@@ -1,16 +1,16 @@
 import os
 import sys
 
+project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(project_path)
+
 import discord
 from discord import Member as DiscordMember
 from discord.ext import commands
 from discord.ext.commands import Greedy
 
 from utils.jsonReader import Helpers
-from .toolsCog.systemMessages import CustomMessages
-
-project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(project_path)
+from cogs.toolsCog.systemMessages import CustomMessages
 
 helper = Helpers()
 
