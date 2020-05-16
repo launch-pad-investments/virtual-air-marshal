@@ -62,8 +62,7 @@ async def jail_sentence_checker():
                     if role: 
                         if role in member.roles:
                             await member.remove_roles(role, reason='Jail time served')
-        
-        print(f'@{time_of_release} --> {len(overdue_members)} members have been unjailed!')
+        print(Fore.GREEN + f'@{time_of_release} --> {len(overdue_members)} members have been unjailed!')
     else:
         pass
     
@@ -75,11 +74,6 @@ def start_scheduler():
     scheduler.start()
         
 if __name__ == '__main__':
-    print(Fore.RED + 'some red text')
-    print(Back.GREEN + 'and with a green background')
-    print(Style.DIM + 'and in dim text')
-    print(Style.RESET_ALL)
-
     notification_str = Fore.MAGENTA + '+++++++++++++++++++++++++++++++++++++++\n' \
                        '           LOADING COGS....        \n'
     for extension in extensions:
