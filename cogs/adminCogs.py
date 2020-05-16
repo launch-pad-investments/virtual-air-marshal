@@ -128,6 +128,12 @@ class TeamCommands(commands.Cog):
 
     @admin.command()
     @commands.check(is_public)
+    async def jail(self, ctx, user: discord.Member):
+        pass
+    
+    #TODO integrate jail command 
+    @admin.command()
+    @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(ban_predicate), commands.check(admin_predicate),
                         commands.check(is_overwatch))
     async def ban(self, ctx, users: Greedy[DiscordMember], *, reason: str):
