@@ -128,7 +128,7 @@ class TeamCommands(commands.Cog):
 
     @admin.command()
     @commands.check(is_public)
-    async def jail(self, ctx, user: discord.Member):
+    async def jail(self, ctx, user: discord.Member):        
         pass
     
     #TODO integrate jail command 
@@ -186,144 +186,7 @@ class TeamCommands(commands.Cog):
         message = f'Role {role.name} with ID {role.id}has ben given to the user {user.display_name}'
         await customMessages.system_message(ctx=ctx, color_code=0, destination=1, message=message)
 
-    @admin.group()
-    @commands.check(is_public)
-    @commands.check_any(commands.is_owner(), commands.check(admin_predicate), commands.check(ban_predicate))
-    async def check(self, ctx):
-        if ctx.invoked_subcommand is None:
-            title = f"Sub commands for ***{bot_setup['command']}admin check*** group"
-            description = f"Description of all availabale sub-command for __check__ category"
-            value = [{'name': f'{bot_setup["command"]}admin check user_info <Discord Member>  ',
-                      'value': f"Returns indepth details about the user"},
-                     {'name': f'{bot_setup["command"]}admin check user_roles <Discord Member> ',
-                      'value': f"Returns all the roles which are applied to selected member"},
-                     {'name': f'{bot_setup["command"]}admin check user_guild_permissions <Discord Member> ',
-                      'value': f"Returns users global guild permissions"},
-                     {
-                         'name': f'{bot_setup["command"]}admin check user_channel_permissions <Discord Member> <Discord Channel> ',
-                         'value': f"Checks the permissions user has for selected channel"},
-                     ]
-            await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
-
-    @check.command()
-    async def user_roles(self, ctx, user: DiscordMember):
-        """
-        Checks waht roles user has
-        :param ctx: Discord Context
-        :param user: Discord Member
-        :return: info embed on roles
-        """
-        title = f"Role query"
-        description = f'Role and permission check for user {user.name} with ID {user.id}'
-        roles = ''
-        for role in user.roles:
-            roles += f'{role.name}\n'
-
-        value = [{'name': f'Roles for user {user.name} with ID {user.id}',
-                  'value': f"{roles}"}
-                 ]
-
-        await customMessages.embed_builder(ctx, title=title, description=description, data=value)
-
-    @check.command()
-    async def user_info(self, ctx, user: DiscordMember):
-        # TODO does not work
-
-        roles = f'***Top Role: {user.top_role}***'
-        for role in user.roles[1:]:
-            roles += f'{role.name}\n'
-
-        if user.premium_since is None:
-            premium = "No Premium status"
-        else:
-            premium = user.premium_since
-
-        act = ''
-        count = 1
-        if user.activities is not None:
-            for activity in user.activities:
-                act += f'{count}.: {activity}\n'
-                count += 1
-        else:
-            act = 'User does not have activities'
-
-        user_info = discord.Embed(title='User Info',
-                                  description='info on the user')
-        user_info.set_thumbnail(url=user.avatar_url)
-        user_info.add_field(name='__**User:**__',
-                            value=f'Username: ***{user}***\n'
-                                  f'User ID: ***{user.id}***\n'
-                                  f'Display Name: ***{user.display_name}***\n'
-                                  f'Nickname: ***{user.nick}***',
-                            inline=False)
-        user_info.add_field(name='Account created:',
-                            value=user.created_at,
-                            inline=False)
-        user_info.add_field(name='Joined community at',
-                            value=user.joined_at,
-                            inline=True)
-        user_info.add_field(name='Is Bot',
-                            value=user.bot,
-                            inline=False)
-        user_info.add_field(name='Premium status',
-                            value=premium,
-                            inline=False)
-        user_info.add_field(name='Current status',
-                            value=user.status,
-                            inline=False)
-        user_info.add_field(name=f'Roles on {user.guild}',
-                            value=roles)
-        user_info.add_field(name='Current activities:',
-                            value=act,
-                            inline=False)
-        user_info.add_field(name='Voice state',
-                            value=user.voice)
-        user_info.add_field(name='Guild',
-                            value=user.guild.name,
-                            inline=False)
-        await ctx.channel.send(embed=user_info)
-
-    @check.command()
-    async def user_guild_permissions(self, ctx, user: DiscordMember):
-        """
-        Returs users global guild permissions
-        :param ctx: Discord Context
-        :param user: Discord User/ Mmember
-        :return:
-        """
-        user_perm = ''
-        for perm in user.guild_permissions:
-            if perm[1] is True:
-                user_perm += f"- {perm[0]}\n"
-        values = [
-            {"name": f"Users general permissions on  ***#{user.guild.name}***",
-             "value": user_perm}
-        ]
-        await customMessages.embed_builder(ctx, title="Guild Permission check",
-                                           description=f"{user.name} with ID {user.id} permission status for channel",
-                                           data=values)
-
-    @check.command()
-    async def user_channel_permissions(self, ctx, user: DiscordMember, channel: discord.TextChannel):
-        """
-        Checks the permissions of the user for selected channell
-        :param ctx: Context
-        :param user: Discord User
-        :param channel: Discord Channel
-        :return: Info Embed
-        """
-        user_perm = ''
-        for perm in user.permissions_in(channel):
-            if perm[1] is True:
-                user_perm += f"- {perm[0]}\n"
-        values = [
-            {"name": f"Permissions for channel ***#{channel.name}***",
-             "value": user_perm}
-        ]
-        await customMessages.embed_builder(ctx, title="Channel Permission check",
-                                           description=f"{user.name} with ID {user.id} permission status for channel",
-                                           data=values)
-
+            
     @kick.error
     async def kick_error(self, ctx, error):
         if isinstance(error, commands.BadArgument):
