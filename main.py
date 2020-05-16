@@ -79,7 +79,7 @@ if __name__ == '__main__':
     for extension in extensions:
         try:
             bot.load_extension(extension)
-            notification_str += (Fore.GREEN + f'| {extension} :smile: \n')
+            notification_str += (Fore.GREEN + f'| {extension}\n')
         except Exception as error:
             notification_str += (Fore.RED + f'| {extension} --> {error}\n')
             raise
