@@ -1,6 +1,6 @@
 import os
 import sys
-
+from colorama import Fore
 
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
@@ -51,7 +51,7 @@ class AutoFunctions(commands.Cog):
                 try:
                     await member.send(embed=sys_embed)
                 except Exception:
-                    print('pass')
+                    pass
 
             else:
                 pass
@@ -97,7 +97,7 @@ class AutoFunctions(commands.Cog):
                     try:
                         await author.send(embed=sys_embed)
                     except Exception:
-                        print('pass')
+                        pass
                 else:
                     message = 'You have either reacted with wrong emoji or than you did not want to accept Terms Of Service. Community has therefore stayed locked for you.'
                     title = f"Access to {reaction.guild} forbidden"
@@ -107,9 +107,9 @@ class AutoFunctions(commands.Cog):
                     sys_embed.add_field(name='Message',
                                         value=message)
             else:
-                print(f'In appropriate message ID {reaction.message_id}')
+                pass
         else:
-            print('This channel is not applied for services')
+            pass
             
     
     @commands.Cog.listener()
@@ -165,8 +165,8 @@ class AutoFunctions(commands.Cog):
                                             # member = guild.get_member(message.author.id)                
                                             role = guild.get_role(710429549040500837)
                                             await message.author.add_roles(role, reason='Jailed......')       
-                                                                                
-                                            print('remove roles from user')                   
+                                            print(Fore.RED + f'User {message.author} has been jailed!!!!')
+                                                                                       
                                             for role in active_roles:
                                                 role = guild.get_role(role_id=int(role))  # Get the role
                                                 await message.author.remove_roles(role, reason='Jail time served')
