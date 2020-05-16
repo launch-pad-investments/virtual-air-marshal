@@ -1,8 +1,6 @@
 """
 Main bot script
 """
-#TODO integrate loops and pymonog
-
 import discord
 from datetime import datetime
 import time
@@ -11,7 +9,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from jailList import JailManagement
 from utils.jsonReader import Helpers
-
+from colorama import Fore, Back, Style
 
 jail_manager = JailManagement()
 helper = Helpers()
@@ -77,19 +75,25 @@ def start_scheduler():
     scheduler.start()
         
 if __name__ == '__main__':
-    notification_str = '+++++++++++++++++++++++++++++++++++++++\n' \
+    print(Fore.RED + 'some red text')
+    print(Back.GREEN + 'and with a green background')
+    print(Style.DIM + 'and in dim text')
+    print(Style.RESET_ALL)
+
+    notification_str = Fore.MAGENTA + '+++++++++++++++++++++++++++++++++++++++\n' \
                        '           LOADING COGS....        \n'
     for extension in extensions:
         try:
             bot.load_extension(extension)
-            notification_str += f'| {extension} :smile: \n'
+            notification_str += (Fore.GREEN + f'| {extension} :smile: \n')
         except Exception as error:
-            notification_str += f'| {extension} --> {error}\n'
+            notification_str += (Fore.RED + f'| {extension} --> {error}\n')
             raise
 
-    notification_str += '+++++++++++++++++++++++++++++++++++++++'
+    notification_str += Fore.MAGENTA + '+++++++++++++++++++++++++++++++++++++++'
     # Discord Token
     print(notification_str)
+    print(Style.RESET_ALL)
     start_scheduler()
     bot.run(bot_setup['token'], reconnect=True)
 
