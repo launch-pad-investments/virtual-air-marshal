@@ -137,7 +137,7 @@ class TeamCommands(commands.Cog):
         if role not in user.roles:
             # Check if in counter and if yes remove the user from counter
             # Send jail details
-            
+            pass            
         else:
             print('He is jailed already')
         
