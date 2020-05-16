@@ -129,7 +129,18 @@ class TeamCommands(commands.Cog):
     @admin.command()
     @commands.check(is_public)
     async def jail(self, ctx, user: discord.Member):        
-        pass
+        """
+        Sends user to jail
+        """
+        role = ctx.message.guild.get_role(role_id=667623277430046720)  # Get the role
+        user_id = user.id
+        if role not in user.roles:
+            # Check if in counter and if yes remove the user from counter
+            # Send jail details
+            
+        else:
+            print('He is jailed already')
+        
     
     #TODO integrate jail command 
     @admin.command()
