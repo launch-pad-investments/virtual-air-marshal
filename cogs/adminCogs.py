@@ -183,6 +183,9 @@ class TeamCommands(commands.Cog):
                     role = guild.get_role(role_id=int(role))  # Get the role
                     await user.remove_roles(role, reason='Jail time initiated')
                     
+                message=f'{ctx.message.author} Jailed {user} for {duration} mininutes! :soap: :eggplant: '
+                await customMessages.system_message(ctx=ctx, color_code=0, destination=1, message=message)
+                    
             else:
                 print('Could not throw him to database jail')
         else:
