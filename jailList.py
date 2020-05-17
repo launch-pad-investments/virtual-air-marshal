@@ -19,6 +19,11 @@ class JailManagement():
         all_users = list(self.jailed.find({"end": {"$lt": timestamp}}))
         return all_users
     
+    def get_jailed_user(self, discord_id):
+        user = self.jailed.find_one({"userId":discord_id},
+                                    {"_id":0})
+        return user
+    
     
     def check_if_in_counter(self, discord_id:int):
         result = self.counter.find_one({"userId":discord_id})

@@ -195,8 +195,41 @@ class TeamCommands(commands.Cog):
     @admin.command()
     @commands.check(is_public)
     async def release(self, ctx, user:discord.Member):
-        #TODO make code which releases the member from the jail 
-        pass
+        if jail_manager.check_if_jailed(discord_id = int(user.id)):
+            user_details = jail_manager.get_jailed_user(discord_id=user.id)
+            if jail_manager.remove_from_jailed(discord_id=int(user.id)):
+                all_role_ids = user_details["roleIds"]
+                free = discord.Embed(title='__Sentence Revoked__',
+                        color=discord.Color.green())
+                free.set_thumbnail(url=self.bot.user.avatar_url)
+                free.add_field(name='Message',
+                               value='You have been manually unjailed by {ctx.message.author} and you can start to communicate again! '
+                               ' Next time be more caucious what and how you write. Bad behaviour will'
+                               ' not be tolerated')
+                await user.send(embed=free)
+                
+                # Add all roles user has had in the past
+                for taken_role in all_role_ids:
+                        to_give=ctx.message.guild.get_role(role_id=int(taken_role))
+                        if to_give:
+                            await user.add_roles(to_give, reason='Returning back roles')    
+
+                # Get and remove jailed role
+                role = ctx.message.guild.get_role(role_id=710429549040500837)  # Get the jail role           
+                         
+                if role: 
+                    if role in user.roles:
+                        await user.remove_roles(role, reason='Jail time served')
+                        
+                time_of_release = datetime.utcnow()
+                print(Fore.GREEN + f'@{time_of_release} --> {user} has been unjailed by {ctx.message.author}')        
+            else:
+                message=f'{user} Could not be set free due to system error...'
+                await customMessages.system_message(ctx=ctx, color_code=1, destination=1, message=message) 
+        else:
+            message=f'{user} Is not jailed at this moment...'
+            await customMessages.system_message(ctx=ctx, color_code=1, destination=1, message=message) 
+            
     
     @admin.command()
     @commands.check(is_public)
