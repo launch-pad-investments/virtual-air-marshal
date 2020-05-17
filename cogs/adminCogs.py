@@ -165,7 +165,7 @@ class TeamCommands(commands.Cog):
                 # Remove all other roles from user
                 for role in active_roles:
                     role = guild.get_role(role_id=int(role))  # Get the role
-                    await message.author.remove_roles(role, reason='Jail time initiated')
+                    await user.remove_roles(role, reason='Jail time initiated')
                     
             else:
                 print('Could not throw him to database jail')
