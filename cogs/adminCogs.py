@@ -137,7 +137,6 @@ class TeamCommands(commands.Cog):
         Sends user to jail
         """
         jail_role = ctx.message.guild.get_role(role_id=710429549040500837)  # Get the jail role
-        partner_role = ctx.message.guild.get_role(role_id =667623277430046720 )
         user_id = user.id
         if jail_role not in user.roles:
             # Current time
