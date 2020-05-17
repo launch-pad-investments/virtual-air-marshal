@@ -189,7 +189,7 @@ class TeamCommands(commands.Cog):
     
     @admin.command()
     @commands.check(is_public)
-    aysnc def release(self, ctx, user:discord.Member):
+    async def release(self, ctx, user:discord.Member):
         #TODO make code which releases the member from the jail 
         pass
     
