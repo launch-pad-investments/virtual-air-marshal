@@ -136,9 +136,10 @@ class TeamCommands(commands.Cog):
         """
         Sends user to jail
         """
-        role = ctx.message.guild.get_role(role_id=667623277430046720)  # Get the role
+        jail_role = ctx.message.guild.get_role(role_id=710429549040500837)  # Get the jail role
+        partner_role = ctx.message.guild.get_role(role_id =667623277430046720 )
         user_id = user.id
-        if role not in user.roles:
+        if jail_role not in user.roles:
             # Current time
             start = datetime.utcnow()
 
@@ -158,8 +159,8 @@ class TeamCommands(commands.Cog):
                     jail_manager.remove_from_counter(discord_id=int(user_id))
                 
                 guild = self.bot.get_guild(id=667607865199951872)
-                role = guild.get_role(710429549040500837)
-                await user.add_roles(role, reason='Jailed......')       
+                
+                await user.add_roles(jail_role, reason='Jailed......')       
                 print(Fore.RED + f'User {user} has been jailed by Admin!!!!')
                 
                 
@@ -185,7 +186,9 @@ class TeamCommands(commands.Cog):
             else:
                 print('Could not throw him to database jail')
         else:
-            print('He is jailed already')
+            message=f'{user} Is Jailed already...'
+            await customMessages.system_message(ctx=ctx, color_code=1, destination=1, message=message)
+ 
     
     @admin.command()
     @commands.check(is_public)
