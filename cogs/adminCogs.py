@@ -186,7 +186,13 @@ class TeamCommands(commands.Cog):
                 print('Could not throw him to database jail')
         else:
             print('He is jailed already')
-        
+    
+    @admin.command()
+    @commands.check(is_public)
+    aysnc def release(self, ctx, user:discord.Member):
+        #TODO make code which releases the member from the jail 
+        pass
+    
     @admin.command()
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(ban_predicate), commands.check(admin_predicate),
