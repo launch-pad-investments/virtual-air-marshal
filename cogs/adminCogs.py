@@ -4,16 +4,20 @@ import sys
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
 
+from datetime import datetime
+from datetime import timedelta
+import time
 import discord
 from discord import Member as DiscordMember
 from discord.ext import commands
 from discord.ext.commands import Greedy
-
+from jailList import JailManagement
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
+from colorama import Fore
 
 helper = Helpers()
-
+jail_manager = JailManagement()
 customMessages = CustomMessages()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 
@@ -128,21 +132,46 @@ class TeamCommands(commands.Cog):
 
     @admin.command()
     @commands.check(is_public)
-    async def jail(self, ctx, user: discord.Member):        
+    async def jail(self, ctx, user: discord.Member, duration:int):        
         """
         Sends user to jail
         """
         role = ctx.message.guild.get_role(role_id=667623277430046720)  # Get the role
         user_id = user.id
         if role not in user.roles:
-            # Check if in counter and if yes remove the user from counter
-            # Send jail details
-            pass            
+            # Current time
+            start = datetime.utcnow()
+
+            # Set the jail expiration to after one hour
+            td = timedelta(minutes=int(duration))
+            # calculate future date
+            end = start + td
+            expiry = (int(time.mktime(end.timetuple())))
+            
+            end_date_time_stamp = datetime.utcfromtimestamp(expiry)
+
+            # Get all roles user has                                                                                    
+            guild = self.bot.get_guild(id=667607865199951872)  # Get guild
+            active_roles = [role.id for role in user.roles][1:] # Get active roles
+            if jail_manager.throw_to_jail(discord_id=int(user_id),end=expiry, roleIds=active_roles):
+                if jail_manager.check_if_in_counter(discord_id=int(user.id)):
+                    jail_manager.remove_from_counter(discord_id=int(user_id))
+                
+                guild = self.bot.get_guild(id=667607865199951872)
+                role = guild.get_role(710429549040500837)
+                await user.add_roles(role, reason='Jailed......')       
+                print(Fore.RED + f'User {user} has been jailed by Admin!!!!')
+                
+                # Remove all other roles from user
+                for role in active_roles:
+                    role = guild.get_role(role_id=int(role))  # Get the role
+                    await message.author.remove_roles(role, reason='Jail time initiated')
+                    
+            else:
+                print('Could not throw him to database jail')
         else:
             print('He is jailed already')
         
-    
-    #TODO integrate jail command 
     @admin.command()
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(ban_predicate), commands.check(admin_predicate),
