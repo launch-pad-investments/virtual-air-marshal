@@ -162,6 +162,21 @@ class TeamCommands(commands.Cog):
                 await user.add_roles(role, reason='Jailed......')       
                 print(Fore.RED + f'User {user} has been jailed by Admin!!!!')
                 
+                
+                # Send message
+                jailed_info = discord.Embed(title='__You have been jailed by Admin!__',
+                                            description=f'You have been manually jailed by Admin {ctx.message.author}.'
+                                            'All roles on community have been removed and will be automatically reasigned once jail time is served',
+                                            color = discord.Color.red())
+                jailed_info.add_field(name=f'Jail time duration:',
+                                    value=f'{duration} minutes')
+                jailed_info.add_field(name=f'Sentence started @:',
+                                    value=f'{start} UTC')
+                jailed_info.add_field(name=f'Sentece ends on:',
+                                    value=f'{end_date_time_stamp} UTC')                
+                await user.send(embed=jailed_info)
+                await ctx.channe.send(content=':cop:', delete_after = 60)
+                
                 # Remove all other roles from user
                 for role in active_roles:
                     role = guild.get_role(role_id=int(role))  # Get the role
