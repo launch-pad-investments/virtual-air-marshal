@@ -175,7 +175,7 @@ class TeamCommands(commands.Cog):
                 jailed_info.add_field(name=f'Sentece ends on:',
                                     value=f'{end_date_time_stamp} UTC')                
                 await user.send(embed=jailed_info)
-                await ctx.channe.send(content=':cop:', delete_after = 60)
+                await ctx.channel.send(content=':cop:', delete_after = 60)
                 
                 # Remove all other roles from user
                 for role in active_roles:
