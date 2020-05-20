@@ -39,6 +39,7 @@ class AutoFunctions(commands.Cog):
         """
         if bot_setup['welcomeService'] == 1:
             if not member.bot:
+                print(Fore.BLUE + f"New user joined community: {member} (ID: {member.id})")
                 text = 'Hey, and welcome to the Launch Pad Investments. Please head to #the-landing-pad, read ' \
                        'the Terms of Service and if you agree, you will know what to do ;). Enjoy your stay!'
 
@@ -56,6 +57,7 @@ class AutoFunctions(commands.Cog):
             else:
                 pass
         else:
+            print(Fore.BLUE + f"New user joined community: {member} (ID: {member.id})")
             role = discord.utils.get(member.guild.roles, name=bot_setup['entryRole'])
             member.add_roles(role)
 
@@ -98,6 +100,8 @@ class AutoFunctions(commands.Cog):
                         await author.send(embed=sys_embed)
                     except Exception:
                         pass
+                    
+                    print(Fore.GREEN + f"User accepted TOS {author} (ID: {author.id}")
                 else:
                     message = 'You have either reacted with wrong emoji or than you did not want to accept Terms Of Service. Community has therefore stayed locked for you.'
                     title = f"Access to {reaction.guild} forbidden"
