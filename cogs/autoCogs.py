@@ -40,7 +40,6 @@ class AutoFunctions(commands.Cog):
         if bot_setup['welcomeService'] == 1:
             if not member.bot:
                 
-                #TODO give him a unverified role
                 print(Fore.BLUE + f"New user joined community: {member} (ID: {member.id})")
                 role = discord.utils.get(member.guild.roles, name="UNVERIFIED")
                 await member.add_roles(role)
@@ -105,6 +104,10 @@ class AutoFunctions(commands.Cog):
                         await author.send(embed=sys_embed)
                     except Exception:
                         pass
+                    
+                    print(Fore.CYAN + f"Removing the Unverified role from {author} (ID: {author.id}")
+                    role_rmw = discord.utils.get(author.guild.roles, name="UNVERIFIED")
+                    await author.remove_roles(role_rmw, reason='User accepted TOS')
                     
                     print(Fore.GREEN + f"User accepted TOS {author} (ID: {author.id}")
                 else:
