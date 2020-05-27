@@ -67,8 +67,11 @@ class TeamCommands(commands.Cog):
         
         await ctx.channel.send(content=f'You {ctx.message.author} can see {count} members in background')
         await ctx.channel.send(content=f'Those members are:')
+        user_list = str()
         for usr in ctx.channel.members:
-            await ctx.channel.send(content=f'{usr}')
+            user_list += f'{usr}\n'
+
+        await ctx.channel.send(content=user_list)
         
     @commands.group()
     @commands.check(is_public)
