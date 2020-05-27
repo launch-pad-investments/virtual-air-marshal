@@ -43,7 +43,7 @@ class AutoFunctions(commands.Cog):
                 #TODO give him a unverified role
                 print(Fore.BLUE + f"New user joined community: {member} (ID: {member.id})")
                 role = discord.utils.get(member.guild.roles, name="UNVERIFIED")
-                member.add_roles(role)
+                await member.add_roles(role)
                 print(Fore.YELLOW + "Role Unveriffied give to the user {member} with ID: {member.id}")
                 text = 'Hey, and welcome to the Launch Pad Investments. Please head to #the-landing-pad, read ' \
                        'the Terms of Service and if you agree, you will know what to do ;). Enjoy your stay!'
