@@ -61,7 +61,7 @@ class TeamCommands(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def see(self, ctx):
+    async def see(self, ctx, user:discord.User):
         
         count = len(ctx.channel.members)
         
