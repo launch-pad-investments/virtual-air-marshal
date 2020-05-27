@@ -39,7 +39,12 @@ class AutoFunctions(commands.Cog):
         """
         if bot_setup['welcomeService'] == 1:
             if not member.bot:
+                
+                #TODO give him a unverified role
                 print(Fore.BLUE + f"New user joined community: {member} (ID: {member.id})")
+                role = discord.utils.get(member.guild.roles, name="UNVERIFIED")
+                member.add_roles(role)
+                print(Fore.YELLOW + "Role Unveriffied give to the user {member} with ID: {member.id}")
                 text = 'Hey, and welcome to the Launch Pad Investments. Please head to #the-landing-pad, read ' \
                        'the Terms of Service and if you agree, you will know what to do ;). Enjoy your stay!'
 
@@ -118,7 +123,7 @@ class AutoFunctions(commands.Cog):
     
     @commands.Cog.listener()
     async def on_message(self, message):
-        if not message.author.bot:
+        if not message.author.bot: 
             if message.guild.id == 667607865199951872:
                 role = message.guild.get_role(role_id=667623277430046720)  # Get the role
                 if role not in message.author.roles:
