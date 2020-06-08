@@ -21,8 +21,9 @@ class CommunityManager:
             "communityName":str(community_name),
             "communityOwnerName":str(owner_name),
             "communityOwnerId":int(owner_id),
-            "appliedChannel":int(0),
-            "appliedMessage":int(0),
+            "appliedChannelId":int(0),
+            "appliedChannelName":None,
+            "appliedMessageId":int(0),
             "welcomeService":int(0),
         }
         
@@ -33,17 +34,31 @@ class CommunityManager:
             return False
 
         
-    def check_community_existance(self, community_id:int):
+    def check_community_reg_status(self, community_id:int):
         result = self.communityProfiles.find_one({"communityId":community_id})
         
         if result:
             return True
         else:
             return False
-        
-    def check_if_turned_on(self, community_id:int):
+    
+    def get_details_of_channel(self, community_id:int):
+        result = self.communityProfiles.find_one({"communityId":community_id},
+                                                 {"_id":0,
+                                                  "appliedChannelName":1,
+                                                  "appliedChannelId":1,
+                                                  })
+        return result
+    
+    def check_if_security_activated(self, community_id:int):
         result = self.communityProfiles.find_one({"communityId":community_id},
                                                  {"_id":0,
                                                   "welcomeService":1})
-        return result['weclomeService']
+        try:
+            return result['weclomeService']
+        except TypeError:
+            return 2
     
+    def get_role_id(self, community_id):
+        
+
