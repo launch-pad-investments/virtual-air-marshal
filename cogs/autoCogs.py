@@ -10,14 +10,16 @@ import discord
 from discord.ext import commands
 from datetime import datetime, timedelta
 import time
-
+from backoffice import roleAutomationDb
 from utils.jsonReader import Helpers
 from toolsCog.systemMessages import CustomMessages
 from jailList import JailManagement
+from backoffice.communityProfilesDb import CommunityManager
 
 jail_manager = JailManagement()
 helper = Helpers()
 cust_messages = CustomMessages()
+community_manager  = CommunityManager()
 
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 CONT_JAIL_DURATION = 2
@@ -26,7 +28,7 @@ CONT_JAIL_DURATION = 2
 class AutoFunctions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.bad_words = helper.read_json_file('badWords.json')['words']   
+        self.bad_words = helper.read_json_file('badWords.json')['words']
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -37,9 +39,10 @@ class AutoFunctions(commands.Cog):
         :param member:
         :return:
         """
+        
+        
         if bot_setup['welcomeService'] == 1:
             if not member.bot:
-                
                 print(Fore.BLUE + f"New user joined community: {member} (ID: {member.id})")
                 role = discord.utils.get(member.guild.roles, name="UNVERIFIED")
                 await member.add_roles(role)
