@@ -47,6 +47,7 @@ class CommunityManager:
                                                  {"_id":0,
                                                   "appliedChannelName":1,
                                                   "appliedChannelId":1,
+                                                  "appliedMessageId":1,
                                                   })
         return result
     
@@ -58,7 +59,3 @@ class CommunityManager:
             return result['weclomeService']
         except TypeError:
             return 2
-    
-    def get_role_id(self, community_id):
-        
-

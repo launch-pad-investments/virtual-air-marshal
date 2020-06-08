@@ -29,7 +29,7 @@ class AutoFunctions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.bad_words = helper.read_json_file('badWords.json')['words']
-
+        
     @commands.Cog.listener()
     async def on_member_join(self, member):
         """
@@ -118,28 +118,47 @@ class AutoFunctions(commands.Cog):
         """
 
         author = reaction.member  # Author of reaction
-
+        details = community_manager.get_details_of_channel(community_id = author.guild.id)
+        
         # Check if user has responded with reaction to the mmessage with id on the specific channel
-        if reaction.channel_id == bot_setup['reactionChannelId']:
-            if reaction.message_id == bot_setup['reactionMessageId']:
+        if reaction.channel_id == details['appliedChannelId']:
+            if reaction.message_id == details['appliedMessageId']:
                 # Check if user reacted with thumbs up emoji
                 if reaction.emoji.name == '\U0001F44D':
-                    role = discord.utils.get(reaction.member.guild.roles, name=bot_setup['entryRole'])
+                    role = discord.utils.get(reaction.member.guild.roles, name='Visitor')
                     await reaction.member.add_roles(role)
-
-                    sys_embed = discord.Embed(title="System Message",
-                                              description="Access granted",
-                                              colour=0x319f6b)
-                    sys_embed.add_field(name='Message',
-                                        value="Welcome to Launch Pad Investment Community. Please head to #the-landing-pad and get familliar with out TOS")
+                    
+                    text = f'Hey and welcome to the {author.guild}. '
+                    f'You have successfully verified yourself, and gave yourself a chance to look through its content. Enjoy Your Stay!'
+                    
+                    sys_embed = discord.Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
+                                            description=f"Access to {author.guild} granted!",
+                                            colour=0x319f6b)
+                    sys_embed.add_field(name='__Notice!__',
+                                        value=text)
 
                     try:
                         await author.send(embed=sys_embed)
                     except Exception:
-                        pass
+                        print('pass')
+                        
+                        
+                    text = f'{author.guild} uses {self.bot.user} which is a product of Launch Pad Investment Discord Group. '
+                    f' It has been designed with the reason to allow moderation of the community.'
+                    
+                    sys_embed = discord.Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
+                                            description=f"Air-Marshal monitoring you activity :robot: ",
+                                            colour=0x319f6b)
+                    sys_embed.add_field(name='__Notice!__',
+                                        value=text)
+
+                    try:
+                        await author.send(embed=sys_embed)
+                    except Exception:
+                        print('pass')
                     
                     print(Fore.CYAN + f"Removing the Unverified role from {author} (ID: {author.id}")
-                    role_rmw = discord.utils.get(author.guild.roles, name="UNVERIFIED")
+                    role_rmw = discord.utils.get(author.guild.roles, name="Unverified")
                     await author.remove_roles(role_rmw, reason='User accepted TOS')
                     
                     print(Fore.GREEN + f"User accepted TOS {author} (ID: {author.id}")
@@ -152,7 +171,13 @@ class AutoFunctions(commands.Cog):
                     sys_embed.add_field(name='Message',
                                         value=message)
             else:
-                pass
+                message = f'You have reacted to wrong message! Message ID is {details["appliedMessageId"]}!'
+                title = f":octagonal_sign:  __Air Marshal System Message__ :octagonal_sign: "
+                sys_embed = discord.Embed(title="System Message",
+                                            description=title,
+                                            colour=0x319f6b)
+                sys_embed.add_field(name='Message',
+                                    value=message)
         else:
             pass
             
