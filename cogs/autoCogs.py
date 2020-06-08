@@ -184,6 +184,11 @@ class AutoFunctions(commands.Cog):
     
     @commands.Cog.listener()
     async def on_message(self, message):
+        """
+        Bad word checker!
+        """
+        #TODO integrate multi discord activity
+        # TODO check if community has activated jail systme 
         if not message.author.bot: 
             if message.guild.id == 667607865199951872:
                 role = message.guild.get_role(role_id=667623277430046720)  # Get the role
