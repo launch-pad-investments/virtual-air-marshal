@@ -10,7 +10,7 @@ import discord
 from discord.ext import commands
 from datetime import datetime, timedelta
 import time
-from backoffice import roleAutomationDb
+from backoffice.communityProfilesDb import CommunityManager
 from utils.jsonReader import Helpers
 from toolsCog.systemMessages import CustomMessages
 from jailList import JailManagement

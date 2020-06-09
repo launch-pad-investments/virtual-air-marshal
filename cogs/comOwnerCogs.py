@@ -82,7 +82,7 @@ class CommunityOwnerCommands(commands.Cog):
     @commands.check(is_community_owner)
     async def register(self, ctx):
         if community_manager.register_community_for_service(community_id=ctx.message.guild.id, community_name=f'{ctx.message.guild}', owner_id=ctx.message.guild.owner_id,owner_name=f'{ctx.message.author}'):
-            message = f'You have successfully registered community to {self.bot.user} system. Proceed with {bot_setup["command"]}service for further instructions!'
+            message = f'You have successfully registered community to ***{self.bot.user.mention}*** system. Proceed with __{bot_setup["command"]} service__ for further instructions!'
             await customMessages.system_message(ctx, message=message, color_code=0, destination=1)
         else:
             message = f'There has been an error while trying register community into the system. Please contact support staff'

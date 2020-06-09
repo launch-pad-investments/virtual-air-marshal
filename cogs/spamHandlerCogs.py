@@ -1,4 +1,8 @@
 
+"""
+COG: Handles the settings for communities verification system from bot invasion
+"""
+
 import os
 import sys
 
@@ -21,7 +25,7 @@ from colorama import Fore
 helper = Helpers()
 community_manager = CommunityManager()
 jail_manager = JailManagement()
-customMessages = CustomMessages()
+custom_message = CustomMessages()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 
 def is_community_registered(ctx):
@@ -65,16 +69,29 @@ class SpamService(commands.Cog):
                       'value': "Right click on the messsage and copy its ID and provide it to bot. Message needs to be located in selected channel"}
                      ]
 
-            await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)    
+            await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)    
     
     
     @spam.command()
     async def on(self,ctx):
-        if community_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=1,service_type=2):
-            #direct = 1 is turned on 
-            print('you have successfully turned on the service')
+        if community_manager.check_welcome_channel_status(community_id=int(ctx.message.guild.id)):
+            if community_manager.check_reaction_message_status(community_id=int(ctx.message.guild.id)):
+                if community_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=1,service_type=2):
+                    title='__System Message__'
+                    message = 'You have turned ON the bot invasion prevention function successfully. '
+                    custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
+                else:
+                    message = f'You are either not an Overwatch member, owner of the community, or community has not been registered yet into the system. Use' 
+                    f' {bot_setup["command"]}service register to start'
+                    await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+            else:
+                message = f'You can not turn this service ON since the message where system will be listening for reacions, has not been provided yet.'
+                f' Please use first command {bot_setup["command"]}spam set_message <message id as INT> ***' 
+                await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
-            print('There has been error while trying to turn on the service')
+            message = f'You can not turn this service ON since the channel where system will be listening for reacions, has not been provided yet.'
+            f' Please use first command {bot_setup["command"]}spam set_channel <#discord.TextChannel> ***' 
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
     
     
     @spam.command()
@@ -104,7 +121,7 @@ class SpamService(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             message = f'You are either not an Overwatch member, owner of the community, or community has not been registered yet into the system. Use' 
             f' {bot_setup["command"]}service register to start'
-            await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             print(error)
 

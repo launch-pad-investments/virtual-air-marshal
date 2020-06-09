@@ -13,7 +13,7 @@ class CommunityManager:
     def __init__(self):
         self.connection = MongoClient('mongodb://localhost:27017/')
         self.airMarshall = self.connection['AirMarshall']
-        self.communityProfiles = self.airMarshall.welcomeComSettings
+        self.communityProfiles = self.airMarshall.communityProfiles
 
     def register_community_for_service(self, community_id,community_name, owner_id, owner_name):
         community_profile = {
@@ -33,6 +33,24 @@ class CommunityManager:
             return True
         except errors.PyMongoError:
             return False
+        
+    def check_welcome_channel_status(self, community_id:int):
+        result = self.communityProfiles.find_one({"communityId":int(community_id)},
+                                                 {"_id":0,
+                                                  "appliedChannelId":1})
+        if result["appliedChannelId"] == 0:
+            return False
+        else:
+            return True
+        
+    def check_reaction_message_status(self, community_id:int):
+        result = self.communityProfiles.find_one({"communityId":int(community_id)},
+                                                 {"_id":0,
+                                                  "appliedMessageId":1})
+        if result["appliedChannelId"] == 0:
+            return False
+        else:
+            return True      
 
     def modify_channel(self, community_id:int, channel_id:int, channel_name:str):
         result = self.communityProfiles.update_one({"communityId":int(community_id)},
