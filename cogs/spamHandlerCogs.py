@@ -47,6 +47,8 @@ class SpamService(commands.Cog):
         self.bot = bot
 
     @commands.group()
+    @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
+    @commands.check(is_community_registered)
     async def spam(self, ctx):
         if ctx.invoked_subcommand is None:
             title = '__Available commands under ***Spam*** category!'
@@ -69,6 +71,7 @@ class SpamService(commands.Cog):
     @spam.command()
     async def on(self,ctx):
         pass
+
     
     
     @spam.command()
@@ -86,7 +89,8 @@ class SpamService(commands.Cog):
     @spam.error
     async def spam_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
-            message = 'You are either not an Overwatch member, owner of the community, or community has not been registered yet into the system.'
+            message = f'You are either not an Overwatch member, owner of the community, or community has not been registered yet into the system. Use' 
+            f' {bot_setup["command"]}service register to start'
             await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             print(error)
