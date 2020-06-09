@@ -44,8 +44,7 @@ class JailService(commands.Cog):
         self.bot = bot
 
 
-
-    @service.group()
+    @commands.group()
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner), commands.check(is_community_registered))
     async def jail(self, ctx):
         if ctx.invoked_subcommand is None:
@@ -59,13 +58,15 @@ class JailService(commands.Cog):
             await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
             
             
-    @jail.error
-    async def jail_error(self, ctx, error):
-        if isinstance(error, commands.CheckFailure):
-            message = 'You are either not an Overwatch member, owner of the community, or community has not been registered yet into the system.'
-            await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
-        else:
-            print(error)
+    # Turn on and turn off
+    @jail.command()
+    async def on (self,ctx):
+        pass
+    
+    @jail.command()
+    async def off (self,ctx):
+        pass
+    
             
 def setup(bot):
     bot.add_cog(JailService(bot))
