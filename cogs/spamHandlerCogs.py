@@ -81,8 +81,8 @@ class SpamService(commands.Cog):
                     message = 'You have turned ON the bot invasion prevention function successfully. '
                     custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
                 else:
-                    message = f'You are either not an Overwatch member, owner of the community, or community has not been registered yet into the system. Use' 
-                    f' {bot_setup["command"]}service register to start'
+                    message = f'There was a backend error. Please try again later or contact one of the administrators on the community. We '
+                    'apologize for inconvinience'
                     await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
             else:
                 message = f'You can not turn this service ON since the message where system will be listening for reacions, has not been provided yet.'
@@ -97,10 +97,15 @@ class SpamService(commands.Cog):
     @spam.command()
     async def off(self,ctx):
         if community_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=0,service_type=2):
-            #direct = 1 is turned on 
-            print('you have successfully turned off the service')
+                title='__System Message__'
+                message = 'You have turned OFF the bot invasion prevention function successfully. Have in mind that now everything will needd to be '
+                'done manually.'
+                custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
         else:
-            print('There has been error while trying to turn off the service')
+            message = f'There was a backend error. Please try again later or contact one of the administrators on the community. We '
+            'apologize for inconvinience'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+
     
     @spam.command()
     async def set_channel(self,ctx, channel:discord.TextChannel):
