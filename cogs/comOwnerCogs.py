@@ -64,14 +64,19 @@ class CommunityOwnerCommands(commands.Cog):
             description = 'All available commands for owners of the community. Choose one, and further commands will be displayed'
             value = [{'name': f'{bot_setup["command"]}register',
                       'value': "Auto language moderation category of settings for community with auto jail and release function"},
-                     {'name': f'{bot_setup["command"]}jail',
-                      'value': "Auto language moderation category of settings for community with auto jail and release function"},
-                     {'name': f'{bot_setup["command"]}spam',
-                      'value': "Spamm protection category of settings for the community"},
+                     {'name': f'{bot_setup["command"]}about',
+                      'value': "Information on all services and what the bot offers"}
+                     
                      ]
 
             await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
 
+    @services.command()
+    async def about(self, ctx):
+        # Create description on all services
+        pass
+    
+    
     @service.command()
     @commands.check(is_community_not_registered)
     @commands.check(is_community_owner)
@@ -82,44 +87,7 @@ class CommunityOwnerCommands(commands.Cog):
         else:
             message = f'There has been an error while trying register community into the system. Please contact support staff'
             await customMessages.system_message(ctx, message=message, color_code=0, destination=1)
-    
-    @service.group()
-    @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner), commands.check(is_community_registered))
-    async def jail(self, ctx):
-        if ctx.invoked_subcommand is None:
-            title = '__Available commands under ***Jail*** category!'
-            description = 'Jail system was designed with intentions to keep the language of the community clean and social. If member breaches language for 3 minutes, he/she is sent to jail for 2 minutes.' 
-            ' All roles are removed and given back once jail-time has expired.'
-            value = [{'name': f'{bot_setup["command"]}jail set <>',
-                      'value': "Auto language moderation category of settings for community with auto jail and release function"},
-                     ]
-
-            await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
-    
-    @service.group()
-    @commands.check(is_overwatch)
-    @commands.check(is_community_owner)
-    @commands.check(is_community_registered)
-    async def spam(self, ctx):
-        if ctx.invoked_subcommand is None:
-            title = '__Available commands under ***Spam*** category!'
-            description = 'Spam system has been designed witht he reason to protect community from invasion of spam bots. It includes '
-            'Auto role uppon successfull reaction from the user to appropriate channel. '
-            value = [{'name': f'MUST READ Before start',
-                      'value': "Create two roles with exact name as written here:\n ***Unverified*** -> Given when member joins\n ***Visitor*** --> Given when member reacts appropriatelly"},
-                     {'name': f'{bot_setup["command"]}spam turn <ON/OFF>',
-                      'value': 'This will turn the spam protection ON/OFF. In order to make it work you need to set appropriate message, channel,'
-                      ' and role on community.'},
-                     {'name': f'{bot_setup["command"]}spam set_channel <#discord.Channel>',
-                      'value': "This will set the channel where bot will be listening for message and reaction."},
-                     {'name': f'{bot_setup["command"]}spam set_message <Message ID as number>',
-                      'value': "Right click on the messsage and copy its ID and provide it to bot. Message needs to be located in selected channel"}
-                     ]
-
-            await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)    
-    
-
-    
+   
     @register.error
     async def register_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
@@ -128,22 +96,6 @@ class CommunityOwnerCommands(commands.Cog):
         else:
             print(error)
     
-    @jail.error
-    async def jail_error(self, ctx, error):
-        if isinstance(error, commands.CheckFailure):
-            message = 'You are either not an Overwatch member, owner of the community, or community has not been registered yet into the system.'
-            await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
-        else:
-            print(error)
-            
-    @spam.error
-    async def spam_error(self, ctx, error):
-        if isinstance(error, commands.CheckFailure):
-            message = 'You are either not an Overwatch member, owner of the community, or community has not been registered yet into the system.'
-            await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
-        else:
-            print(error)
-
 
 def setup(bot):
     bot.add_cog(CommunityOwnerCommands(bot))
