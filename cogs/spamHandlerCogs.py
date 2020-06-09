@@ -70,20 +70,33 @@ class SpamService(commands.Cog):
     
     @spam.command()
     async def on(self,ctx):
-        pass
-
+        if community_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=1,service_type=2):
+            #direct = 1 is turned on 
+            print('you have successfully turned on the service')
+        else:
+            print('There has been error while trying to turn on the service')
     
     
     @spam.command()
     async def off(self,ctx):
-        pass
+        if community_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=0,service_type=2):
+            #direct = 1 is turned on 
+            print('you have successfully turned off the service')
+        else:
+            print('There has been error while trying to turn off the service')
     
     @spam.command()
     async def set_channel(self,ctx, channel:discord.TextChannel):
         pass
     
     @spam.command()
-    async def set_message(self, ctx, message_id:int)
+    async def set_message(self, ctx, message_id:int):
+        msg = await self.bot.fetch_message(id=message_id)
+        
+        if msg is not None:
+            print('message exists')
+        else:
+            print('message does not exist')
     
     
     @spam.error

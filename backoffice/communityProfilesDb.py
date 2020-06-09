@@ -44,10 +44,10 @@ class CommunityManager:
                                                     {"$set":{"appliedMessageId":channel_id}})
     
     def turn_on_off(self, community_id, direction:int, service_type:int):
-        if type == 1:
+        if service_type == 1:
             result = self.communityProfiles.update_one({"communityId":int(community_id)},
                                                         {"$set":{"jailService":direction}})
-        elif type == 2:
+        elif service_type == 2:
             result = self.communityProfiles.update_one({"communityId":int(community_id)},
                                             {"$set":{"welcomeService":direction}})   
         
