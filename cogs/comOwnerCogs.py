@@ -71,7 +71,7 @@ class CommunityOwnerCommands(commands.Cog):
 
             await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
 
-    @services.command()
+    @service.command()
     async def about(self, ctx):
         # Create description on all services
         pass
@@ -87,7 +87,15 @@ class CommunityOwnerCommands(commands.Cog):
         else:
             message = f'There has been an error while trying register community into the system. Please contact support staff'
             await customMessages.system_message(ctx, message=message, color_code=0, destination=1)
-   
+
+    @service.error
+    async def service_error(self, ctx, error):
+        if isinstance(error, commands.CheckFailure):
+            message = 'Access to this areas is allowed only for the owner of the community or than the Bot Overwatch members!'
+            await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
+        else:
+            print(error)
+            
     @register.error
     async def register_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
