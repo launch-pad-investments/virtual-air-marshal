@@ -34,6 +34,24 @@ class CommunityManager:
         except errors.PyMongoError:
             return False
 
+    def modify_channel(self, community_id:int, channel_id:int, channel_name:str):
+        result = self.communityProfiles.update_one({"communityId":int(community_id)},
+                                                    {"$set":{"appliedChannelId":int(channel_id),
+                                                             "appliedChannelName":channel_name}})
+
+    def modify_message(self,community_id:int, channel_id:int, channel_name:str, ):
+        result = self.communityProfiles.update_one({"communityId":int(community_id)},
+                                                    {"$set":{"appliedMessageId":channel_id}})
+    
+    def turn_on_off(self, community_id, direction:int, service_type:int):
+        if type == 1:
+            result = self.communityProfiles.update_one({"communityId":int(community_id)},
+                                                        {"$set":{"jailService":direction}})
+        elif type == 2:
+            result = self.communityProfiles.update_one({"communityId":int(community_id)},
+                                            {"$set":{"welcomeService":direction}})   
+        
+        
     def check_if_not_registered(self, community_id:int):
         result = self.communityProfiles.find_one({"communityId":community_id})
         

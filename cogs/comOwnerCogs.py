@@ -87,21 +87,45 @@ class CommunityOwnerCommands(commands.Cog):
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner), commands.check(is_community_registered))
     async def jail(self, ctx):
         if ctx.invoked_subcommand is None:
-            title = '__Available settings categories for community__'
-            description = 'All available commands for owners of the community. Choose one, and further commands will be displayed'
-            value = [{'name': f'{bot_setup["command"]}jail activate/deactivate',
+            title = '__Available commands under ***Jail*** category!'
+            description = 'Jail system was designed with intentions to keep the language of the community clean and social. If member breaches language for 3 minutes, he/she is sent to jail for 2 minutes.' 
+            ' All roles are removed and given back once jail-time has expired.'
+            value = [{'name': f'{bot_setup["command"]}jail set <>',
                       'value': "Auto language moderation category of settings for community with auto jail and release function"},
-                     {'name': f'{bot_setup["command"]}spam activate',
-                      'value': "Spamm protection category of settings for the community"},
                      ]
 
             await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
-        pass
     
     @service.group()
-    @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner), commands.check(is_community_registered))
+    @commands.check(is_overwatch)
+    @commands.check(is_community_owner)
+    @commands.check(is_community_registered)
     async def spam(self, ctx):
-        pass
+        if ctx.invoked_subcommand is None:
+            title = '__Available commands under ***Spam*** category!'
+            description = 'Spam system has been designed witht he reason to protect community from invasion of spam bots. It includes '
+            'Auto role uppon successfull reaction from the user to appropriate channel. '
+            value = [{'name': f'MUST READ Before start',
+                      'value': "Create two roles with exact name as written here:\n ***Unverified*** -> Given when member joins\n ***Visitor*** --> Given when member reacts appropriatelly"},
+                     {'name': f'{bot_setup["command"]}spam turn <0=OFF , 1=ON>',
+                      'value': 'This will turn the spam protection ON/OFF. In order to make it work you need to set appropriate message, channel,'
+                      ' and role on community.'},
+                     {'name': f'{bot_setup["command"]}spam set_channel <#discord.Channel>',
+                      'value': "This will set the channel where bot will be listening for message and reaction."},
+                     {'name': f'{bot_setup["command"]}spam set_message <Message ID as number>',
+                      'value': "Right click on the messsage and copy its ID and provide it to bot. Message needs to be located in selected channel"}
+                     ]
+
+            await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
+    
+    @spam.command()
+    async def turn(self, ctx, side:int):
+        community_manager.
+    
+        
+    
+    
+    
     
     
     @register.error
