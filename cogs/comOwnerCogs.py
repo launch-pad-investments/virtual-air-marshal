@@ -107,7 +107,7 @@ class CommunityOwnerCommands(commands.Cog):
             'Auto role uppon successfull reaction from the user to appropriate channel. '
             value = [{'name': f'MUST READ Before start',
                       'value': "Create two roles with exact name as written here:\n ***Unverified*** -> Given when member joins\n ***Visitor*** --> Given when member reacts appropriatelly"},
-                     {'name': f'{bot_setup["command"]}spam turn <0=OFF , 1=ON>',
+                     {'name': f'{bot_setup["command"]}spam turn <ON/OFF>',
                       'value': 'This will turn the spam protection ON/OFF. In order to make it work you need to set appropriate message, channel,'
                       ' and role on community.'},
                      {'name': f'{bot_setup["command"]}spam set_channel <#discord.Channel>',
@@ -116,17 +116,9 @@ class CommunityOwnerCommands(commands.Cog):
                       'value': "Right click on the messsage and copy its ID and provide it to bot. Message needs to be located in selected channel"}
                      ]
 
-            await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
+            await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)    
     
-    @spam.command()
-    async def turn(self, ctx, side:int):
-        community_manager.
-    
-        
-    
-    
-    
-    
+
     
     @register.error
     async def register_error(self, ctx, error):
