@@ -46,10 +46,7 @@ class SpamService(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @service.group()
-    @commands.check(is_overwatch)
-    @commands.check(is_community_owner)
-    @commands.check(is_community_registered)
+    @commands.group()
     async def spam(self, ctx):
         if ctx.invoked_subcommand is None:
             title = '__Available commands under ***Spam*** category!'
@@ -57,7 +54,7 @@ class SpamService(commands.Cog):
             'Auto role uppon successfull reaction from the user to appropriate channel. '
             value = [{'name': f'MUST READ Before start',
                       'value': "Create two roles with exact name as written here:\n ***Unverified*** -> Given when member joins\n ***Visitor*** --> Given when member reacts appropriatelly"},
-                     {'name': f'{bot_setup["command"]}spam turn <ON/OFF>',
+                     {'name': f'{bot_setup["command"]}spam on/off',
                       'value': 'This will turn the spam protection ON/OFF. In order to make it work you need to set appropriate message, channel,'
                       ' and role on community.'},
                      {'name': f'{bot_setup["command"]}spam set_channel <#discord.Channel>',
@@ -69,8 +66,24 @@ class SpamService(commands.Cog):
             await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)    
     
     
+    @spam.command()
+    async def on(self,ctx):
+        pass
     
-        @spam.error
+    
+    @spam.command()
+    async def off(self,ctx):
+        pass
+    
+    @spam.command()
+    async def set_channel(self,ctx, channel:discord.TextChannel):
+        pass
+    
+    @spam.command()
+    async def set_message(self, ctx, message_id:int)
+    
+    
+    @spam.error
     async def spam_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
             message = 'You are either not an Overwatch member, owner of the community, or community has not been registered yet into the system.'
