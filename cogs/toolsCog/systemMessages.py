@@ -59,15 +59,16 @@ class CustomMessages:
             signal = discord.Colour.red()
 
         if sys_msg_title is None:
-            sys_msg_title = 'System Message'
+            sys_msg_title = '__System Message__'
         else:
             pass
 
-        sys_embed = discord.Embed(title="System Message",
+        sys_embed = discord.Embed(title="__System Message__",
                                   description=sys_msg_title,
                                   colour=signal)
         sys_embed.add_field(name='Message',
                             value=message)
+        sys_embed.set_footer(text='This product is property of Launc Pad Investments group')
 
         if destination == 0:
             await ctx.author.send(embed=sys_embed)

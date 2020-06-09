@@ -25,6 +25,7 @@ class CommunityManager:
             "appliedChannelName":None,
             "appliedMessageId":int(0),
             "welcomeService":int(0),
+            "jailService":int(0)
         }
         
         try:
@@ -33,6 +34,13 @@ class CommunityManager:
         except errors.PyMongoError:
             return False
 
+    def check_if_not_registered(self, community_id:int):
+        result = self.communityProfiles.find_one({"communityId":community_id})
+        
+        if result:
+            return False
+        else:
+            return True
         
     def check_community_reg_status(self, community_id:int):
         result = self.communityProfiles.find_one({"communityId":community_id})

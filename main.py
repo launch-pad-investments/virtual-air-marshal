@@ -19,7 +19,7 @@ scheduler = AsyncIOScheduler()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 bot = commands.Bot(command_prefix=commands.when_mentioned_or(bot_setup['command']))
 bot.remove_command('help')
-extensions = ['cogs.managementCmd', 'cogs.autoCogs', 'cogs.adminCogs']
+extensions = ['cogs.managementCmd', 'cogs.autoCogs', 'cogs.adminCogs', 'cogs.comOwnerCogs']
 
 async def jail_sentence_checker():
     now = datetime.utcnow().timestamp()  # Gets current time of the system in unix format

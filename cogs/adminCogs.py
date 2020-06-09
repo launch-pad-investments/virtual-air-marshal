@@ -60,19 +60,6 @@ class TeamCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    async def see(self, ctx, user:discord.User):
-        
-        count = len(ctx.channel.members)
-        
-        await ctx.channel.send(content=f'You {ctx.message.author} can see {count} members in background')
-        await ctx.channel.send(content=f'Those members are:')
-        user_list = str()
-        for usr in ctx.channel.members:
-            user_list += f'{usr}\n'
-
-        await ctx.channel.send(content=user_list)
-        
     @commands.group()
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(kick_predicate), commands.check(admin_predicate),
