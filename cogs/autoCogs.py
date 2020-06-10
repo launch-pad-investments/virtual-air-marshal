@@ -39,7 +39,7 @@ class AutoFunctions(commands.Cog):
         """
         if not member.bot:
             sec_value = community_manager.check_if_security_activated(community_id=int(member.guild.id))
-            # Give user unverified
+
             if sec_value == 1:
                 details = community_manager.get_details_of_channel(community_id = member.guild.id)
                 role = discord.utils.get(member.guild.roles, name="Unverified")

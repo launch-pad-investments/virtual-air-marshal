@@ -55,7 +55,7 @@ class CommunityManager:
         result = self.communityProfiles.find_one({"communityId":int(community_id)},
                                                  {"_id":0,
                                                   "appliedMessageId":1})
-        if result["appliedChannelId"] == 0:
+        if result["appliedMessageId"] == 0:
             return False
         else:
             return True      
