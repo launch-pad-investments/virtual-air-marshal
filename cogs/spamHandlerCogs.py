@@ -109,16 +109,40 @@ class SpamService(commands.Cog):
     
     @spam.command()
     async def set_channel(self,ctx, channel:discord.TextChannel):
-        pass
+        if community_manager.modify_channel(community_id=int(ctx.message.guild.id),channel_id=channel.id,channel_name=f'{channel.name}'):
+            title='__System Message__'
+            message = f'You have successfully set channel {channel} with id {channel.id} to listen for user verifications. Proceed with command'
+            f' ***{bot_setup["command"]} spam set_message <message ID> *** to identify message where user needs to react with :thumbs-up:'
+            custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
+        else:
+            message = f'There was an issue while setting up channel to listen for user verifications. Please try again later' 
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+            
     
     @spam.command()
     async def set_message(self, ctx, message_id:int):
-        msg = await self.bot.fetch_message(id=message_id)
-        
-        if msg is not None:
-            print('message exists')
+        channel_db = community_manager.get_communtiy_settings(community_id=ctx.message.guild.id)
+        if channel_db['appliedChannelId'] > 0:
+            channel = self.bot.get_channel(id=int(channel_db['appliedChannelId']))
+            msg = await channel.fetch_message(int(message_id))
+            if msg is not None:
+                if msg.guild.id == ctx.message.guild.id:
+                    if community_manager.modify_message(community_id=ctx.message.guild.id,message_id=int(message_id)):
+                        title='__System Message__'
+                        message = f'You have set message to be listening for reaction successfully! Here is location of message:\n'
+                        f'Location: {msg.channel}\n ID: {msg.id}. Proceed with final step by activating the service with ***{bot_setup["command"]} spam on***. '
+                        custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
+                else:
+                    message = f'Why would you select message from different discord community. It does not make any sense'
+                    await custom_message.system_message(ctx, message=message, color_code=1, destination=1)    
+            else:
+                message = f'Message could not be found on the community. Are you sure you have provided the right message ID?'
+                await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
-            print('message does not exist')
+            message = f'You need to first set channel with command {bot_setup["command"]} spam set_channel <#discord.TextChannel> ***'
+            ' before you can set the mssage from the selected channel.' 
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+            
     
     
     @spam.error

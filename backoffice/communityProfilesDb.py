@@ -43,6 +43,14 @@ class CommunityManager:
         else:
             return True
         
+    def get_communtiy_settings(self, community_id):
+        
+        result = self.communityProfiles.find_one({"communityId":int(community_id)},
+                                                 {"_id":0})
+        if result:
+            return result
+        else:
+            return {}
     def check_reaction_message_status(self, community_id:int):
         result = self.communityProfiles.find_one({"communityId":int(community_id)},
                                                  {"_id":0,
@@ -57,9 +65,9 @@ class CommunityManager:
                                                     {"$set":{"appliedChannelId":int(channel_id),
                                                              "appliedChannelName":channel_name}})
 
-    def modify_message(self,community_id:int, channel_id:int, channel_name:str, ):
+    def modify_message(self,community_id:int, message_id:int):
         result = self.communityProfiles.update_one({"communityId":int(community_id)},
-                                                    {"$set":{"appliedMessageId":channel_id}})
+                                                    {"$set":{"appliedMessageId":message_id}})
     
     def turn_on_off(self, community_id, direction:int, service_type:int):
         if service_type == 1:

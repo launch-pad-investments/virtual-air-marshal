@@ -66,7 +66,7 @@ async def jail_sentence_checker():
     else:
         pass
     
-    return
+    return 
 
 
 def start_scheduler():
