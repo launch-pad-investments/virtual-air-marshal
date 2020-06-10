@@ -13,7 +13,9 @@ class CommunityManager:
     def __init__(self):
         self.connection = MongoClient('mongodb://localhost:27017/')
         self.airMarshall = self.connection['AirMarshall']
-        self.communityProfiles = self.airMarshall.communityProfiles
+        
+        #TODO rewrite to two separate files
+        self.spamServiceDetails = self.airMarshall.communityProfiles
 
     def register_community_for_service(self, community_id,community_name, owner_id, owner_name):
         community_profile = {
@@ -25,7 +27,8 @@ class CommunityManager:
             "appliedChannelName":None,
             "appliedMessageId":None,
             "welcomeService":int(0),
-            "jailService":int(0)
+            "jailService":int(0),
+            "jailRoleId":null,
         }
         
         try:
@@ -51,6 +54,7 @@ class CommunityManager:
             return result
         else:
             return {}
+        
     def check_reaction_message_status(self, community_id:int):
         result = self.communityProfiles.find_one({"communityId":int(community_id)},
                                                  {"_id":0,
@@ -126,3 +130,13 @@ class CommunityManager:
             return int(result['weclomeService'])
         except TypeError:
             return 2
+        
+    def get_active_jails(self):
+        """
+        Returns the list of communities who have applied for jail service
+        """
+        result = list(self.communityProfiles.find({"jailService":{"$gt":}},
+                                                  {"_id":0,
+                                                   "communityId":1}))
+        
+        return result

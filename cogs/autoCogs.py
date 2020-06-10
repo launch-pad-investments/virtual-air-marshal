@@ -29,6 +29,7 @@ class AutoFunctions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.bad_words = helper.read_json_file('badWords.json')['words']
+        self.active_jails = community_manager.get_active_jails()
         
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -205,10 +206,9 @@ class AutoFunctions(commands.Cog):
         """
         Bad word checker!
         """
-        #TODO integrate multi discord activity
-        # TODO check if community has activated jail systme 
+
         if not message.author.bot: 
-            if message.guild.id == 667607865199951872:
+            if message.guild.id in self.active_jails:  # If guild has active jail
                 role = message.guild.get_role(role_id=667623277430046720)  # Get the role
                 if role not in message.author.roles:
                     bad_count = [word for word in message.content.lower().split() if word in self.bad_words]
