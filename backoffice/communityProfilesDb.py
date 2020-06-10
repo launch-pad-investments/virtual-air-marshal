@@ -83,9 +83,14 @@ class CommunityManager:
         if service_type == 1:
             result = self.communityProfiles.update_one({"communityId":int(community_id)},
                                                         {"$set":{"jailService":direction}})
+            
         elif service_type == 2:
             result = self.communityProfiles.update_one({"communityId":int(community_id)},
                                             {"$set":{"welcomeService":direction}})   
+        if result:
+            return True
+        else:
+            return False
         
         
     def check_if_not_registered(self, community_id:int):

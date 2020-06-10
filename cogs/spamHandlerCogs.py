@@ -79,7 +79,7 @@ class SpamService(commands.Cog):
                 if community_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=1,service_type=2):
                     title='__System Message__'
                     message = 'You have turned ON the bot invasion prevention function successfully. '
-                    custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
+                    await custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
                 else:
                     message = f'There was a backend error. Please try again later or contact one of the administrators on the community. We apologize for inconvinience'
                     await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
@@ -96,7 +96,7 @@ class SpamService(commands.Cog):
         if community_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=0,service_type=2):
                 title='__System Message__'
                 message = 'You have turned OFF the bot invasion prevention function successfully. Have in mind that now everything will needd to be done manually.'
-                custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
+                await custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
         else:
             message = f'There was a backend error. Please try again later or contact one of the administrators on the community. We apologize for inconvinience'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
