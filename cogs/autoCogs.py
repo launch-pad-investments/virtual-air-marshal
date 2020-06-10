@@ -29,7 +29,7 @@ class AutoFunctions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.bad_words = helper.read_json_file('badWords.json')['words']
-        self.active_jails = community_manager.get_active_jails()
+        # self.active_jails = community_manager.get_active_jails()
         
     @commands.Cog.listener()
     async def on_member_join(self, member):
