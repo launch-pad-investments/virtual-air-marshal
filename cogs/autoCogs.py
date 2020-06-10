@@ -40,17 +40,11 @@ class AutoFunctions(commands.Cog):
         """
         print('New member joining')
         if not member.bot:
-            print('Member not bot')
             sec_value = community_manager.check_if_security_activated(community_id=int(member.guild.id))
-            from pprint import pprint
-            pprint(sec_value)
             if sec_value == 1:
-                print('Security activated ')
                 details = community_manager.get_details_of_channel(community_id = member.guild.id) # Get details of channel as dict
                 role = discord.utils.get(member.guild.roles, name="Unverified")  # Check if role can be found if not than None
-                pprint(details)
                 if role:
-                    print('role found')
                     await member.add_roles(role)  # Give member a role
                     #Console printoutn
                     print(Fore.BLUE + f"New user joined community: {member} (ID: {member.id})")
@@ -79,7 +73,6 @@ class AutoFunctions(commands.Cog):
                 
             # Give user verified role
             elif sec_value == 0:
-                print('role not activated')
                 # Auto role if system is off
                 print(Fore.BLUE + f"New user joined community: {member} (ID: {member.id})")
                 role = discord.utils.get(member.guild.roles, name='Visitor')
@@ -138,11 +131,7 @@ class AutoFunctions(commands.Cog):
 
         author = reaction.member  # Author of reaction
         details = community_manager.get_details_of_channel(community_id = author.guild.id)
-        from pprint import pprint
-        pprint(details)
         # Check if user has responded with reaction to the message with id on the specific channel
-        print(reaction.channel_id)
-        print(details['appliedChannelId'])
         if reaction.channel_id == details['appliedChannelId']:
             if reaction.message_id == details['appliedMessageId']:
                 # Check if user reacted with thumbs up emoji
