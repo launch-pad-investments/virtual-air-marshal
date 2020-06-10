@@ -33,8 +33,8 @@ def is_public(ctx):
     return ctx.message.channel.type != discord.ChannelType.private
 
 def is_overwatch(ctx):
-    access_list = bot_setup['userAccess']
-    return [user for user in access_list if ctx.message.author.id == int(user)]
+    access_list = [455916314238648340, 360367188432912385]
+    return [member for member in access_list if member == ctx.message.author.id]
 
 def is_community_owner(ctx):
     return ctx.message.author.id == ctx.message.guild.owner_id
@@ -79,7 +79,8 @@ class CommunityOwnerCommands(commands.Cog):
     
     @service.command()
     @commands.check(is_community_not_registered)
-    @commands.check(is_community_owner)
+    @commands.check(is_public)
+    @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
     async def register(self, ctx):
         if community_manager.register_community_for_service(community_id=ctx.message.guild.id, community_name=f'{ctx.message.guild}', owner_id=ctx.message.guild.owner_id,owner_name=f'{ctx.message.author}'):
             message = f'You have successfully registered community to ***{self.bot.user.mention}*** system. Proceed with __{bot_setup["command"]} service__ for further instructions!'
