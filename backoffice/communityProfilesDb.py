@@ -15,7 +15,7 @@ class CommunityManager:
         self.airMarshall = self.connection['AirMarshall']
         
         #TODO rewrite to two separate files
-        self.spamServiceDetails = self.airMarshall.communityProfiles
+        self.communityProfiles = self.airMarshall.communityProfiles
 
     def register_community_for_service(self, community_id,community_name, owner_id, owner_name):
         community_profile = {
@@ -28,7 +28,7 @@ class CommunityManager:
             "appliedMessageId":None,
             "welcomeService":int(0),
             "jailService":int(0),
-            "jailRoleId":null,
+            "jailRoleId":None,
         }
         
         try:
@@ -131,12 +131,12 @@ class CommunityManager:
         except TypeError:
             return 2
         
-    def get_active_jails(self):
-        """
-        Returns the list of communities who have applied for jail service
-        """
-        result = list(self.communityProfiles.find({"jailService":{"$gt":0}},
-                                                  {"_id":0,
-                                                   "communityId":1}))
+    # def get_active_jails(self):
+    #     """
+    #     Returns the list of communities who have applied for jail service
+    #     """
+    #     result = list(self.communityProfiles.find({"jailService":{"$gt":0}},
+    #                                               {"_id":0,
+    #                                                "communityId":1}))
         
-        return result
+    #     return result
