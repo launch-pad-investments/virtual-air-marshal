@@ -140,7 +140,7 @@ class AutoFunctions(commands.Cog):
                     try:
                         await author.send(embed=sys_embed)
                     except Exception:
-                        print('pass')
+                        pass
                         
                         
                     text = f'{author.guild} uses {self.bot.user} which is a product of Launch Pad Investment Discord Group. '
@@ -155,7 +155,7 @@ class AutoFunctions(commands.Cog):
                     try:
                         await author.send(embed=sys_embed)
                     except Exception:
-                        print('pass')
+                        pass
                     
                     print(Fore.CYAN + f"Removing the Unverified role from {author} (ID: {author.id}")
                     role_rmw = discord.utils.get(author.guild.roles, name="Unverified")

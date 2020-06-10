@@ -23,7 +23,7 @@ class CommunityManager:
             "communityOwnerId":int(owner_id),
             "appliedChannelId":int(0),
             "appliedChannelName":None,
-            "appliedMessageId":int(0),
+            "appliedMessageId":None,
             "welcomeService":int(0),
             "jailService":int(0)
         }
@@ -61,15 +61,25 @@ class CommunityManager:
             return True      
 
     def modify_channel(self, community_id:int, channel_id:int, channel_name:str):
-        result = self.communityProfiles.update_one({"communityId":int(community_id)},
-                                                    {"$set":{"appliedChannelId":int(channel_id),
-                                                             "appliedChannelName":channel_name}})
+        try:
+            result = self.communityProfiles.update_one({"communityId":int(community_id)},
+                                                        {"$set":{"appliedChannelId":int(channel_id),
+                                                                "appliedChannelName":channel_name}})
+            return True
+        except errors.PyMongoError:
+            return False
 
     def modify_message(self,community_id:int, message_id:int):
-        result = self.communityProfiles.update_one({"communityId":int(community_id)},
-                                                    {"$set":{"appliedMessageId":message_id}})
+        try:
+            result = self.communityProfiles.update_one({"communityId":int(community_id)},
+                                                        {"$set":{"appliedMessageId":message_id}})
+            return True
+        except errors.PyMongoError:
+            return False
     
     def turn_on_off(self, community_id, direction:int, service_type:int):
+        # Direction == 1 --> ON
+        # Direction == 0 --> OFF
         if service_type == 1:
             result = self.communityProfiles.update_one({"communityId":int(community_id)},
                                                         {"$set":{"jailService":direction}})
