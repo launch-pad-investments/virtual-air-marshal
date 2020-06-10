@@ -21,7 +21,6 @@ class JailSystem:
             "communityName":str(community_name),
             "communityOwnerName":str(owner_name),
             "communityOwnerId":int(owner_id),
-            "welcomeService":int(0),
             "jailService":int(0),
             "jailRoleId":None,
         }

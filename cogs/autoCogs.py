@@ -131,8 +131,11 @@ class AutoFunctions(commands.Cog):
 
         author = reaction.member  # Author of reaction
         details = community_manager.get_details_of_channel(community_id = author.guild.id)
-        
+        from pprint import pprint
+        pprint(details)
         # Check if user has responded with reaction to the message with id on the specific channel
+        print(reaction.channel_id)
+        print(details['appliedChannelId'])
         if reaction.channel_id == details['appliedChannelId']:
             if reaction.message_id == details['appliedMessageId']:
                 # Check if user reacted with thumbs up emoji
