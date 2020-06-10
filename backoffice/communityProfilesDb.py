@@ -135,7 +135,7 @@ class CommunityManager:
         """
         Returns the list of communities who have applied for jail service
         """
-        result = list(self.communityProfiles.find({"jailService":{"$gt":}},
+        result = list(self.communityProfiles.find({"jailService":{"$gt":0}},
                                                   {"_id":0,
                                                    "communityId":1}))
         
