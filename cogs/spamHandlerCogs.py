@@ -54,6 +54,10 @@ class SpamService(commands.Cog):
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
     @commands.check(is_community_registered)
     async def spam(self, ctx):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         if ctx.invoked_subcommand is None:
             title = '__Available commands under ***Spam*** category!'
             description = 'Spam system has been designed witht he reason to protect community from invasion of spam bots. It includes '
@@ -74,6 +78,10 @@ class SpamService(commands.Cog):
     
     @spam.command()
     async def on(self,ctx):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         if community_manager.check_welcome_channel_status(community_id=int(ctx.message.guild.id)):
             if community_manager.check_reaction_message_status(community_id=int(ctx.message.guild.id)):
                 if community_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=1,service_type=2):
@@ -93,6 +101,10 @@ class SpamService(commands.Cog):
     
     @spam.command()
     async def off(self,ctx):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         if community_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=0,service_type=2):
                 title='__System Message__'
                 message = 'You have turned OFF the bot invasion prevention function successfully. Have in mind that now everything will needd to be done manually.'
@@ -104,6 +116,10 @@ class SpamService(commands.Cog):
     
     @spam.command()
     async def set_channel(self,ctx, channel:discord.TextChannel):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         if community_manager.modify_channel(community_id=int(ctx.message.guild.id),channel_id=channel.id,channel_name=f'{channel.name}'):
             title='__System Message__'
             message = f'You have successfully set channel {channel} with id {channel.id} to listen for user verifications. Proceed with command ***{bot_setup["command"]} spam set_message <message ID> *** to identify message where user needs to react with :thumbs-up:'
@@ -115,6 +131,10 @@ class SpamService(commands.Cog):
     
     @spam.command()
     async def set_message(self, ctx, message_id:int):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         channel_db = community_manager.get_communtiy_settings(community_id=ctx.message.guild.id)
         if channel_db['appliedChannelId']:
             channel = self.bot.get_channel(id=int(channel_db['appliedChannelId']))
