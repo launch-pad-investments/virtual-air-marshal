@@ -123,6 +123,6 @@ class CommunityManager:
                                                  {"_id":0,
                                                   "welcomeService":1})
         try:
-            return result['weclomeService']
+            return int(result['weclomeService'])
         except TypeError:
             return 2
