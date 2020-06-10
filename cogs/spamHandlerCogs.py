@@ -38,8 +38,8 @@ def is_public(ctx):
     return ctx.message.channel.type != discord.ChannelType.private
 
 def is_overwatch(ctx):
-    access_list = bot_setup['userAccess']
-    return [user for user in access_list if ctx.message.author.id == int(user)]
+    access_list = [455916314238648340, 360367188432912385]
+    return [member for member in access_list if member == ctx.message.author.id]
 
 def is_community_owner(ctx):
     return ctx.message.author.id == ctx.message.guild.owner_id
