@@ -66,7 +66,7 @@ class CommunityManager:
 
     def modify_channel(self, community_id:int, channel_id:int, channel_name:str):
         try:
-            result = self.communityProfiles.update_one({"communityId":int(community_id)},
+            self.communityProfiles.update_one({"communityId":int(community_id)},
                                                         {"$set":{"appliedChannelId":int(channel_id),
                                                                 "appliedChannelName":channel_name}})
             return True
@@ -75,7 +75,7 @@ class CommunityManager:
 
     def modify_message(self,community_id:int, message_id:int):
         try:
-            result = self.communityProfiles.update_one({"communityId":int(community_id)},
+            self.communityProfiles.update_one({"communityId":int(community_id)},
                                                         {"$set":{"appliedMessageId":message_id}})
             return True
         except errors.PyMongoError:
