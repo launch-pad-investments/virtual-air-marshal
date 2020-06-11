@@ -10,16 +10,15 @@ import discord
 from discord.ext import commands
 from datetime import datetime, timedelta
 import time
-from backoffice.communityProfilesDb import CommunityManager
 from utils.jsonReader import Helpers
 from toolsCog.systemMessages import CustomMessages
 from jailList import JailManagement
-from backoffice.communityProfilesDb import CommunityManager
+from backoffice.communityProfilesDb import SpamSystemManager
 
 jail_manager = JailManagement()
 helper = Helpers()
 cust_messages = CustomMessages()
-community_manager  = CommunityManager()
+spam_sys_mng  = SpamSystemManager()
 
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 CONT_JAIL_DURATION = 2
@@ -40,9 +39,9 @@ class AutoFunctions(commands.Cog):
         """
         print('New member joining')
         if not member.bot:
-            sec_value = community_manager.check_if_security_activated(community_id=int(member.guild.id))
+            sec_value = spam_sys_mng.check_if_security_activated(community_id=int(member.guild.id))
             if sec_value == 1:
-                details = community_manager.get_details_of_channel(community_id = member.guild.id) # Get details of channel as dict
+                details = spam_sys_mng.get_details_of_channel(community_id = member.guild.id) # Get details of channel as dict
                 role = discord.utils.get(member.guild.roles, name="Unverified")  # Check if role can be found if not than None
                 if role:
                     await member.add_roles(role)  # Give member a role
@@ -130,7 +129,7 @@ class AutoFunctions(commands.Cog):
         """
 
         author = reaction.member  # Author of reaction
-        details = community_manager.get_details_of_channel(community_id = author.guild.id)
+        details = spam_sys_mng.get_details_of_channel(community_id = author.guild.id)
         # Check if user has responded with reaction to the message with id on the specific channel
         if reaction.channel_id == details['appliedChannelId']:
             if reaction.message_id == details['appliedMessageId']:
