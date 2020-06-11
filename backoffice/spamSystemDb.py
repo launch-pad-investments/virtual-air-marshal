@@ -120,4 +120,4 @@ class SpamSystemManager:
         try:
             return int(result['welcomeService'])
         except TypeError:
-            return False
+            return 2

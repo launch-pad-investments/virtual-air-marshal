@@ -23,7 +23,6 @@ spam_sys_mng  = SpamSystemManager()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 CONT_JAIL_DURATION = 2
 
-
 class AutoFunctions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -36,88 +35,91 @@ class AutoFunctions(commands.Cog):
         :param member:
         :return:
         """
-        print('New member joining')
-        if not member.bot:
-            sec_value = spam_sys_mng.check_if_security_activated(community_id=int(member.guild.id))
-            if sec_value == 1:
-                details = spam_sys_mng.get_details_of_channel(community_id = member.guild.id) # Get details of channel as dict
-                role = discord.utils.get(member.guild.roles, name="Unverified")  # Check if role can be found if not than None
-                if role:
-                    await member.add_roles(role)  # Give member a role
-                    #Console printoutn
+        print(f'New member joining {member}')
+        if spam_sys_mng.check_community_reg_status(community_id=member.guild.id):
+            if not member.bot:
+                sec_value = spam_sys_mng.check_if_security_activated(community_id=int(member.guild.id))
+                if sec_value == 1:
+                    details = spam_sys_mng.get_details_of_channel(community_id = member.guild.id) # Get details of channel as dict
+                    role = discord.utils.get(member.guild.roles, name="Unverified")  # Check if role can be found if not than None
+                    if role:
+                        await member.add_roles(role)  # Give member a role
+                        #Console printoutn
+                        print(Fore.BLUE + f"New user joined community: {member} (ID: {member.id})")
+                        print(Fore.YELLOW + f"Role Unveriffied given to the user {member} with ID: {member.id}")
+                        text = f'Hey and welcome to the {member.guild}. '
+                        f'Head to channel #{details["appliedChannelName"]} '
+                        f'(ID: {details["appliedChannelId"]}) and accept TOS/Rules of community!'
+
+                        sys_embed = discord.Embed(title="__Air Marshal System Message__",
+                                                description="This is auto-message!",
+                                                colour=0x319f6b)
+                        sys_embed.add_field(name='Message',
+                                            value=text,
+                                            inline=False)
+                        sys_embed.set_thumbnail(url=self.bot.user.avatar_url)
+                        sys_embed.set_footer(text='Service provided by Launch Pad Investments')
+
+                        try:
+                            await member.send(embed=sys_embed)
+                            print(Fore.YELLOW + f"Message with instructions sent to {member} with ID: {member.id}")
+                        except Exception:
+                            print(Fore.RED + f"Message with instructions could not be delivered to {member} with ID: {member.id} due to no DM rule")
+                            pass
+                    else:
+                        print(Fore.RED + f"Role Unverified does not eexist on guild {member.guild} with id {member.guild.id}")  
+                    
+                # Give user verified role
+                elif sec_value == 0:
+                    # Auto role if system is off
                     print(Fore.BLUE + f"New user joined community: {member} (ID: {member.id})")
-                    print(Fore.YELLOW + f"Role Unveriffied given to the user {member} with ID: {member.id}")
-                    text = f'Hey and welcome to the {member.guild}. '
-                    f'Head to channel #{details["appliedChannelName"]} '
-                    f'(ID: {details["appliedChannelId"]}) and accept TOS/Rules of community!'
-
-                    sys_embed = discord.Embed(title="__Air Marshal System Message__",
-                                            description="This is auto-message!",
-                                            colour=0x319f6b)
-                    sys_embed.add_field(name='Message',
-                                        value=text,
-                                        inline=False)
-                    sys_embed.set_thumbnail(url=self.bot.user.avatar_url)
-                    sys_embed.set_footer(text='Service provided by Launch Pad Investments')
-
-                    try:
-                        await member.send(embed=sys_embed)
-                        print(Fore.YELLOW + f"Message with instructions sent to {member} with ID: {member.id}")
-                    except Exception:
-                        print(Fore.RED + f"Message with instructions could not be delivered to {member} with ID: {member.id} due to no DM rule")
-                        pass
-                else:
-                    print(Fore.RED + f"Role Unverified does not eexist on guild {member.guild} with id {member.guild.id}")  
-                
-            # Give user verified role
-            elif sec_value == 0:
-                # Auto role if system is off
-                print(Fore.BLUE + f"New user joined community: {member} (ID: {member.id})")
-                role = discord.utils.get(member.guild.roles, name='Visitor')
-                
-                if role:
-                    await member.add_roles(role)
+                    role = discord.utils.get(member.guild.roles, name='Visitor')
                     
-                    print(Fore.YELLOW + f"Role Visitor given to the user {member} with ID: {member.id}")
-                    text = f'Hey and welcome to the {member.guild}. '
-                    f'Head to channel #{details["appliedChannelName"]} '
-                    f'(ID: {details["appliedChannelId"]}) and familiarize yourself with TOS/Rules of community and enjoy jour stay!'
-                    
-                    sys_embed = discord.Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
-                                            description=f"Access to {member.guild} granted!",
-                                            colour=0x319f6b)
-                    sys_embed.add_field(name='__Notice!__',
-                                        value=text)
-
-                    try:
-                        await member.send(embed=sys_embed)
-                    except Exception:
-                        print('pass')
+                    if role:
+                        await member.add_roles(role)
                         
+                        print(Fore.YELLOW + f"Role Visitor given to the user {member} with ID: {member.id}")
+                        text = f'Hey and welcome to the {member.guild}. '
+                        f'Head to channel #{details["appliedChannelName"]} '
+                        f'(ID: {details["appliedChannelId"]}) and familiarize yourself with TOS/Rules of community and enjoy jour stay!'
                         
-                    text = f'{member.guild} uses {self.bot.user} which is a product of Launch Pad Investment Discord Group. '
-                    f' It has been designed with the reason to allow moderation of the community.'
-                    
-                    sys_embed = discord.Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
-                                            description=f"Air-Marshal monitoring you activity :robot: ",
-                                            colour=0x319f6b)
-                    sys_embed.add_field(name='__Notice!__',
-                                        value=text)
+                        sys_embed = discord.Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
+                                                description=f"Access to {member.guild} granted!",
+                                                colour=0x319f6b)
+                        sys_embed.add_field(name='__Notice!__',
+                                            value=text)
 
-                    try:
-                        await member.send(embed=sys_embed)
-                    except Exception:
-                        print(Fore.RED + f"Message with instructions could not be delivered to {member} with ID: {member.id} due to no DM rule")
-                        pass
-                else:
-                    print(Fore.RED + f"Role Visitor does not exist on guild {member.guild} with id {member.guild.id}")  
+                        try:
+                            await member.send(embed=sys_embed)
+                        except Exception:
+                            print('pass')
+                            
+                            
+                        text = f'{member.guild} uses {self.bot.user} which is a product of Launch Pad Investment Discord Group. '
+                        f' It has been designed with the reason to allow moderation of the community.'
+                        
+                        sys_embed = discord.Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
+                                                description=f"Air-Marshal monitoring you activity :robot: ",
+                                                colour=0x319f6b)
+                        sys_embed.add_field(name='__Notice!__',
+                                            value=text)
+
+                        try:
+                            await member.send(embed=sys_embed)
+                        except Exception:
+                            print(Fore.RED + f"Message with instructions could not be delivered to {member} with ID: {member.id} due to no DM rule")
+                            pass
+                    else:
+                        print(Fore.RED + f"Role Visitor does not exist on guild {member.guild} with id {member.guild.id}")  
+                        
+                # Nothing to do as it is not registered
+                elif sec_value == 2:
+                    print(Fore.LIGHTWHITE_EX + f'Community {member.guild} not registered for the service')
                     
-            # Nothing to do as it is not registered
-            elif sec_value == 2:
-                print(Fore.LIGHTWHITE_EX + f'Community {member.guild} not registered for the service')
-                
+            else:
+                print(Fore.LIGHTWHITE_EX + f'{member} is BOT who joined {member.guild} with ID {member.guild.id}')
         else:
-            print(Fore.LIGHTWHITE_EX + f'{member} is BOT who joined {member.guild} with ID {member.guild.id}')
+            print(f'Community {member.guild} not registered for spam prevention service')
             
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, reaction):
@@ -128,14 +130,12 @@ class AutoFunctions(commands.Cog):
         """
 
         author = reaction.member  # Author of reaction
-        print(reaction.member.guild.id)
-        details = spam_sys_mng.get_details_of_channel(community_id = reaction.member.guild.id)
-        print(details)
-        # Check if user has responded with reaction to the message with id on the specific channel
-        if details:
-            print('Community registered')
-            if spam_sys_mng.check_if_security_activated(community_id=reaction.member.guild.id) == 1:
-                print('Community has registered system')
+        guild_id = reaction.member.guild.id  #Guild of reaction
+
+        if spam_sys_mng.check_if_security_activated(community_id=guild_id) == 1:
+            details = spam_sys_mng.get_details_of_channel(community_id = reaction.member.guild.id)
+            if details:
+                print('Community registered')
                 if reaction.message.channel_id == details['appliedChannelId']:
                     print('Reaction where it was applied matches the channel')
                     if reaction.message_id == details['appliedMessageId']:
@@ -192,8 +192,8 @@ class AutoFunctions(commands.Cog):
                             message = 'You have either reacted with wrong emoji or than you did not want to accept Terms Of Service. Community has therefore stayed locked for you.'
                             title = f"Access to {reaction.guild} forbidden"
                             sys_embed = discord.Embed(title="System Message",
-                                                      description=title,
-                                                      colour=0x319f6b)
+                                                    description=title,
+                                                    colour=0x319f6b)
                             sys_embed.add_field(name='Message',
                                                 value=message)
                     else:
@@ -207,9 +207,9 @@ class AutoFunctions(commands.Cog):
                 else:
                     print('Wrong reaction applied')
             else:
-                print('Security not activated')
+                print('Community not registered into the system')
         else:
-            print('Community not registered into the system')
+            print(Fore.LIGHTWHITE_EX + f'Community {reaction.member.guild.id} not registered for the service or it is not activated')
             
     
     # @commands.Cog.listener()

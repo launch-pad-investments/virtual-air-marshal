@@ -23,6 +23,7 @@ class JailSystemManager:
             "communityOwnerId":int(owner_id),
             "jailService":int(0),
             "jailRoleId":None,
+            "jailRoleName":None
         }
         
         try:
@@ -32,9 +33,22 @@ class JailSystemManager:
             return False
 
     def turn_on_off(self, community_id, direction:int):
-        result = self.jailSystem.update_one({"communityId":int(community_id)},
-                                            {"$set":{"welcomeService":direction}})   
+        try:
+            self.jailSystem.update_one({"communityId":int(community_id)},
+                                                {"$set":{"welcomeService":direction}})   
+            return True
+        except errors.PyMongoError:
+            return False
 
+    def get_jail_status(self, community_id:int):
+        result = self.jailSystem.find_one({"communityId":community_id},
+                                          {"_id":0,
+                                           "jailService":1})
+        try:
+            return int(result['jailService'])
+        except KeyError:
+            return 2
+            
         
     def check_if_jail_not_registered(self, community_id:int):
         result = self.jailSystem.find_one({"communityId":community_id})
