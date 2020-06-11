@@ -35,7 +35,7 @@ class AutoFunctions(commands.Cog):
         :param member:
         :return:
         """
-        print(f'New member joining {member}')
+        print(Fore.LIGHTYELLOW_EX+f'New member joining {member}')
         if spam_sys_mng.check_community_reg_status(community_id=member.guild.id):
             if not member.bot:
                 sec_value = spam_sys_mng.check_if_security_activated(community_id=int(member.guild.id))
