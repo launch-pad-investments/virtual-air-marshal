@@ -135,8 +135,7 @@ class AutoFunctions(commands.Cog):
         if spam_sys_mng.check_if_security_activated(community_id=guild_id) == 1:
             details = spam_sys_mng.get_details_of_channel(community_id = reaction.member.guild.id)
             if details:
-                print('Community registered')
-                if reaction.message.channel_id == details['appliedChannelId']:
+                if reaction.channel_id == details['appliedChannelId']:
                     print('Reaction where it was applied matches the channel')
                     if reaction.message_id == details['appliedMessageId']:
                         print('Reaction message id matches the one applied')
@@ -211,7 +210,7 @@ class AutoFunctions(commands.Cog):
         else:
             print(Fore.LIGHTWHITE_EX + f'Community {reaction.member.guild.id} not registered for the service or it is not activated')
             
-    
+       
     # @commands.Cog.listener()
     # async def on_message(self, message):
     #     """
