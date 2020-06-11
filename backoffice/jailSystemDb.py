@@ -15,7 +15,7 @@ class JailSystemManager:
         self.airMarshall = self.connection['AirMarshall']
         self.jailSystem = self.airMarshall.jailProfiles
 
-    def register_community_for_service(self, community_id,community_name, owner_id, owner_name):
+    def register_community_for_jail_service(self, community_id,community_name, owner_id, owner_name):
         community_profile = {
             "communityId":int(community_id),
             "communityName":str(community_name),

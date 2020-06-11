@@ -7,7 +7,8 @@ sys.path.append(project_path)
 from datetime import datetime
 from datetime import timedelta
 import time
-from backoffice.communityProfilesDb import CommunityManager
+from backoffice.communityProfilesDb import SpamSystemManager
+from backoffice.jailSystemDb import JailSystemManager
 import discord
 from discord import Member as DiscordMember
 from discord.ext import commands
@@ -18,16 +19,17 @@ from cogs.toolsCog.systemMessages import CustomMessages
 from colorama import Fore
 
 helper = Helpers()
-community_manager = CommunityManager()
+spam_sys_mng = SpamSystemManager()
+jail_sys_mgn = JailSystemManager()
 jail_manager = JailManagement()
 customMessages = CustomMessages()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 
 def is_community_registered(ctx):
-    return community_manager.check_community_reg_status(community_id=ctx.message.guild.id)
+    return spam_sys_mng.check_community_reg_status(community_id=ctx.message.guild.id)
 
 def is_community_not_registered(ctx):
-    return community_manager.check_if_not_registered(community_id=ctx.message.guild.id)
+    return spam_sys_mng.check_if_not_registered(community_id=ctx.message.guild.id)
 
 def is_public(ctx):
     return ctx.message.channel.type != discord.ChannelType.private
@@ -77,12 +79,34 @@ class CommunityOwnerCommands(commands.Cog):
         pass
     
     
-    @service.command()
+    @service.group()
     @commands.check(is_community_not_registered)
     @commands.check(is_public)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
     async def register(self, ctx):
-        if community_manager.register_community_for_service(community_id=ctx.message.guild.id, community_name=f'{ctx.message.guild}', owner_id=ctx.message.guild.owner_id,owner_name=f'{ctx.message.author}'):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+
+        if ctx.invoked_subcommand is None:
+            title = '__Available settings categories for service register__'
+            description = 'Before you can use one of the availabale services you need to register it first into the system.'
+            value = [{'name': f'{bot_setup["command"]}service register jail',
+                      'value': "Register community into the system which automatically monitors use of language, and executes consequences ob breach."},
+                     {'name': f'{bot_setup["command"]}service register spam',
+                      'value': "Register community for spam service, which prevents community from unwanted discord community bot invasions."}]
+
+            await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
+    @register.command()
+    #TODO integrate iff 
+    async def jail(self, ctx):
+        if jail_sys_mgn
+        
+    
+    @register.command()
+    async def spam(self, ctx)
+        if spam_sys_mng.register_community_for_service(community_id=ctx.message.guild.id, community_name=f'{ctx.message.guild}', owner_id=ctx.message.guild.owner_id,owner_name=f'{ctx.message.author}'):
             message = f'You have successfully registered community to ***{self.bot.user.mention}*** system. Proceed with __{bot_setup["command"]} service__ for further instructions!'
             await customMessages.system_message(ctx, message=message, color_code=0, destination=1)
         else:
