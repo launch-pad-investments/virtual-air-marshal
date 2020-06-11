@@ -9,11 +9,11 @@ project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
 from pymongo import MongoClient, errors
 
-class JailSystem:
+class JailSystemManager:
     def __init__(self):
         self.connection = MongoClient('mongodb://localhost:27017/')
         self.airMarshall = self.connection['AirMarshall']
-        self.communityProfiles = self.airMarshall.jailProfiles
+        self.jailSystem = self.airMarshall.jailProfiles
 
     def register_community_for_service(self, community_id,community_name, owner_id, owner_name):
         community_profile = {
@@ -26,9 +26,14 @@ class JailSystem:
         }
         
         try:
-            self.communityProfiles.insert(community_profile)
+            self.jailSystem.insert(community_profile)
             return True
         except errors.PyMongoError:
             return False
+        
+    def turn_on_off(self, community_id, direction:int):
+        result = self.jailSystem.update_one({"communityId":int(community_id)},
+                                            {"$set":{"welcomeService":direction}})   
+
         
 
