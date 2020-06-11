@@ -136,16 +136,10 @@ class AutoFunctions(commands.Cog):
             details = spam_sys_mng.get_details_of_channel(community_id = reaction.member.guild.id)
             if details:
                 if reaction.channel_id == details['appliedChannelId']:
-                    print('Reaction where it was applied matches the channel')
                     if reaction.message_id == details['appliedMessageId']:
-                        print('Reaction message id matches the one applied')
-                        # Check if user reacted with thumbs up emoji
                         if reaction.emoji.name == '\U0001F44D':
-                            print('Reaction matches the channel')
                             role = discord.utils.get(reaction.member.guild.roles, name='Visitor')
-                            
                             if role:
-                                print('Role found')
                                 await reaction.member.add_roles(role)
                                 print(Fore.YELLOW + f"Role Visitor given to the user {author} with ID: {author.id}")
                                 
@@ -204,9 +198,9 @@ class AutoFunctions(commands.Cog):
                         sys_embed.add_field(name='Message',
                                             value=message)
                 else:
-                    print('Wrong reaction applied')
+                    pass
             else:
-                print('Community not registered into the system')
+                print(Fore.LIGHTWHITE_EX +f'Community {reaction.member.guild} not registered into the system')
         else:
             print(Fore.LIGHTWHITE_EX + f'Community {reaction.member.guild.id} not registered for the service or it is not activated')
             
