@@ -30,10 +30,24 @@ class JailSystemManager:
             return True
         except errors.PyMongoError:
             return False
-        
+
     def turn_on_off(self, community_id, direction:int):
         result = self.jailSystem.update_one({"communityId":int(community_id)},
                                             {"$set":{"welcomeService":direction}})   
 
         
-
+    def check_if_jail_not_registered(self, community_id:int):
+        result = self.jailSystem.find_one({"communityId":community_id})
+        if result:
+            return False
+        else:
+            return True
+        
+    def check_if_jail_registered(self, community_id:int):
+        result = self.jailSystem.find_one({"communityId":community_id})
+        
+        if result:
+            return True
+        else:
+            return False
+    

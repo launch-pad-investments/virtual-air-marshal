@@ -108,7 +108,10 @@ class SpamSystemManager:
                                                   "appliedChannelId":1,
                                                   "appliedMessageId":1,
                                                   })
-        return result
+        if result:
+            return result
+        else:
+            return {}
     
     def check_if_security_activated(self, community_id:int):
         result = self.spamSystem.find_one({"communityId":community_id},
@@ -117,4 +120,4 @@ class SpamSystemManager:
         try:
             return int(result['welcomeService'])
         except TypeError:
-            return 2
+            return False

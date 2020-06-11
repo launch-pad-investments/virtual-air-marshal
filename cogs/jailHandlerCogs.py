@@ -7,7 +7,7 @@ sys.path.append(project_path)
 from datetime import datetime
 from datetime import timedelta
 import time
-from backoffice.communityProfilesDb import CommunityManager
+from backoffice.spamSystemDb import SpamSystemManager
 import discord
 from discord import Member as DiscordMember
 from discord.ext import commands
@@ -18,7 +18,7 @@ from cogs.toolsCog.systemMessages import CustomMessages
 from colorama import Fore
 
 helper = Helpers()
-community_manager = CommunityManager()
+community_manager = SpamSystemManager()
 jail_manager = JailManagement()
 customMessages = CustomMessages()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')

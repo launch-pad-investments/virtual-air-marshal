@@ -12,7 +12,7 @@ sys.path.append(project_path)
 from datetime import datetime
 from datetime import timedelta
 import time
-from backoffice.communityProfilesDb import CommunityManager
+from backoffice.spamSystemDb import SpamSystemManager
 import discord
 from discord import Member as DiscordMember
 from discord.ext import commands
@@ -23,16 +23,15 @@ from cogs.toolsCog.systemMessages import CustomMessages
 from colorama import Fore
 
 helper = Helpers()
-community_manager = CommunityManager()
-jail_manager = JailManagement()
+spam_sys_mng = SpamSystemManager()
 custom_message = CustomMessages()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 
 def is_community_registered(ctx):
-    return community_manager.check_community_reg_status(community_id=ctx.message.guild.id)
+    return spam_sys_mng.check_community_reg_status(community_id=ctx.message.guild.id)
 
 def is_community_not_registered(ctx):
-    return community_manager.check_if_not_registered(community_id=ctx.message.guild.id)
+    return spam_sys_mng.check_if_not_registered(community_id=ctx.message.guild.id)
 
 def is_public(ctx):
     return ctx.message.channel.type != discord.ChannelType.private
@@ -43,8 +42,6 @@ def is_overwatch(ctx):
 
 def is_community_owner(ctx):
     return ctx.message.author.id == ctx.message.guild.owner_id
-
-
 
 class SpamService(commands.Cog):
     def __init__(self, bot):
@@ -82,9 +79,9 @@ class SpamService(commands.Cog):
             await ctx.message.delete()
         except Exception:
             pass
-        if community_manager.check_welcome_channel_status(community_id=int(ctx.message.guild.id)):
-            if community_manager.check_reaction_message_status(community_id=int(ctx.message.guild.id)):
-                if community_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=1,service_type=2):
+        if spam_sys_mng.check_welcome_channel_status(community_id=int(ctx.message.guild.id)):
+            if spam_sys_mng.check_reaction_message_status(community_id=int(ctx.message.guild.id)):
+                if spam_sys_mng.turn_on_off(community_id=int(ctx.message.guild.id),direction=1):
                     title='__System Message__'
                     message = 'You have turned ON the bot invasion prevention function successfully. '
                     await custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
@@ -105,7 +102,7 @@ class SpamService(commands.Cog):
             await ctx.message.delete()
         except Exception:
             pass
-        if community_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=0,service_type=2):
+        if spam_sys_mng.turn_on_off(community_id=int(ctx.message.guild.id),direction=0):
                 title='__System Message__'
                 message = 'You have turned OFF the bot invasion prevention function successfully. Have in mind that now everything will needd to be done manually.'
                 await custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
@@ -120,7 +117,7 @@ class SpamService(commands.Cog):
             await ctx.message.delete()
         except Exception:
             pass
-        if community_manager.modify_channel(community_id=int(ctx.message.guild.id),channel_id=channel.id,channel_name=f'{channel.name}'):
+        if spam_sys_mng.modify_channel(community_id=int(ctx.message.guild.id),channel_id=channel.id,channel_name=f'{channel.name}'):
             title='__System Message__'
             message = f'You have successfully set channel {channel} with id {channel.id} to listen for user verifications. Proceed with command ***{bot_setup["command"]} spam set_message <message ID> *** to identify message where user needs to react with :thumbs-up:'
             await custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
@@ -135,13 +132,13 @@ class SpamService(commands.Cog):
             await ctx.message.delete()
         except Exception:
             pass
-        channel_db = community_manager.get_communtiy_settings(community_id=ctx.message.guild.id)
+        channel_db = spam_sys_mng.get_communtiy_settings(community_id=ctx.message.guild.id)
         if channel_db['appliedChannelId']:
             channel = self.bot.get_channel(id=int(channel_db['appliedChannelId']))
             msg = await channel.fetch_message(int(message_id))
             if msg is not None:
                 if msg.guild.id == ctx.message.guild.id:
-                    if community_manager.modify_message(community_id=ctx.message.guild.id,message_id=int(message_id)):
+                    if spam_sys_mng.modify_message(community_id=ctx.message.guild.id,message_id=int(message_id)):
                         title='__System Message__'
                         message = f'You have set message to be listening for reaction successfully! Here is location of message:\n Location: #{msg.channel}\n ID: {msg.id}. \nProceed with final step by activating the service with ***{bot_setup["command"]} spam on***. '
                         await custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
