@@ -131,7 +131,6 @@ class AutoFunctions(commands.Cog):
 
         author = reaction.member  # Author of reaction
         guild_id = reaction.member.guild.id  #Guild of reaction
-
         if spam_sys_mng.check_if_security_activated(community_id=guild_id) == 1:
             details = spam_sys_mng.get_details_of_channel(community_id = reaction.member.guild.id)
             if details:
@@ -202,7 +201,7 @@ class AutoFunctions(commands.Cog):
             else:
                 print(Fore.LIGHTWHITE_EX +f'Community {reaction.member.guild} not registered into the system')
         else:
-            print(Fore.LIGHTWHITE_EX + f'Community {reaction.member.guild.id} not registered for the service or it is not activated')
+            pass
             
        
     # @commands.Cog.listener()
