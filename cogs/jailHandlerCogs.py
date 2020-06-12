@@ -62,7 +62,6 @@ class JailService(commands.Cog):
 
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
             
-            
     @jail.command()
     @commands.check(is_community_registered)
     async def on(self,ctx):
@@ -73,12 +72,12 @@ class JailService(commands.Cog):
 
         if jail_sys_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=1):
             title='__System Message__'
-            message = 'You have turned ON the bot invasion prevention function successfully. '
+            message = 'You have turned ON the automatic jail system and profanity monitor successfully. '
             await custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
         else:
-            print('Could not turn jail system on try again later')
+            message = f'There was a backend error. Please try again later or contact one of the administrators on the community. We apologize for inconvinience'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
     
-    #TODO rewrite for jail settings
     @jail.command() 
     @commands.check(is_community_registered)
     async def off(self,ctx):
@@ -89,7 +88,7 @@ class JailService(commands.Cog):
         
         if jail_sys_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=0):
                 title='__System Message__'
-                message = 'You have turned OFF the bot invasion prevention function successfully. Have in mind that now everything will needd to be done manually.'
+                message = 'You have turned OFF automtic jail system and profanity successfully. Your members can get crazy'
                 await custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
         else:
             message = f'There was a backend error. Please try again later or contact one of the administrators on the community. We apologize for inconvinience'
