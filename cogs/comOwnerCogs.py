@@ -10,10 +10,11 @@ import time
 from backoffice.spamSystemDb import SpamSystemManager
 from backoffice.jailSystemDb import JailSystemManager
 import discord
+from discord import Embed
 from discord import Member as DiscordMember
 from discord.ext import commands
 from discord.ext.commands import Greedy
-from jailList import JailManagement
+from backoffice.jailManagementDb import JailManagement
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
 from colorama import Fore
@@ -67,9 +68,11 @@ class CommunityOwnerCommands(commands.Cog):
         if ctx.invoked_subcommand is None:
             title = '__Available settings categories for community__'
             description = 'All available commands for owners of the community. Choose one, and further commands will be displayed'
-            value = [{'name': f'{bot_setup["command"]}register spam',
+            value = [{'name': f'{bot_setup["command"]}service status',
                       'value': "Register community for spam prevention system for bot invasion"},
-                     {'name': f'{bot_setup["command"]}register jail',
+                     {'name': f'{bot_setup["command"]}service register spam',
+                      'value': "Register community for spam prevention system for bot invasion"},
+                     {'name': f'{bot_setup["command"]}service register jail',
                       'value': "Register community for bad language prevention system and auto-jail and un-jail. (IN DEVELOPMENT)"}
                      
                      ]
@@ -77,9 +80,28 @@ class CommunityOwnerCommands(commands.Cog):
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
 
     @service.command()
-    async def about(self, ctx):
-        # Create description on all services
-        pass
+    async def status(self, ctx):
+        status_embed = Embed(title='__System status__',
+                       description='Current status of community on services')
+        if spam_sys_mng.check_if_security_activated(community_id=ctx.message.guild.id) == 1:
+            status_embed.add_filed(name='Spam prevention system status',
+                             value="Ativated",
+                             inline=False)
+        else:
+            status_embed.add_filed(name='Spam prevention system status',
+                    value="Deactivated or not registered",
+                    inline=False)
+        
+        if jail_sys_mgn.check_if_jail_activated(community_id=ctx.message.guild.id) == 1:
+            status_embed.add_filed(name='Jail and profanity system status',
+                    value="Ativated",
+                    inline=False)
+        else:
+            status_embed.add_filed(name='Spam prevention system status',
+                    value="Deactivate or not registered for service",
+                    inline=False)
+            
+        await ctx.channel.send(embed=status_embed)
     
     
     @service.group()

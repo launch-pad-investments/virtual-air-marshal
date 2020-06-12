@@ -65,3 +65,11 @@ class JailSystemManager:
         else:
             return False
     
+    def check_if_jail_activated(self, community_id:int):
+        result = self.spamSystem.find_one({"communityId":community_id},
+                                                 {"_id":0,
+                                                  "welcomeService":1})
+        try:
+            return int(result['welcomeService'])
+        except TypeError:
+            return 2
