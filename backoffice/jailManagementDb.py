@@ -11,9 +11,9 @@ sys.path.append(project_path)
 class JailManagement():
     def __init__(self):
         self.connection = MongoClient("mongodb://localhost:27017")
-        self.jail = self.connection['JailManagement']
-        self.counter = self.jail.counter
-        self.jailed = self.jail.jailed
+        self.jail = self.connection['AirMarshall']
+        self.counter = self.jail.profanityCounter
+        self.jailed = self.jail.jailedMembers
 
     def get_served_users(self, timestamp):
         all_users = list(self.jailed.find({"end": {"$lt": timestamp}}))
