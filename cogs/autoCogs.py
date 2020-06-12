@@ -14,7 +14,7 @@ from utils.jsonReader import Helpers
 from toolsCog.systemMessages import CustomMessages
 from jailList import JailManagement
 from backoffice.spamSystemDb import SpamSystemManager
-
+from better_profanity import profanity
 jail_manager = JailManagement()
 helper = Helpers()
 cust_messages = CustomMessages()
@@ -203,7 +203,13 @@ class AutoFunctions(commands.Cog):
         else:
             pass
             
-       
+    # @commands.Cog.listener()
+    # async def on_message(self, message):
+    #     if not message.author.bot:
+    #         if profanity.contains_profanity(message.content):
+    #             await message.delete()
+    #             await message.channel.send('You cant use bad words here')
+
     # @commands.Cog.listener()
     # async def on_message(self, message):
     #     """

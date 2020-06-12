@@ -70,21 +70,13 @@ class JailService(commands.Cog):
             await ctx.message.delete()
         except Exception:
             pass
-        if jail_sys_manager.check(community_id=int(ctx.message.guild.id)):
-            if jail_sys_manager.check_reaction_message_status(community_id=int(ctx.message.guild.id)):
-                if jail_sys_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=1):
-                    title='__System Message__'
-                    message = 'You have turned ON the bot invasion prevention function successfully. '
-                    await custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
-                else:
-                    message = f'There was a backend error. Please try again later or contact one of the administrators on the community. We apologize for inconvinience'
-                    await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
-            else:
-                message = f'You can not turn this service ON since the message where system will be listening for reacions, has not been provided yet. Please use first command {bot_setup["command"]}spam set_message <message id as INT> ***' 
-                await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+
+        if jail_sys_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=1):
+            title='__System Message__'
+            message = 'You have turned ON the bot invasion prevention function successfully. '
+            await custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
         else:
-            message = f'You can not turn this service ON since the channel where system will be listening for reacions, has not been provided yet. Please use first command {bot_setup["command"]}spam set_channel <#discord.TextChannel> ***' 
-            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+            print('Could not turn jail system on try again later')
     
     #TODO rewrite for jail settings
     @jail.command() 
