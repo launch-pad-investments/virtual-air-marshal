@@ -42,13 +42,10 @@ async def jail_sentence_checker():
                                ' not be tolerated')
                 await dest.send(embed=free)
                 
-                #remove role
-                               
                 # get guild and member
                 guild = bot.get_guild(id=667607865199951872)
                 member = guild.get_member(user_id)
                 
-
                 # Check if member still exists
                 if member in guild.members:
                     # Give him back roles

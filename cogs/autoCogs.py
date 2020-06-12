@@ -220,7 +220,7 @@ class AutoFunctions(commands.Cog):
                 else:
                     pass
             else:
-                print('jail system not activated')
+                pass
 
     # @commands.Cog.listener()
     # async def on_message(self, message):
