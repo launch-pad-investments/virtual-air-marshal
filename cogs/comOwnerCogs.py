@@ -86,7 +86,7 @@ class CommunityOwnerCommands(commands.Cog):
                        colour = Colour.blue())
         if spam_sys_mng.check_if_security_activated(community_id=ctx.message.guild.id) == 1:
             status_embed.add_field(name='Spam prevention system status',
-                             value="Ativated",
+                             value="Activated",
                              inline=False)
         else:
             status_embed.add_field(name='Spam prevention system status',
@@ -95,7 +95,7 @@ class CommunityOwnerCommands(commands.Cog):
         
         if jail_sys_mgn.get_jail_status(community_id=ctx.message.guild.id) == 1:
             status_embed.add_field(name='Jail and profanity system status',
-                    value="Ativated",
+                    value="Activated",
                     inline=False)
         else:
             status_embed.add_field(name='Spam prevention system status',
@@ -130,7 +130,7 @@ class CommunityOwnerCommands(commands.Cog):
         if jail_sys_mgn.register_community_for_jail_service(community_id=int(ctx.message.guild.id),
                                                             community_name=f'{ctx.message.guild}',
                                                             owner_id=ctx.message.guild.owner_id,
-                                                            owner_name=ctx.message.guild.owner_name):
+                                                            owner_name=f'{ctx.message.guild.owner}'):
             
             message = f'You have successfully registered community to ***{self.bot.user.mention} JAIL*** system.'
             await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
@@ -142,7 +142,7 @@ class CommunityOwnerCommands(commands.Cog):
     @register.command()
     @commands.check(is_spam_not_registered)
     async def spam(self, ctx):
-        if spam_sys_mng.register_community_for_service(community_id=ctx.message.guild.id, community_name=f'{ctx.message.guild}', owner_id=ctx.message.guild.owner_id,owner_name=f'{ctx.message.author}'):
+        if spam_sys_mng.register_community_for_service(community_id=ctx.message.guild.id, community_name=f'{ctx.message.guild}', owner_id=ctx.message.guild.owner_id,owner_name=f'{ctx.message.guild.owner}'):
             message = f'You have successfully registered community to ***{self.bot.user.mention} SPAM*** system.'
             await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
         else:

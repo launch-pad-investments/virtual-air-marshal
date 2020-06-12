@@ -46,9 +46,20 @@ class JailSystemManager:
                                            "jailService":1})
         try:
             return int(result['jailService'])
-        except KeyError:
+        except TypeError:
             return 2
             
+    def jail_activated(self, community_id:int):
+        result = self.jailSystem.find_one({"communityId":community_id},
+                                          {"_id":0,
+                                           "jailService":1})
+        try:
+            if int(result['jailService'])==1:
+                return True
+            else:
+                return False
+        except TypeError:
+            return False
         
     def check_if_jail_not_registered(self, community_id:int):
         result = self.jailSystem.find_one({"communityId":community_id})

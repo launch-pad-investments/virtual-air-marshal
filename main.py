@@ -7,7 +7,7 @@ import time
 from discord.ext import commands
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
-from jailList import JailManagement
+from backoffice.jailManagementDb import JailManagement
 from utils.jsonReader import Helpers
 from colorama import Fore, Style
 

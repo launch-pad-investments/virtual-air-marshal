@@ -12,16 +12,23 @@ from datetime import datetime, timedelta
 import time
 from utils.jsonReader import Helpers
 from toolsCog.systemMessages import CustomMessages
-from jailList import JailManagement
+from backoffice.jailManagementDb import JailManagement
+from backoffice.jailSystemDb import JailSystemManager
 from backoffice.spamSystemDb import SpamSystemManager
 from better_profanity import profanity
 jail_manager = JailManagement()
 helper = Helpers()
 cust_messages = CustomMessages()
 spam_sys_mng  = SpamSystemManager()
+jail_sys_mng = JailSystemManager()
 
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 CONT_JAIL_DURATION = 2
+
+def is_jail_activated(message):
+    print(message.content)
+    print(message.guild.id)
+    return jail_sys_mng.jail_activated(community_id=message.guild.id)
 
 class AutoFunctions(commands.Cog):
     def __init__(self, bot):
@@ -203,12 +210,17 @@ class AutoFunctions(commands.Cog):
         else:
             pass
             
-    # @commands.Cog.listener()
-    # async def on_message(self, message):
-    #     if not message.author.bot:
-    #         if profanity.contains_profanity(message.content):
-    #             await message.delete()
-    #             await message.channel.send('You cant use bad words here')
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if not message.author.bot:
+            if jail_sys_mng.jail_activated(community_id=message.guild.id):
+                if profanity.contains_profanity(message.content):
+                    await message.delete()
+                    await message.channel.send('You cant use bad words here')
+                else:
+                    pass
+            else:
+                print('jail system not activated')
 
     # @commands.Cog.listener()
     # async def on_message(self, message):
@@ -218,10 +230,10 @@ class AutoFunctions(commands.Cog):
 
     #     if not message.author.bot: 
     #         if message.guild.id in self.active_jails:  # If guild has active jail
-    #             role = message.guild.get_role(role_id=667623277430046720)  # Get the role
-    #             if role not in message.author.roles:
-    #                 bad_count = [word for word in message.content.lower().split() if word in self.bad_words]
-    #                 if bad_count:
+                # role = message.guild.get_role(role_id=667623277430046720)  # Get the role
+                # if role not in message.author.roles:
+                #     bad_count = [word for word in message.content.lower().split() if word in self.bad_words]
+                #     if bad_count:
     #                     if not jail_manager.check_if_jailed(discord_id=int(message.author.id)):            
     #                         user_id = message.author.id
     #                         if jail_manager.check_if_in_counter(discord_id=user_id):
@@ -291,10 +303,10 @@ class AutoFunctions(commands.Cog):
     #     else:
     #         pass
 
-    @commands.Cog.listener()
-    async def on_guild_role_delete(self, role):
-        print('Print guild has deleted role')
-        #TODO make checks if the deleted role is in database
+    # @commands.Cog.listener()
+    # async def on_guild_role_delete(self, role):
+    #     print('Print guild has deleted role')
+    #     #TODO make checks if the deleted role is in database
         
         
 def setup(bot):

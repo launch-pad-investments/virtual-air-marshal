@@ -11,7 +11,7 @@ import discord
 from discord import Member as DiscordMember
 from discord.ext import commands
 from discord.ext.commands import Greedy
-from jailList import JailManagement
+from backoffice.jailManagementDb import JailManagement
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
 from colorama import Fore
