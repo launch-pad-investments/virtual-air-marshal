@@ -41,11 +41,12 @@ class JailManagement():
         except errors.PyMongoError:
             return False
         
-    def throw_to_jail(self, discord_id:int, end:int, roleIds:list):
+    def throw_to_jail(self, user_id:int,community_id:int, expiration:int, role_ids:list):
         try:
             self.jailed.insert_one({"userId":discord_id,
-                                            "end":int(end),
-                                            "roleIds":roleIds})
+                                            "end":int(expiration),
+                                            "roleIds":role_ids,
+                                            "community":community_id})
             return True
         except errors.PyMongoError:
             return False
