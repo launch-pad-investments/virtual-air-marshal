@@ -35,7 +35,7 @@ class JailSystemManager:
     def turn_on_off(self, community_id, direction:int):
         try:
             self.jailSystem.update_one({"communityId":int(community_id)},
-                                                {"$set":{"welcomeService":direction}})   
+                                                {"$set":{"jailService":direction}})   
             return True
         except errors.PyMongoError:
             return False
