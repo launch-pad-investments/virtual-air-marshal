@@ -9,10 +9,12 @@ from datetime import timedelta
 import time
 import discord
 from discord import Member as DiscordMember
+
 from backoffice.jailSystemDb import JailSystemManager
+from backoffice.jailManagementDb import JailManagement
+
 from discord.ext import commands
 from discord.ext.commands import Greedy
-from jailList import JailManagement
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
 from colorama import Fore
@@ -20,6 +22,7 @@ from colorama import Fore
 helper = Helpers()
 jail_sys_manager = JailSystemManager()
 jail_manager = JailManagement()
+
 custom_message = CustomMessages()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 
@@ -60,43 +63,45 @@ class JailService(commands.Cog):
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
             
             
-    # @jail.command()
-    # async def on(self,ctx):
-    #     try:
-    #         await ctx.message.delete()
-    #     except Exception:
-    #         pass
-    #     if jail_sys_manager.check_welcome_channel_status(community_id=int(ctx.message.guild.id)):
-    #         if jail_sys_manager.check_reaction_message_status(community_id=int(ctx.message.guild.id)):
-    #             if jail_sys_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=1):
-    #                 title='__System Message__'
-    #                 message = 'You have turned ON the bot invasion prevention function successfully. '
-    #                 await custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
-    #             else:
-    #                 message = f'There was a backend error. Please try again later or contact one of the administrators on the community. We apologize for inconvinience'
-    #                 await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
-    #         else:
-    #             message = f'You can not turn this service ON since the message where system will be listening for reacions, has not been provided yet. Please use first command {bot_setup["command"]}spam set_message <message id as INT> ***' 
-    #             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
-    #     else:
-    #         message = f'You can not turn this service ON since the channel where system will be listening for reacions, has not been provided yet. Please use first command {bot_setup["command"]}spam set_channel <#discord.TextChannel> ***' 
-    #         await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+    @jail.command()
+    @commands.check(is_community_registered)
+    async def on(self,ctx):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+        if jail_sys_manager.check(community_id=int(ctx.message.guild.id)):
+            if jail_sys_manager.check_reaction_message_status(community_id=int(ctx.message.guild.id)):
+                if jail_sys_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=1):
+                    title='__System Message__'
+                    message = 'You have turned ON the bot invasion prevention function successfully. '
+                    await custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
+                else:
+                    message = f'There was a backend error. Please try again later or contact one of the administrators on the community. We apologize for inconvinience'
+                    await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+            else:
+                message = f'You can not turn this service ON since the message where system will be listening for reacions, has not been provided yet. Please use first command {bot_setup["command"]}spam set_message <message id as INT> ***' 
+                await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        else:
+            message = f'You can not turn this service ON since the channel where system will be listening for reacions, has not been provided yet. Please use first command {bot_setup["command"]}spam set_channel <#discord.TextChannel> ***' 
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
     
-    
-    # @jail.command()
-    # async def off(self,ctx):
-    #     try:
-    #         await ctx.message.delete()
-    #     except Exception:
-    #         pass
+    #TODO rewrite for jail settings
+    @jail.command() 
+    @commands.check(is_community_registered)
+    async def off(self,ctx):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         
-    #     if jail_sys_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=0):
-    #             title='__System Message__'
-    #             message = 'You have turned OFF the bot invasion prevention function successfully. Have in mind that now everything will needd to be done manually.'
-    #             await custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
-    #     else:
-    #         message = f'There was a backend error. Please try again later or contact one of the administrators on the community. We apologize for inconvinience'
-    #         await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        if jail_sys_manager.turn_on_off(community_id=int(ctx.message.guild.id),direction=0):
+                title='__System Message__'
+                message = 'You have turned OFF the bot invasion prevention function successfully. Have in mind that now everything will needd to be done manually.'
+                await custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)
+        else:
+            message = f'There was a backend error. Please try again later or contact one of the administrators on the community. We apologize for inconvinience'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
     
             
