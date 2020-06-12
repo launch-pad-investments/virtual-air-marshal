@@ -233,7 +233,7 @@ class AutoFunctions(commands.Cog):
                                 expiry = (int(time.mktime(end.timetuple())))
                                 end_date_time_stamp = datetime.utcfromtimestamp(expiry)
                                                                     
-                                guild = self.bot.get_guild(id=int(message.guild.id))  # Get guild
+                                # guild = self.bot.get_guild(id=int(message.guild.id))  # Get guild
                                 active_roles = [role.id for role in message.author.roles][1:] # Get active roles
                                 
                                 #jail user in database
@@ -270,92 +270,6 @@ class AutoFunctions(commands.Cog):
                     pass
             else:
                 pass
-
-    # @commands.Cog.listener()
-    # async def on_message(self, message):
-    #     """
-    #     Bad word checker!
-    #     """
-
-    #     if not message.author.bot: 
-    #         if message.guild.id in self.active_jails:  # If guild has active jail
-    #             role = message.guild.get_role(role_id=667623277430046720)  # Get the role
-    #             if role not in message.author.roles:
-    #                 if bad_count:
-    #                     if not jail_manager.check_if_jailed(discord_id=int(message.author.id)):            
-    #                         user_id = message.author.id
-    #                         if jail_manager.check_if_in_counter(discord_id=user_id):
-    #                             current_score = jail_manager.increase_count(discord_id=user_id)
-    #                             if current_score >= 3:
-    #                                 # Current time
-    #                                 start = datetime.utcnow()
-
-    #                                 # Set the jail expiration to after one hour
-    #                                 td = timedelta(minutes=int(CONT_JAIL_DURATION))
-    #                                 # calculate future date
-    #                                 end = start + td
-    #                                 expiry = (int(time.mktime(end.timetuple())))
-                                    
-    #                                 end_date_time_stamp = datetime.utcfromtimestamp(expiry)
-                                                                        
-    #                                 guild = self.bot.get_guild(id=667607865199951872)  # Get guild
-    #                                 active_roles = [role.id for role in message.author.roles][1:] # Get active roles
-                                    
-    #                                 # Throw to jail                        
-    #                                 if jail_manager.throw_to_jail(discord_id=int(user_id),end=expiry, roleIds=active_roles):
-    #                                     # Remove from counter
-    #                                     if jail_manager.remove_from_counter(discord_id=int(user_id)):
-                                            
-    #                                         # Send message
-    #                                         jailed_info = discord.Embed(title='__You have been jailed!__',
-    #                                                                     description=' You have been automatically jailed, since you have broken the'
-    #                                                                     'communication rules on community 3 times in a row. Next time be more cautious'
-    #                                                                     ' on how you communicate',
-    #                                                                     color = discord.Color.red())
-    #                                         jailed_info.add_field(name=f'Jail time duration:',
-    #                                                             value=f'{CONT_JAIL_DURATION} minutes')
-    #                                         jailed_info.add_field(name=f'Sentence started @:',
-    #                                                             value=f'{start} UTC')
-    #                                         jailed_info.add_field(name=f'Sentece end on:',
-    #                                                             value=f'{end_date_time_stamp} UTC')
-                                            
-    #                                         await message.author.send(embed=jailed_info)
-    #                                         await message.channel.send(content=':cop:', delete_after = 60)
-                                            
-    #                                         # Jailing time
-    #                                         guild = self.bot.get_guild(id=667607865199951872)
-    #                                         # member = guild.get_member(message.author.id)                
-    #                                         role = guild.get_role(710429549040500837)
-    #                                         await message.author.add_roles(role, reason='Jailed......')       
-    #                                         print(Fore.RED + f'User {message.author} has been jailed!!!!')
-                                                                                       
-    #                                         for role in active_roles:
-    #                                             role = guild.get_role(role_id=int(role))  # Get the role
-    #                                             await message.author.remove_roles(role, reason='Jail time served')
-                                            
-    #                             else: 
-    #                                 await message.channel.send(content=f'{message.author.mention} You have received your {current_score}. strike. When you reach 3...you will be spanked!', delete_after = 10)
-    #                         else:
-    #                             jail_manager.apply_user(discord_id=user_id)
-    #                             await message.channel.send(content='You have received your first strike. once you reach 3...you will be spanked and thrown to jail where only Animus can save you', delete_after=50)
-    #                             await message.delete()
-    #                     else:                       
-    #                         await message.author.send(content='You have been put in the LaunchPad Prison. Send a DM to an admin to grant you bail, or sit your time out.')
-    #                         await message.delete()
-    #                 else:
-    #                     pass
-    #             else:
-    #                 pass
-    #         else:
-    #             pass
-    #     else:
-    #         pass
-
-    # @commands.Cog.listener()
-    # async def on_guild_role_delete(self, role):
-    #     print('Print guild has deleted role')
-    #     #TODO make checks if the deleted role is in database
-        
         
 def setup(bot):
     bot.add_cog(AutoFunctions(bot))
