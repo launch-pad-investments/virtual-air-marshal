@@ -43,7 +43,7 @@ class JailManagement():
         
     def throw_to_jail(self, user_id:int,community_id:int, expiration:int, role_ids:list):
         try:
-            self.jailed.insert_one({"userId":discord_id,
+            self.jailed.insert_one({"userId":user_id,
                                             "end":int(expiration),
                                             "roleIds":role_ids,
                                             "community":community_id})
