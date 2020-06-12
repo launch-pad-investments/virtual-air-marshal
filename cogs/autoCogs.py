@@ -199,7 +199,7 @@ class AutoFunctions(commands.Cog):
                 else:
                     pass
             else:
-                print(Fore.LIGHTWHITE_EX +f'Community {reaction.member.guild} not registered into the system')
+                pass
         else:
             pass
             
