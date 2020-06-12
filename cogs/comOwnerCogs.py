@@ -10,7 +10,7 @@ import time
 from backoffice.spamSystemDb import SpamSystemManager
 from backoffice.jailSystemDb import JailSystemManager
 import discord
-from discord import Embed
+from discord import Embed, Colour
 from discord import Member as DiscordMember
 from discord.ext import commands
 from discord.ext.commands import Greedy
@@ -82,22 +82,23 @@ class CommunityOwnerCommands(commands.Cog):
     @service.command()
     async def status(self, ctx):
         status_embed = Embed(title='__System status__',
-                       description='Current status of community on services')
+                       description='Current status of community on services',
+                       colour = Colour.blue())
         if spam_sys_mng.check_if_security_activated(community_id=ctx.message.guild.id) == 1:
-            status_embed.add_filed(name='Spam prevention system status',
+            status_embed.add_field(name='Spam prevention system status',
                              value="Ativated",
                              inline=False)
         else:
-            status_embed.add_filed(name='Spam prevention system status',
+            status_embed.add_field(name='Spam prevention system status',
                     value="Deactivated or not registered",
                     inline=False)
         
-        if jail_sys_mgn.check_if_jail_activated(community_id=ctx.message.guild.id) == 1:
-            status_embed.add_filed(name='Jail and profanity system status',
+        if jail_sys_mgn.get_jail_status(community_id=ctx.message.guild.id) == 1:
+            status_embed.add_field(name='Jail and profanity system status',
                     value="Ativated",
                     inline=False)
         else:
-            status_embed.add_filed(name='Spam prevention system status',
+            status_embed.add_field(name='Spam prevention system status',
                     value="Deactivate or not registered for service",
                     inline=False)
             
