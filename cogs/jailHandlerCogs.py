@@ -90,9 +90,59 @@ class JailService(commands.Cog):
     
     @jail.command()
     async def punish(self, ctx, user:DiscordMember, duration:int):
-        # Jail members
-        print('Punish')
-        pass
+        """
+        Punish user and throw him to jail
+        """
+        print(Fore.GREEN + 'Manual Jail')
+        # Current time
+        start = datetime.utcnow()
+        print(Fore.GREEN + f'@{start}')
+        # Set the jail expiration to after N minutes 
+        td = timedelta(minutes=int(duration))
         
+        # calculate future date
+        end = start + td
+        expiry = (int(time.mktime(end.timetuple())))
+        end_date_time_stamp = datetime.utcfromtimestamp(expiry)
+                                            
+        # guild = self.bot.get_guild(id=int(message.guild.id))  # Get guild
+        active_roles = [role.id for role in user.roles][1:] # Get active roles
+
+            
+        #jail user in database
+        if jail_manager.throw_to_jail(user_id=user.id,community_id=ctx.guild.id,expiration=expiry,role_ids=active_roles):
+            # Remove user from active counter database
+            if jail_manager.remove_from_counter(discord_id=int(user_id)):
+                
+                # Send message
+                jailed_info = discord.Embed(title='__You have been jailed!__',
+                                            description=f' You have been automatically jailed, since you have broken the'
+                                            f'communication rules on community {ctx.guild} 3 times in a row. Next time be more cautious'
+                                            f' on how you communicate. Status will be restored once Jail Time Expires.',
+                                            color = discord.Color.red())
+                jailed_info.add_field(name=f'Jail time duration:',
+                                    value=f'{duration} minutes',
+                                    inline=False)
+                jailed_info.add_field(name=f'Sentence started @:',
+                                    value=f'{start} UTC',
+                                    inline=False)
+                jailed_info.add_field(name=f'Sentece ends on:',
+                                    value=f'{end_date_time_stamp} UTC',
+                                    inline=False)
+                jailed_info.set_thumbnail(url=self.bot.user.avatar_url)
+                await user.send(embed=jailed_info)
+                await ctx.channel.send(content=':cop:', delete_after = 60)
+                
+                # ADD Jailed role to user
+                print(Fore.GREEN + 'Getting Jailed role on community')
+                role = discord.utils.get(ctx.guild.roles, name="Jailed") 
+                await user.add_roles(role, reason='Jailed......')       
+                print(Fore.RED + f'User {user} has been jailed!!!!')
+                
+                print(Fore.GREEN + 'Removing active roles from user')                                         
+                for role in active_roles:
+                    role = ctx.guild.get_role(role_id=int(role))  # Get the role
+                    await user.remove_roles(role, reason='Jail time served')
+                
 def setup(bot):
     bot.add_cog(JailService(bot))
