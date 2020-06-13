@@ -77,15 +77,7 @@ class ManagementCommands(commands.Cog):
             message = f'User {user} could not be removed to the Master Access list'
             await customMessages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
                                                 sys_msg_title=title)
-    
-    @commands.command()
-    async def make_role(self, ctx):
-        try:
-            perms = Permissions(send_messages=False, read_messages=True, view_channel=True, )
-            await ctx.guild.create_role(name='Jailed', permissions=perms, hoist=True,colour=Colour.red(), mentionable=True)
-        except Exception as e:
-            print(e)
-            
+               
     @commands.command()
     async def remove_role(self, ctx):
         role = discord.utils.get(ctx.guild.roles, name="Jailed")  # Check if role can be found if not than None
