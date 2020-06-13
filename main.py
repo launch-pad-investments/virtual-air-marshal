@@ -23,7 +23,8 @@ extensions = ['cogs.managementCmd', 'cogs.autoCogs', 'cogs.adminCogs', 'cogs.com
 
 async def jail_sentence_checker():
     now = datetime.utcnow().timestamp()  # Gets current time of the system in unix format
-    print(Fore.LIGHTWHITE_EX + f'Checking for sentece @ {now}')
+    now_read = datetime.utcnow()
+    print(Fore.LIGHTWHITE_EX + f'Checking for sentece @ {now_read}')
     overdue_members = jail_manager.get_served_users(timestamp=int(now))  # Gets all overdue members from database
     if overdue_members:
         print(Fore.LIGHTYELLOW_EX + f'{len(overdue_members)} served sentence')
