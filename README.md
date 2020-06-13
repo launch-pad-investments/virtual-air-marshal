@@ -23,13 +23,13 @@ How to setup
 1. @Virtual Air Marshal#8238 service register jail --> This will automatically create as well "Jailed" role if it does not exist on the community.
 2. @Virtual Air Marshal#8238 jail on --> Turns the service ON and starts to monitor user messages on public channels.
 
-- Other available commands
+Other available commands
 
-@Virtual Air Marshal#8238 jail off --> Turns the Jail service OFF
+- @Virtual Air Marshal#8238 jail off --> Turns the Jail service OFF
 
-@Virtual Air Marshal#8238 jail unjail @discord.User --> Administrators can release user from the jail before time expires
+- @Virtual Air Marshal#8238 jail unjail @discord.User --> Administrators can release user from the jail before time expires
 
-@Virtual Air Marshal#8238 jail punish @discord.User duration(minutes) --> Throw user manually to jail for N minutes
+- @Virtual Air Marshal#8238 jail punish @discord.User duration(minutes) --> Throw user manually to jail for N minutes
 
 ### Bot Invasion protection System
 - What is it
