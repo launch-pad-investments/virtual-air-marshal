@@ -79,33 +79,6 @@ class ManagementCommands(commands.Cog):
 
     @commands.command()
     @commands.check(has_access)
-    async def welcome_sys(self, ctx, code: int):
-        """
-        Provide code
-        :param ctx:
-        :param code:
-        :return:
-        """
-        if code == 1:
-            if helper.update_json_file(file_name='mainBotConfig.json', key='welcomeService', value=code):
-                message = 'You have successfully turned ON automatic Visitor role '
-                await customMessages.system_message(ctx=ctx, color_code=0, message=message, destination=1)
-            else:
-                message = 'There has been an error when modifying settings. Please contact Animus'
-                await customMessages.system_message(ctx=ctx, color_code=1, message=message, destination=1)
-        elif code == 0:
-            if helper.update_json_file(file_name='mainBotConfig.json', key='welcomeService', value=code):
-                message = 'You have successfully turned OFF automatic Visitor role'
-                await customMessages.system_message(ctx=ctx, color_code=0, message=message, destination=1)
-            else:
-                message = 'There has been an error when modifying settings. Please contact Animus'
-                await customMessages.system_message(ctx=ctx, color_code=1, message=message, destination=1)
-        else:
-            message = 'Wrong code provided. Choose either 1 = ON or 0 = OFF'
-            await customMessages.system_message(ctx=ctx, color_code=1, message=message, destination=1)
-
-    @commands.command()
-    @commands.check(has_access)
     async def reaction_channel_id(self, ctx, channel: discord.TextChannel):
         """
         Function which allows to modify the channel properties where reaction needs to be placed
