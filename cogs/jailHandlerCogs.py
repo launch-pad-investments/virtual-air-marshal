@@ -112,7 +112,9 @@ class JailService(commands.Cog):
         #jail user in database
         if jail_manager.throw_to_jail(user_id=user.id,community_id=ctx.guild.id,expiration=expiry,role_ids=active_roles):
             # Remove user from active counter database
-            if jail_manager.remove_from_counter(discord_id=int(user_id)):
+            
+            #TODO check if in counter and if yes remove him or than pass
+            if jail_manager.remove_from_counter(discord_id=int(user.id)):
                 
                 # Send message
                 jailed_info = discord.Embed(title='__You have been jailed!__',
