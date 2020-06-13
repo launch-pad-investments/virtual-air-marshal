@@ -10,7 +10,7 @@ import time
 from backoffice.spamSystemDb import SpamSystemManager
 from backoffice.jailSystemDb import JailSystemManager
 import discord
-from discord import Embed, Colour
+from discord import Embed, Colour, Permissions
 from discord import Member as DiscordMember
 from discord.ext import commands
 from discord.ext.commands import Greedy
@@ -44,12 +44,35 @@ def is_community_owner(ctx):
 
 def is_jail_not_registered(ctx):
     return jail_sys_mgn.check_if_jail_not_registered(community_id=ctx.message.guild.id)
-
-
+    
 class CommunityOwnerCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
+        
+    async def check_role_status(self, ctx, role_name):
+        role = discord.utils.get(ctx.guild.roles, name=role_name)
+        if not role:
+            try:
+                if role_name == 'Jailed':
+                    # Creates the role for Jailed system
+                    perms = Permissions(send_messages=False, read_messages=True, view_channel=True, read_message_history = True)
+                    await ctx.guild.create_role(name='Jailed', permissions=perms, hoist=True,colour=Colour.red(), mentionable=True)
+                elif role_name == 'Visitor':
+                    # Creates the role for verified users
+                    perms = Permissions(send_messages=False, read_messages=True, view_channel=True,read_message_history = True)
+                    await ctx.guild.create_role(name='Visitor', permissions=perms, colour=Colour.green(), mentionable=True)
+                elif role_name == 'Unverified':
+                    # Creates role for un-verified users
+                    perms = Permissions(send_messages=False, read_messages=True, view_channel=True, add_reactions=True)
+                    await ctx.guild.create_role(name='Unverified', permissions=perms,colour=Colour.magenta(), mentionable=True)
+                return True
+            except discord.errors.Forbidden:
+                await ctx.channel.send(content='Bot does not have permission to create roles')
+                return False
+        else:
+            print('Role already exists on community')
+            return True
+        
     @commands.group()
     @commands.check(is_public)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
@@ -127,28 +150,37 @@ class CommunityOwnerCommands(commands.Cog):
     @register.command()
     @commands.check(is_jail_not_registered)
     async def jail(self, ctx):
-        if jail_sys_mgn.register_community_for_jail_service(community_id=int(ctx.message.guild.id),
-                                                            community_name=f'{ctx.message.guild}',
-                                                            owner_id=ctx.message.guild.owner_id,
-                                                            owner_name=f'{ctx.message.guild.owner}'):
-            
-            message = f'You have successfully registered community to ***{self.bot.user.mention} JAIL*** system. Be sure to create role named ***Jailed***'
-            await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
+        if await self.check_role_status(ctx=ctx,role_name='Jailed'):
+            if jail_sys_mgn.register_community_for_jail_service(community_id=int(ctx.message.guild.id),
+                                                                community_name=f'{ctx.message.guild}',
+                                                                owner_id=ctx.message.guild.owner_id,
+                                                                owner_name=f'{ctx.message.guild.owner}'):
+                
+                message = f'You have successfully registered community to ***{self.bot.user.mention} JAIL*** system. Be sure to create role named ***Jailed***'
+                await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
+            else:
+                message = f'There has been an error while trying register community into the JAIL system. Please contact support staff or try again later'
+                await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
         else:
-            message = f'There has been an error while trying register community into the JAIL system. Please contact support staff or try again later'
-            await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
-
+            print('Role could not be created')
     
     @register.command()
     @commands.check(is_spam_not_registered)
     async def spam(self, ctx):
-        if spam_sys_mng.register_community_for_service(community_id=ctx.message.guild.id, community_name=f'{ctx.message.guild}', owner_id=ctx.message.guild.owner_id,owner_name=f'{ctx.message.guild.owner}'):
-            message = f'You have successfully registered community to ***{self.bot.user.mention} SPAM*** system.'
-            await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
+        
+        if await self.check_role_status(ctx=ctx,role_name='Unverified'):
+            if await self.check_role_status(ctx=ctx,role_name='Visitor'):
+                if spam_sys_mng.register_community_for_service(community_id=ctx.message.guild.id, community_name=f'{ctx.message.guild}', owner_id=ctx.message.guild.owner_id,owner_name=f'{ctx.message.guild.owner}'):
+                    message = f'You have successfully registered community to ***{self.bot.user.mention} SPAM*** system.'
+                    await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
+                else:
+                    message = f'There has been an error while trying register community into the system. Please contact support staff'
+                    await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
+            else:
+                print('Role Verified could not be created')
         else:
-            message = f'There has been an error while trying register community into the system. Please contact support staff'
-            await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
-
+            print('Role Unverified could not be created')
+            
     @service.error
     async def service_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):

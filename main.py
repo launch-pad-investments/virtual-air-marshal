@@ -26,7 +26,7 @@ async def jail_sentence_checker():
     print(Fore.LIGHTWHITE_EX + f'Checking for sentece @ {now}')
     overdue_members = jail_manager.get_served_users(timestamp=int(now))  # Gets all overdue members from database
     if overdue_members:
-        print(Fore.LIGHTYELLOW_EX q+ f'{len(overdue_members)} served sentence')
+        print(Fore.LIGHTYELLOW_EX + f'{len(overdue_members)} served sentence')
         time_of_release = datetime.utcnow()
         print(Fore.LIGHTYELLOW_EX + f'Released @ {time_of_release} ')
         
