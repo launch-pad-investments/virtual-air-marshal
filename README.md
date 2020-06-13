@@ -17,11 +17,13 @@ stripped of all roles, and Jailed role is assigned which prevents user to write 
 to fit the needs. Once user get jailed, he/she receives the role for 5 minutes. Once jail time is served, bot will automatically restore the users state to 
 pre-jail time. 
 
-- How to set up
+How to setup 
+
 1. @Virtual Air Marshal#8238 service register jail --> This will automatically create as well "Jailed" role if it does not exist on the community.
 2. @Virtual Air Marshal#8238 jail on --> Turns the service ON and starts to monitor user messages on public channels.
 
 - Other available commands
+
 @Virtual Air Marshal#8238 jail off --> Turns the Jail service OFF
 @Virtual Air Marshal#8238 jail unjail @discord.User --> Administrators can release user from the jail before time expires
 @Virtual Air Marshal#8238 jail punish @discord.User duration(minutes) --> Throw user manually to jail for N minutes
