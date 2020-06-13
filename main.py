@@ -31,10 +31,10 @@ async def jail_sentence_checker():
         time_of_release = datetime.utcnow()
         print(Fore.LIGHTYELLOW_EX + f'Released @ {time_of_release} ')
         
-        #TODO continue from here
         for unjailed in overdue_members:
             user_id = unjailed["userId"]
             all_role_ids = unjailed["roleIds"]
+            guild_id = unjailed["community"]
             
             if jail_manager.remove_from_jailed(discord_id=user_id):
                 #send notifcation 
@@ -49,26 +49,31 @@ async def jail_sentence_checker():
                 await dest.send(embed=free)
                 
                 # get guild and member
-                guild = bot.get_guild(id=667607865199951872)
+                guild = bot.get_guild(id=int(guild_id))
                 member = guild.get_member(user_id)
                 
                 # Check if member still exists
                 if member in guild.members:
                     # Give him back roles
                     for taken_role in all_role_ids:
-                        to_give=guild.get_role(role_id=int(taken_role))
+                        to_give= guild.get_role(role_id=int(taken_role))
                         if to_give:
                             await member.add_roles(to_give, reason='Returning back roles')    
                            
-                    role = guild.get_role(role_id=710429549040500837)  # Get the jail role
-                    
-                    if role: 
-                        if role in member.roles:
-                            await member.remove_roles(role, reason='Jail time served')
+                    # role = guild.get_role(role_id=710429549040500837)  # Get the jail role
+                    role_rmw = discord.utils.get(guild.roles, name="Jailed")
+                   
+                    if role_rmw: 
+                        if role_rmw in member.roles:
+                            await member.remove_roles(role_rmw, reason='Jail time served')
+                            
+                    print(Fore.LIGHTGREEN_EX + f"{member} Successfully released from jail on {guild} and state restored ")
+                print(Fore.LIGHTRED_EX + f'Member {member} is not on {guild} anymore')
         print(Fore.GREEN + f'@{time_of_release} --> {len(overdue_members)} members have been unjailed!')
     else:
         pass
     
+    print(Style.RESET_ALL)
     return 
 
 
