@@ -34,7 +34,7 @@ class JailService(commands.Cog):
 
 
     @commands.group()
-    @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner), commands.check(is_community_registered))
+    @commands.check_any(commands.has_guild_permissions(administrator=True),commands.check(is_overwatch), commands.check(is_community_owner), commands.check(is_community_registered))
     async def jail(self, ctx):
         if ctx.invoked_subcommand is None:
             title = '__Available commands under ***Jail*** category!'
@@ -80,7 +80,19 @@ class JailService(commands.Cog):
             message = f'There was a backend error. Please try again later or contact one of the administrators on the community. We apologize for inconvinience'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
+    @jail.command()
+    async def release (self, ctx, user:DiscordMember):
+        # Check if member in jail
+        # Remove member from jail 
+        # Return roles to member
+        print('release')
+        pass
     
-            
+    @jail.command()
+    async def punish(self, ctx, user:DiscordMember, duration:int):
+        # Jail members
+        print('Punish')
+        pass
+        
 def setup(bot):
     bot.add_cog(JailService(bot))
