@@ -83,6 +83,17 @@ class JailService(commands.Cog):
     @jail.command()
     async def release (self, ctx, user:DiscordMember):
         # Check if member in jail
+        if jail_manager.check_if_jailed(discord_id=user.id):
+            user_details = jail_manager.get_jailed_user(discord_id=user.id)
+            
+            # return roles
+            
+            if jail_manager.remove_from_jailed(discord_id=user.id):
+                pass
+            else:
+                print('Could not be unjailed')
+        else:
+            print('User is not in jail')
         # Remove member from jail 
         # Return roles to member
         print('release')
