@@ -18,6 +18,7 @@ from discord.ext.commands import Greedy
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
 from colorama import Fore
+from cogs.toolsCog.checks import is_community_owner, is_overwatch, is_community_registered
 
 helper = Helpers()
 jail_sys_manager = JailSystemManager()
@@ -26,21 +27,6 @@ jail_manager = JailManagement()
 custom_message = CustomMessages()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 
-def is_community_registered(ctx):
-    return jail_sys_manager.check_if_jail_registered(community_id=ctx.message.guild.id)
-
-def is_community_not_registered(ctx):
-    return jail_sys_manager.check_if_jail_not_registered(community_id=ctx.message.guild.id)
-
-def is_public(ctx):
-    return ctx.message.channel.type != discord.ChannelType.private
-
-def is_overwatch(ctx):
-    access_list = bot_setup['userAccess']
-    return [user for user in access_list if ctx.message.author.id == int(user)]
-
-def is_community_owner(ctx):
-    return ctx.message.author.id == ctx.message.guild.owner_id
 
 class JailService(commands.Cog):
     def __init__(self, bot):

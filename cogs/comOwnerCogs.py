@@ -17,6 +17,7 @@ from discord.ext.commands import Greedy
 from backoffice.jailManagementDb import JailManagement
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
+from cogs.toolsCog.checks import is_public, is_jail_not_registered, is_community_owner, is_spam_not_registered, is_overwatch
 from colorama import Fore
 
 helper = Helpers()
@@ -25,25 +26,6 @@ jail_sys_mgn = JailSystemManager()
 jail_manager = JailManagement()
 custom_message = CustomMessages()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
-
-def is_spam_registered(ctx):
-    return spam_sys_mng.check_community_reg_status(community_id=ctx.message.guild.id)
-
-def is_spam_not_registered(ctx):
-    return spam_sys_mng.check_if_not_registered(community_id=ctx.message.guild.id)
-
-def is_public(ctx):
-    return ctx.message.channel.type != discord.ChannelType.private
-
-def is_overwatch(ctx):
-    access_list = [455916314238648340, 360367188432912385]
-    return [member for member in access_list if member == ctx.message.author.id]
-
-def is_community_owner(ctx):
-    return ctx.message.author.id == ctx.message.guild.owner_id
-
-def is_jail_not_registered(ctx):
-    return jail_sys_mgn.check_if_jail_not_registered(community_id=ctx.message.guild.id)
     
 class CommunityOwnerCommands(commands.Cog):
     def __init__(self, bot):
