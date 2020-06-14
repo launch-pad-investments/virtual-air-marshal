@@ -145,40 +145,37 @@ class JailService(commands.Cog):
             
         #jail user in database
         if jail_manager.throw_to_jail(user_id=user.id,community_id=ctx.guild.id,expiration=expiry,role_ids=active_roles):
-            # Remove user from active counter database
             
-            #TODO check if in counter and if yes remove him or than pass
+            # Remove user from active counter database
             if jail_manager.remove_from_counter(discord_id=int(user.id)):
+                print('Removed from counter')
                 
-                # Send message
-                jailed_info = discord.Embed(title='__You have been jailed!__',
-                                            description=f' You have been automatically jailed, since you have broken the'
-                                            f'communication rules on community {ctx.guild} 3 times in a row. Next time be more cautious'
-                                            f' on how you communicate. Status will be restored once Jail Time Expires.',
-                                            color = discord.Color.red())
-                jailed_info.add_field(name=f'Jail time duration:',
-                                    value=f'{duration} minutes',
-                                    inline=False)
-                jailed_info.add_field(name=f'Sentence started @:',
-                                    value=f'{start} UTC',
-                                    inline=False)
-                jailed_info.add_field(name=f'Sentece ends on:',
-                                    value=f'{end_date_time_stamp} UTC',
-                                    inline=False)
-                jailed_info.set_thumbnail(url=self.bot.user.avatar_url)
-                await user.send(embed=jailed_info)
-                await ctx.channel.send(content=':cop:', delete_after = 60)
-                
-                # ADD Jailed role to user
-                print(Fore.GREEN + 'Getting Jailed role on community')
-                role = discord.utils.get(ctx.guild.roles, name="Jailed") 
-                await user.add_roles(role, reason='Jailed......')       
-                print(Fore.RED + f'User {user} has been jailed!!!!')
-                
-                print(Fore.GREEN + 'Removing active roles from user')                                         
-                for role in active_roles:
-                    role = ctx.guild.get_role(role_id=int(role))  # Get the role
-                    await user.remove_roles(role, reason='Jail time served')
+            # Send message
+            jailed_info = discord.Embed(title='__You have been jailed!__',
+                                        description=f' You have been manually jailed by {ctx.message.author} on {ctx.guild} for {duration} minutes. Status will be restored once Jail Time Expires.',
+                                        color = discord.Color.red())
+            jailed_info.add_field(name=f'Jail time duration:',
+                                value=f'{duration} minutes',
+                                inline=False)
+            jailed_info.add_field(name=f'Sentence started @:',
+                                value=f'{start} UTC',
+                                inline=False)
+            jailed_info.add_field(name=f'Sentece ends on:',
+                                value=f'{end_date_time_stamp} UTC',
+                                inline=False)
+            jailed_info.set_thumbnail(url=self.bot.user.avatar_url)
+            await user.send(embed=jailed_info)
+            
+            # ADD Jailed role to user
+            print(Fore.GREEN + 'Getting Jailed role on community')
+            role = discord.utils.get(ctx.guild.roles, name="Jailed") 
+            await user.add_roles(role, reason='Jailed......')       
+            print(Fore.RED + f'User {user} has been jailed!!!!')
+            
+            print(Fore.GREEN + 'Removing active roles from user')                                         
+            for role in active_roles:
+                role = ctx.guild.get_role(role_id=int(role))  # Get the role
+                await user.remove_roles(role, reason='Jail time served')
                 
 def setup(bot):
     bot.add_cog(JailService(bot))
