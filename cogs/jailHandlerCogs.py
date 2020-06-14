@@ -81,7 +81,7 @@ class JailService(commands.Cog):
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
     @jail.command()
-    async def release (self, ctx, user:DiscordMember):
+    async def release(self, ctx, user:DiscordMember):
         # Check if member in jail
         if jail_manager.check_if_jailed(discord_id=user.id):
             user_details = jail_manager.get_jailed_user(discord_id=user.id)
@@ -94,11 +94,7 @@ class JailService(commands.Cog):
                     free.add_field(name='Message',
                                 value=f'You have been manually unjailed by the {ctx.message.author} on {ctx.message.guild}')
                     await user.send(embed=free)
-                    
-                    #TODO check down
-                    # get guild and member
 
-                    
                     # Check if member still exists
                     for taken_role in all_role_ids:
                         to_give= ctx.message.guild.get_role(role_id=int(taken_role))
@@ -107,9 +103,9 @@ class JailService(commands.Cog):
                             
                         role_rmw = discord.utils.get(ctx.guild.roles, name="Jailed")
                     
-                        if role_rmw: 
-                            if role_rmw in user.roles:
-                                await user.remove_roles(role_rmw, reason='Jail time served')
+                    if role_rmw: 
+                        if role_rmw in user.roles:
+                            await user.remove_roles(role_rmw, reason='Jail time served')
                                 
                         print(Fore.LIGHTGREEN_EX + f"{user} Successfully released from jail on {ctx.message.guild} and state restored ")
                     print(Fore.LIGHTRED_EX + f'Member {user} is not on {ctx.message.guild} anymore')
