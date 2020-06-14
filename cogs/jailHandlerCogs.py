@@ -107,12 +107,19 @@ class JailService(commands.Cog):
                         if role_rmw in user.roles:
                             await user.remove_roles(role_rmw, reason='Jail time served')
                                 
-                        print(Fore.LIGHTGREEN_EX + f"{user} Successfully released from jail on {ctx.message.guild} and state restored ")
-                    print(Fore.LIGHTRED_EX + f'Member {user} is not on {ctx.message.guild} anymore')
+                    print(Fore.LIGHTGREEN_EX + f"{user} Successfully released from jail on {ctx.message.guild} and state restored ")
+                    
+                    message = f'You have successfully release {user} from the jail, and his pre-jail perks have been returned.'
+                    await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+                else:
+                    message = f'User {user} could not be unjailed due to system error. Please try again later. '
+                    await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
             else:
-                print('User not in jail')
+                message = f'User {user} is not jailed at this moment. '
+                await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
-            print('User is not in jail')
+            message = f'User {user} is not jailed at this moment. '
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
     
     @jail.command()
