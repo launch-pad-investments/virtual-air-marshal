@@ -87,10 +87,7 @@ class JailService(commands.Cog):
             user_details = jail_manager.get_jailed_user(discord_id=user.id)
             if user_details:            
                 if jail_manager.remove_from_jailed(discord_id=user.id):
-                    all_role_ids = user_details["roleIds"]
-                    guild_id = user_details["community"]
-                                    #send notifcation 
-                                    
+                    all_role_ids = user_details["roleIds"]                                    
                     free = discord.Embed(title='__Jail message__',
                                         color=discord.Color.green())
                     free.set_thumbnail(url=self.bot.user.avatar_url)
