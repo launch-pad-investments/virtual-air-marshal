@@ -13,7 +13,6 @@ from cogs.toolsCog.checks import is_overwatch
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
 customMessages = CustomMessages()
-
 helper = Helpers()
 
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
@@ -22,7 +21,7 @@ bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 class ManagementCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
+       
     @commands.command()
     @commands.check(is_overwatch)
     async def add_overwatch(self, ctx, user: discord.User):
@@ -46,16 +45,6 @@ class ManagementCommands(commands.Cog):
             await customMessages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
                                                 sys_msg_title=title)
                
-    @commands.command()
-    async def remove_role(self, ctx):
-        role = discord.utils.get(ctx.guild.roles, name="Jailed")  # Check if role can be found if not than None
-        if role:
-
-            print(await role.delete())
-        else:
-            print('no role found')
-
-
     @commands.command()
     @commands.check(is_overwatch)
     async def update(self, ctx):
