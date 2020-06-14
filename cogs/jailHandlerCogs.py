@@ -85,19 +85,42 @@ class JailService(commands.Cog):
         # Check if member in jail
         if jail_manager.check_if_jailed(discord_id=user.id):
             user_details = jail_manager.get_jailed_user(discord_id=user.id)
-            
-            # return roles
-            
-            if jail_manager.remove_from_jailed(discord_id=user.id):
-                pass
+            if user_details:            
+                if jail_manager.remove_from_jailed(discord_id=user.id):
+                    all_role_ids = user_details["roleIds"]
+                    guild_id = user_details["community"]
+                                    #send notifcation 
+                                    
+                    free = discord.Embed(title='__Jail message__',
+                                        color=discord.Color.green())
+                    free.set_thumbnail(url=self.bot.user.avatar_url)
+                    free.add_field(name='Message',
+                                value=f'You have been manually unjailed by the {ctx.message.author} on {ctx.message.guild}')
+                    await user.send(embed=free)
+                    
+                    #TODO check down
+                    # get guild and member
+
+                    
+                    # Check if member still exists
+                    for taken_role in all_role_ids:
+                        to_give= ctx.message.guild.get_role(role_id=int(taken_role))
+                        if to_give:
+                            await user.add_roles(to_give, reason='Returning back roles')    
+                            
+                        role_rmw = discord.utils.get(ctx.guild.roles, name="Jailed")
+                    
+                        if role_rmw: 
+                            if role_rmw in user.roles:
+                                await user.remove_roles(role_rmw, reason='Jail time served')
+                                
+                        print(Fore.LIGHTGREEN_EX + f"{user} Successfully released from jail on {ctx.message.guild} and state restored ")
+                    print(Fore.LIGHTRED_EX + f'Member {user} is not on {ctx.message.guild} anymore')
             else:
-                print('Could not be unjailed')
+                print('User not in jail')
         else:
             print('User is not in jail')
-        # Remove member from jail 
-        # Return roles to member
-        print('release')
-        pass
+
     
     @jail.command()
     async def punish(self, ctx, user:DiscordMember, duration:int):

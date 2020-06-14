@@ -22,7 +22,10 @@ class JailManagement():
     def get_jailed_user(self, discord_id):
         user = self.jailed.find_one({"userId":discord_id},
                                     {"_id":0})
-        return user
+        if user:   
+            return user
+        else:
+            return {}
     
     
     def check_if_in_counter(self, discord_id:int):

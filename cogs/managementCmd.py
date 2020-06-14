@@ -25,7 +25,7 @@ class ManagementCommands(commands.Cog):
 
     @commands.command()
     @commands.check(is_overwatch)
-    async def add_user(self, ctx, user: discord.User):
+    async def add_overwatch(self, ctx, user: discord.User):
         """
         :param ctx:
         :param user:
