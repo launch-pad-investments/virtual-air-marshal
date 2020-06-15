@@ -154,6 +154,7 @@ class JailService(commands.Cog):
             jailed_info = discord.Embed(title='__You have been jailed!__',
                                         description=f' You have been manually jailed by {ctx.message.author} on {ctx.guild} for {duration} minutes. Status will be restored once Jail Time Expires.',
                                         color = discord.Color.red())
+            jailed_info.set_thumbnail(url=self.bot.user.avatar_url)
             jailed_info.add_field(name=f'Jail time duration:',
                                 value=f'{duration} minutes',
                                 inline=False)
