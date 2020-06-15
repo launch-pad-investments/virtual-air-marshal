@@ -22,23 +22,15 @@ helper = Helpers()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 
 
-class HelpCommands(commands.Cog):
+class ManualCommands(commands.Cog):
     def __init__(self, bot):
-        self.bot = bot    
+        self.bot = bot  
     
     @commands.command()
     async def help(self, ctx):
         if ctx.invoked_subcommand is None:
-            pass
+            await menu.start(ctx)
             
         
-    @help.command()
-    async def jail(self, ctx):
-        pass
-    
-    @help.command()
-    async def spam(self, ctx):
-        pass
-        
 def setup(bot):
-    bot.add_cog(HelpCommands(bot))
+    bot.add_cog(ManualCommands(bot))
