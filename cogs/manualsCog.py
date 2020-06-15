@@ -102,7 +102,7 @@ class SupportAndHelpCommands(commands.Cog):
         answer.set_footer(text='Service provided by Launch Pad Investments')
         await recipient.send(embed=answer)
         
-    @support.error()
+    @support.error
     async def support_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
             message = f'You can not create support tickert because you are not the owner of {ctx.message.guild}.'
@@ -111,7 +111,8 @@ class SupportAndHelpCommands(commands.Cog):
             message = f'You you have not provided all required arguments when creating support ticket.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         elif isinstance(error,commands.BadArgument):
-            pass
+            message = f'You have provided bad arguments when creating support ticket. please try again'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
             
 def setup(bot):
     bot.add_cog(SupportAndHelpCommands(bot))
