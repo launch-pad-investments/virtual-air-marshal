@@ -109,7 +109,6 @@ class CommunityOwnerCommands(commands.Cog):
             
         await ctx.channel.send(embed=status_embed)
     
-    
     @service.group()
     @commands.check(is_public)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
