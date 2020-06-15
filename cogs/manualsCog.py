@@ -6,9 +6,10 @@ import os
 import sys
 
 import discord
+from discord.ext import menus
 from discord.ext import commands
 from discord import Permissions, Embed
-from cogs.toolsCog.books import GeneralHelp
+from cogs.toolsCog.books import GeneralHelp, MySource, Source, Test
 
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
@@ -16,6 +17,7 @@ from cogs.toolsCog.systemMessages import CustomMessages
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
 customMessages = CustomMessages()
+
 menu = GeneralHelp()
 helper = Helpers()
 
@@ -30,7 +32,7 @@ class ManualCommands(commands.Cog):
     async def help(self, ctx):
         if ctx.invoked_subcommand is None:
             await menu.start(ctx)
-            
+    
         
 def setup(bot):
     bot.add_cog(ManualCommands(bot))

@@ -42,9 +42,6 @@ class GeneralHelp(menus.Menu):
         await self.message.delete()
         self.stop()
 
-        
-
-
 
 class JailGeneralMenu(menus.Menu):
     async def send_initial_message(self, ctx, channel):
