@@ -198,6 +198,9 @@ class JailService(commands.Cog):
         elif isinstance(error,commands.CheckAnyFailure):
             message = f'You do not have rights to access this area of {self.bot.user} on {ctx.message.guild}.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        elif isinstance(error,commands.BadArgument):
+            message = f'Wrong argument provided:\n {error}. Command structure is {bot_setup["command"]} jail punish <@discord.User> <duration in minutes>'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             raise
             
