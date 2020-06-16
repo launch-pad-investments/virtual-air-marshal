@@ -90,6 +90,11 @@ class JailService(commands.Cog):
     @commands.check(is_public)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
     async def release(self, ctx, user:DiscordMember):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+        
         # Check if member in jail
         if jail_manager.check_if_jailed(discord_id=user.id):
             user_details = jail_manager.get_jailed_user(discord_id=user.id)
@@ -136,6 +141,12 @@ class JailService(commands.Cog):
         """
         Punish user and throw him to jail
         """
+        
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+        
         print(Fore.GREEN + 'Manual Jail')
         # Current time
         start = datetime.utcnow()
