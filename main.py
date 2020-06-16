@@ -25,7 +25,7 @@ extensions = ['cogs.adminCogs',
               'cogs.jailHandlerCogs',
               'cogs.managementCmd',
               'cogs.spamHandlerCogs',
-              'cogs.supportHandlerCogs',
+              'cogs.supportHandlerCog',
               'cogs.supportTicketCogs']
 
 async def jail_sentence_checker():
