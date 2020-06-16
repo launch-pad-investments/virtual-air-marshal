@@ -199,7 +199,7 @@ class JailService(commands.Cog):
             message = f'You do not have rights to access this area of {self.bot.user} on {ctx.message.guild}.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
-            print(Fore.RED+ f'{error}')
+            raise
             
                 
 def setup(bot):
