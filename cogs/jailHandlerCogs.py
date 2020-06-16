@@ -44,9 +44,9 @@ class JailService(commands.Cog):
             value = [{'name': f'{bot_setup["command"]}jail on',
                       'value': "Turns the jail ON"},
                      {'name': f'{bot_setup["command"]}jail off',
-                      'value': "Turns the jail system off"}
+                      'value': "Turns the jail system off"},
                      {'name': f'{bot_setup["command"]}jail release <@discord.User>',
-                      'value': "Releases the user from jail before the expiration time. Can be used only by users with special rights"}
+                      'value': "Releases the user from jail before the expiration time. Can be used only by users with special rights"},
                      {'name': f'{bot_setup["command"]}jail punish <@discord.User> <duration in minutes>',
                       'value': "Manually puts user to Jail for N amount of minutes. Can be used only by users with special rights"}
                      ]
