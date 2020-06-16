@@ -168,6 +168,9 @@ class CommunityOwnerCommands(commands.Cog):
     @service.error
     async def service_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
+            message = 'This command is allowed to be executed only on public channel of community'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        if isinstance(error, commands.CheckAnyFailure):
             message = 'Access to this areas is allowed only for the owner of the community or than the Bot Overwatch members!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         elif isinstance(error,commands.BotMissingPermissions):
@@ -178,8 +181,11 @@ class CommunityOwnerCommands(commands.Cog):
             await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
     @register.error
     async def register_error(self, ctx, error):
-        if isinstance(error, commands.CheckFailure):
+        if isinstance(error, commands.CheckAnyFailure):
             message = 'You are either not an owner of the community, or community has been already registered!'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        elif isinstance(error, commands.CheckFailure):
+            message = 'This command is allowed to be executed only on public channel of community'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
