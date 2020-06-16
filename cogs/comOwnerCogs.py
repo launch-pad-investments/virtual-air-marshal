@@ -9,6 +9,7 @@ from datetime import timedelta
 import time
 from backoffice.spamSystemDb import SpamSystemManager
 from backoffice.jailSystemDb import JailSystemManager
+from backoffice.supportSystemDb import SupportSystemManager
 import discord
 from discord import Embed, Colour, Permissions
 from discord import Member as DiscordMember
@@ -21,6 +22,7 @@ from cogs.toolsCog.checks import is_public, is_jail_not_registered, is_community
 from colorama import Fore
 
 helper = Helpers()
+sup_sys_mng = SupportSystemManager()
 spam_sys_mng = SpamSystemManager()
 jail_sys_mgn = JailSystemManager()
 jail_manager = JailManagement()
@@ -171,8 +173,17 @@ class CommunityOwnerCommands(commands.Cog):
     @register.command()
     @commands.check(is_support_not_registered)
     async def support(self, ctx):
-        #TODO integrate registration procedure
-        pass
+        if sup_sys_mng.register_community_for_service(community_id=ctx.message.guild.id, 
+                                                      community_name=f'{ctx.message.guild}', 
+                                                      owner_id=ctx.message.guild.owner_id,
+                                                      owner_name=f'{ctx.message.guild.owner}'):
+            message = f'You have successfully registered community to ***{self.bot.user.mention} SUPPORT*** system.'
+            await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
+
+        else:
+            message = f'There has been an error while trying register community for ***SUPPORT*** system. Please contact support staff or try again later!'
+            await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
+        
     
     
     @service.error
@@ -212,8 +223,8 @@ class CommunityOwnerCommands(commands.Cog):
             await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
             
 
-    @spam.error
-    async def spam_error(self, ctx, error):
+    @support.error
+    async def support_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
             message = f'You have already register community for ***SUPPORT ***  system! Proceed with ***{bot_setup["command"]} support***'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
