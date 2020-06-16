@@ -18,7 +18,7 @@ from discord.ext.commands import Greedy
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
 from colorama import Fore
-from cogs.toolsCog.checks import is_community_owner, is_overwatch, is_community_registered
+from cogs.toolsCog.checks import is_community_owner, is_overwatch, is_community_registered, is_public
 
 helper = Helpers()
 jail_sys_manager = JailSystemManager()
@@ -34,6 +34,7 @@ class JailService(commands.Cog):
 
 
     @commands.group()
+    @commands.check(is_public)
     @commands.check_any(commands.has_guild_permissions(administrator=True),commands.check(is_overwatch), commands.check(is_community_owner), commands.check(is_community_registered))
     async def jail(self, ctx):
         if ctx.invoked_subcommand is None:
@@ -123,6 +124,8 @@ class JailService(commands.Cog):
 
     
     @jail.command()
+    @commands.check(is_public)
+    @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
     async def punish(self, ctx, user:DiscordMember, duration:int):
         """
         Punish user and throw him to jail
@@ -177,6 +180,27 @@ class JailService(commands.Cog):
             for role in active_roles:
                 role = ctx.guild.get_role(role_id=int(role))  # Get the role
                 await user.remove_roles(role, reason='Jail time served')
+                
+    @jail.error
+    async def jail_error(self, ctx, error):
+        if isinstance(error, commands.CheckFailure):
+            message = f'Command is allowed to be executed only on the public channels of the {ctx.message.guild}.'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        elif isinstance(error,commands.CheckAnyFailure):
+            message = f'You do not have rights to access this area of {self.bot.user} on {ctx.message.guild}.'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+            
+    @punish.error
+    async def punish_error(self, ctx, error):
+        if isinstance(error, commands.CheckFailure):
+            message = f'Command is allowed to be executed only on the public channels of the {ctx.message.guild}.'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        elif isinstance(error,commands.CheckAnyFailure):
+            message = f'You do not have rights to access this area of {self.bot.user} on {ctx.message.guild}.'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        else:
+            print(Fore.RED+ f'{error}')
+            
                 
 def setup(bot):
     bot.add_cog(JailService(bot))
