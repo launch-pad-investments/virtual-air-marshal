@@ -45,7 +45,7 @@ class SupportSystemManager:
         result = self.supportSystem.find_one({"communityId":int(community_id)},
                                                  {"_id":0,
                                                   "supportService":1})
-        if result["appliedChannelId"] == 0:
+        if result["supportService"] == 0:
             return False
         else:
             return True
