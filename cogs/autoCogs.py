@@ -19,17 +19,12 @@ from better_profanity import profanity
 
 jail_manager = JailManagement()
 helper = Helpers()
-cust_messages = CustomMessages()
+custom_messages = CustomMessages()
 spam_sys_mng  = SpamSystemManager()
 jail_sys_mng = JailSystemManager()
 
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 CONST_JAIL_DURATION = 5
-
-def is_jail_activated(message):
-    print(message.content)
-    print(message.guild.id)
-    return jail_sys_mng.jail_activated(community_id=message.guild.id)
 
 class AutoFunctions(commands.Cog):
     def __init__(self, bot):
@@ -213,7 +208,6 @@ class AutoFunctions(commands.Cog):
             
     @commands.Cog.listener()
     async def on_message(self, message):
-        # role = message.guild.get_role(role_id=667623277430046720)  # Get the role @partner
         user_id = message.author.id
         if not message.author.bot:
             if jail_sys_mng.jail_activated(community_id=message.guild.id):  # Check if community has jail activated
@@ -289,6 +283,11 @@ class AutoFunctions(commands.Cog):
                     pass
             else:
                 pass
-        
+    
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        dest = await self.bot.fetch_user(user_id=int(360367188432912385))
+        await custom_messages.bug_messages(ctx=ctx,error=error,destination=dest)
+    
 def setup(bot):
     bot.add_cog(AutoFunctions(bot))

@@ -23,3 +23,6 @@ def is_jail_not_registered(ctx):
 
 def is_community_registered(ctx):
     return jail_sys_mgn.check_if_jail_registered(community_id=ctx.message.guild.id)
+
+def is_jail_activated(message):
+    return jail_sys_mgn.jail_activated(community_id=message.guild.id)
