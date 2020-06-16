@@ -147,6 +147,9 @@ class SpamService(commands.Cog):
             message = f'This command is allowed to be executed only on the public channels of the community or than it has not been registered yet into {self.bot.user} system.\n Error: {error}'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
+            title='__:bug: Found__'
+            message = f'Bug has been found while executing command and {self.bot.user} service team has been automatically notified. We apologize for inconvinience!'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1,sys_msg_title=title)
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
             await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
 

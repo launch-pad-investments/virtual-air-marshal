@@ -32,4 +32,9 @@ def is_jail_activated(message):
 
 def is_support_not_registered(ctx):
     return support_sys_mng.check_if_not_registered(community_id=ctx.message.guild.id)
-    
+
+def is_support_registered(ctx):
+    return support_sys_mng.check_community_reg_status(community_id=int(ctx.message.guild.id))
+
+def check_if_support_channel_registered(ctx):
+    return support_sys_mng.get_channel(community_id=int(ctx.message.guild.id)) > 0

@@ -31,7 +31,16 @@ class SupportSystemManager:
             return True
         except errors.PyMongoError:
             return False
-        
+    
+    def get_channel(self,community_id:int):
+        result = self.supportSystem.find_one({"communityId":int(community_id)},
+                                            {"_id":0,
+                                            "appliedChannelId":1})
+        if result:
+            return result["appliedChannelId"]
+        else:
+            return 0
+                
     def check_support_system_status(self, community_id:int):
         result = self.supportSystem.find_one({"communityId":int(community_id)},
                                                  {"_id":0,
@@ -95,11 +104,11 @@ class SupportSystemManager:
         else:
             return {}
     
-    def check_if_security_activated(self, community_id:int):
+    def check_if_support_activated(self, community_id:int):
         result = self.supportSystem.find_one({"communityId":community_id},
                                                  {"_id":0,
-                                                  "welcomeService":1})
+                                                  "supportService":1})
         try:
-            return int(result['welcomeService'])
+            return int(result['supportService'])
         except TypeError:
             return 2

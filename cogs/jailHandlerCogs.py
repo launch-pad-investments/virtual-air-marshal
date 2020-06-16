@@ -249,6 +249,9 @@ class JailService(commands.Cog):
             message = 'Bot has insufficient permissions which are required to register for services. It requires at least administrator priileges with message and role management permissions!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
+            title='__:bug: Found__'
+            message = f'Bug has been found while executing command and {self.bot.user} service team has been automatically notified. We apologize for inconvinience!'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1,sys_msg_title=title)
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
             await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
             
@@ -264,6 +267,9 @@ class JailService(commands.Cog):
             message = f'Wrong argument provided:\n {error}. Command structure is {bot_setup["command"]} jail punish <@discord.User> <duration in minutes>'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
+            title='__:bug: Found__'
+            message = f'Bug has been found while executing command and {self.bot.user} service team has been automatically notified. We apologize for inconvinience!'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1,sys_msg_title=title)
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
             await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
             
@@ -279,6 +285,9 @@ class JailService(commands.Cog):
             message = f'Wrong argument provided:\n {error}. Command structure is {bot_setup["command"]} jail release <@discord.User>'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
+            title='__:bug: Found__'
+            message = f'Bug has been found while executing command and {self.bot.user} service team has been automatically notified. We apologize for inconvinience!'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1,sys_msg_title=title)
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
             await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
                 
