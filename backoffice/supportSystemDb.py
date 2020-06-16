@@ -45,10 +45,14 @@ class SupportSystemManager:
         result = self.supportSystem.find_one({"communityId":int(community_id)},
                                                  {"_id":0,
                                                   "supportService":1})
-        if result["supportService"] == 0:
+        try:
+            if result["supportService"] == 0:
+                return False
+            else:
+                return True
+        except TypeError:
             return False
-        else:
-            return True
+            
         
     def get_communtiy_settings(self, community_id):
         

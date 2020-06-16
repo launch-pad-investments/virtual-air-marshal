@@ -284,11 +284,6 @@ class AutoFunctions(commands.Cog):
                     pass
             else:
                 pass
-    
-    @commands.Cog.listener()
-    async def on_command_error(self, ctx, error):
-        dest = await self.bot.fetch_user(user_id=int(360367188432912385))
-        await custom_messages.bug_messages(ctx=ctx,error=error,destination=dest)
-    
+
 def setup(bot):
     bot.add_cog(AutoFunctions(bot))
