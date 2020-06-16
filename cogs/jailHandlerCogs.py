@@ -137,7 +137,7 @@ class JailService(commands.Cog):
     @jail.command()
     @commands.check(is_public)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
-    async def punish(self, ctx, user:DiscordMember, duration:int):
+    async def punish(self, ctx, user:DiscordMember, duration:int, *, subject = None):
         """
         Punish user and throw him to jail
         """
@@ -175,6 +175,9 @@ class JailService(commands.Cog):
                                         description=f' You have been manually jailed by {ctx.message.author} on {ctx.guild} for {duration} minutes. Status will be restored once Jail Time Expires.',
                                         color = discord.Color.red())
             jailed_info.set_thumbnail(url=self.bot.user.avatar_url)
+            jailed_info.add_field(name=f'Reason',
+                                value=f'{subject}',
+                                inline=False)
             jailed_info.add_field(name=f'Jail time duration:',
                                 value=f'{duration} minutes',
                                 inline=False)
@@ -192,6 +195,9 @@ class JailService(commands.Cog):
                                         description=f' You have successfully jailed {user} on {ctx.guild} for {duration} minutes. Status will be restored once Jail Time Expires.',
                                         color = discord.Color.red())
             executor.set_thumbnail(url=self.bot.user.avatar_url)
+            jailed_info.add_field(name=f'Reason',
+                                value=f'{subject}',
+                                inline=False)
             executor.add_field(name=f'Jailed User:',
                                 value=f'{user} id: {user.id}',
                                 inline=False)
@@ -213,6 +219,9 @@ class JailService(commands.Cog):
                                         color = discord.Color.red())
             chn.add_field(name=f'Jailed!',
                                 value=f'{user} with id: {user.id} jailed by {ctx.message.author} for duration of {duration} minutes!',
+                                inline=False)
+            jailed_info.add_field(name=f'Reason',
+                                value=f'{subject}',
                                 inline=False)
             chn.set_thumbnail(url=self.bot.user.avatar_url)
             await ctx.channel.send(embed=jailed_info, delete_after=10)
