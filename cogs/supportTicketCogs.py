@@ -72,8 +72,10 @@ class SpamService(commands.Cog):
         
     async def send_ticket_message_channel(self, ctx, message, department:str, color_code:Colour, ticket_id:str, time_of_request):
         try:
-            channel_id = int(support_sys_mng.get_channel(community_id=ctx.message.guild.id))
+            channel_id = int(support_sys_mng.get_channel(community_id=int(ctx.guild.id)))
+            print(channel_id)
             dest = self.bot.get_channel(id=int(channel_id))
+            print(f'{dest}')
 
             time_of_request = datetime.utcnow()
             supp_msg = Embed(title='__Support requested__',
@@ -98,7 +100,8 @@ class SpamService(commands.Cog):
             await support_msg.add_reaction(emoji="⛔")
             
             return True
-        except Exception:
+        except Exception as e:
+            print(e)
             return False
         
 

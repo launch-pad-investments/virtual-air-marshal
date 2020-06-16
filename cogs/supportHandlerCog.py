@@ -80,7 +80,7 @@ class SupportService(commands.Cog):
         except Exception:
             pass
         
-        if sup_sys_mng.turn_on_off(community_id=ctx.message.channel.id, direction = 1):
+        if sup_sys_mng.turn_on_off(community_id=ctx.message.guild.id, direction = 1):
             title='__System Message__'
             message = f'You have turned ON support ticket service successfully. Members can now create ticket by executing command {bot_setup["command"]} ticket <message>'
             await custom_message.system_message(ctx=ctx, color_code=0, message = message, destination = 1, sys_msg_title=title)

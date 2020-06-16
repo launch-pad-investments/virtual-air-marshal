@@ -15,7 +15,7 @@ class SupportSystemManager:
         self.airMarshall = self.connection['AirMarshall']
         self.supportSystem = self.airMarshall.supportProfiles
 
-    def register_community_for_service(self, community_id,community_name, owner_id, owner_name):
+    def register_community_for_support_service(self, community_id,community_name, owner_id, owner_name):
         community_profile = {
             "communityId":int(community_id),
             "communityName":str(community_name),
@@ -25,7 +25,8 @@ class SupportSystemManager:
             "appliedChannelName":None,
             "supportService":int(0),
         }
-        
+        from pprint import pprint
+        pprint(community_profile)
         try:
             self.supportSystem.insert(community_profile)
             return True
@@ -67,15 +68,19 @@ class SupportSystemManager:
     def modify_channel(self, community_id:int, channel_id:int, channel_name:str):
         try:
             self.supportSystem.update_one({"communityId":int(community_id)},
-                                                        {"$set":{"appliedChannelId":int(channel_id),
-                                                                "appliedChannelName":channel_name}})
+                                          {"$set":{"appliedChannelId":int(channel_id),
+                                                  "appliedChannelName":channel_name}})
             return True
         except errors.PyMongoError:
             return False
     
-    def turn_on_off(self, community_id, direction:int):
+    def turn_on_off(self, community_id:int, direction:int):
+        print(direction)
+        print(community_id)
         result = self.supportSystem.update_one({"communityId":int(community_id)},
-                                        {"$set":{"supportService":direction}})   
+                                               {"$set":{"supportService":direction}})  
+        print(result.modified_count) 
+        print(result.modified_count)
         if result:
             return True
         else:
