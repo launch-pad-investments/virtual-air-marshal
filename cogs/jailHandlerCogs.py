@@ -35,6 +35,7 @@ class JailService(commands.Cog):
 
     @commands.group()
     @commands.check(is_public)
+    @commands.bot_has_guild_permissions(administrator=True, manage_messages=True, manage_roles=True)
     @commands.check_any(commands.has_guild_permissions(administrator=True),commands.check(is_overwatch), commands.check(is_community_owner), commands.check(is_community_registered))
     async def jail(self, ctx):
         if ctx.invoked_subcommand is None:
@@ -193,6 +194,9 @@ class JailService(commands.Cog):
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         elif isinstance(error,commands.CheckAnyFailure):
             message = f'You do not have rights to access this area of {self.bot.user} on {ctx.message.guild}.'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        elif isinstance(error,commands.BotMissingPermissions):
+            message = 'Bot has insufficient permissions which are required to register for services. It requires at least administrator priileges with message and role management permissions!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))

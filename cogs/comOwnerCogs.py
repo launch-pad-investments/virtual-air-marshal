@@ -56,6 +56,7 @@ class CommunityOwnerCommands(commands.Cog):
             return True
         
     @commands.group()
+    @commands.bot_has_guild_permissions(administrator=True, manage_messages=True, manage_roles=True)
     @commands.check(is_public)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
     async def service(self, ctx):
@@ -85,6 +86,8 @@ class CommunityOwnerCommands(commands.Cog):
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
 
     @service.command()
+    @commands.check(is_public)
+    @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
     async def status(self, ctx):
         status_embed = Embed(title='__System status__',
                        description='Current status of community on services',
@@ -167,16 +170,20 @@ class CommunityOwnerCommands(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             message = 'Access to this areas is allowed only for the owner of the community or than the Bot Overwatch members!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        elif isinstance(error,commands.BotMissingPermissions):
+            message = 'Bot has insufficient permissions which are required to register for services. It requires at least administrator priileges with message and role management permissions!'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
-            print(error)
-            
+            dest = await self.bot.fetch_user(user_id=int(360367188432912385))
+            await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
     @register.error
     async def register_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
             message = 'You are either not an owner of the community, or community has been already registered!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
-            print(error)
+            dest = await self.bot.fetch_user(user_id=int(360367188432912385))
+            await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
 
     @spam.error
     async def spam_error(self, ctx, error):
@@ -184,7 +191,8 @@ class CommunityOwnerCommands(commands.Cog):
             message = f'You have already register community for ***SPAM PROTECTION***  system! Proceed with ***{bot_setup["command"]} spam***'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
-            print(error)
+            dest = await self.bot.fetch_user(user_id=int(360367188432912385))
+            await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
     
 
 def setup(bot):
