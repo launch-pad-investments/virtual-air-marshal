@@ -38,3 +38,9 @@ def is_support_registered(ctx):
 
 def check_if_support_channel_registered(ctx):
     return support_sys_mng.get_channel(community_id=int(ctx.message.guild.id)) > 0
+
+def check_if_support_activated(ctx):
+    return support_sys_mng.check_support_system_status(community_id=ctx.guild.id)
+
+def is_text_channel(ctx):
+    return isinstance(ctx.message.channel, discord.TextChannel)
