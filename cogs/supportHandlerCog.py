@@ -54,7 +54,7 @@ class SupportService(commands.Cog):
             info_embed= Embed(title='__Support System Message__',
                               description='You have successfully set channel to listen for ticket supports.',
                               colour=Colour.green())
-            info_embed.set_thumbnail(url=self.bot.avatar_url)
+            info_embed.set_thumbnail(url=self.bot.user.avatar_url)
             info_embed.add_field(name='Channel Name',
                                  value=f'{chn}',
                                  inline=False)
