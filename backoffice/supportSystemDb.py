@@ -1,6 +1,6 @@
 
 """
-Script to handle statistics of the bot
+Script to handle support background
 """
 
 import os
