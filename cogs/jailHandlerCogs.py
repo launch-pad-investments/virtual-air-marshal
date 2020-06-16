@@ -136,6 +136,7 @@ class JailService(commands.Cog):
     
     @jail.command()
     @commands.check(is_public)
+    @commands.check(is_community_registered)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
     async def punish(self, ctx, user:DiscordMember, duration:int, *, subject = None):
         """
