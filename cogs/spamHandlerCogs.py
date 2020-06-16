@@ -20,7 +20,7 @@ from discord.ext.commands import Greedy
 from backoffice.jailManagementDb import JailManagement
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
-from cogs.toolsCog.checks import is_overwatch, is_community_owner, is_community_registered
+from cogs.toolsCog.checks import is_overwatch, is_community_owner, is_community_registered, is_public
 from colorama import Fore
 
 helper = Helpers()
@@ -33,6 +33,7 @@ class SpamService(commands.Cog):
         self.bot = bot
 
     @commands.group()
+    @commands.check(is_public)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
     @commands.check(is_community_registered)
     async def spam(self, ctx):
@@ -139,11 +140,15 @@ class SpamService(commands.Cog):
 
     @spam.error
     async def spam_error(self, ctx, error):
-        if isinstance(error, commands.CheckFailure):
+        if isinstance(error, commands.CheckAnyFailure):
             message = f'You are either not an Overwatch member, owner of the community, or community has not been registered yet into the system. Use {bot_setup["command"]}service register to start'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        elif isinstance(error, commands.CheckFailure):
+            message = f'This command is allowed to be executed only on the public channels of the community or than it has not been registered yet into {self.bot.user} system.\n Error: {error}'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
-            print(error)
+            dest = await self.bot.fetch_user(user_id=int(360367188432912385))
+            await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
 
 def setup(bot):
     bot.add_cog(SpamService(bot))
