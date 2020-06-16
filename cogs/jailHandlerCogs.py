@@ -241,7 +241,7 @@ class JailService(commands.Cog):
     @jail.error
     async def jail_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
-            message = f'Command is allowed to be executed only on the public channels of the {ctx.message.guild}.'
+            message = f'Command is allowed to be executed only on the public channels of the {ctx.message.guild} and community needs to be registered into the system.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         elif isinstance(error,commands.CheckAnyFailure):
             message = f'You do not have rights to access this area of {self.bot.user} on {ctx.message.guild}.'
