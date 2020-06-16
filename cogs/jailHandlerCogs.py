@@ -206,8 +206,7 @@ class JailService(commands.Cog):
             message = f'Wrong argument provided:\n {error}. Command structure is {bot_setup["command"]} jail punish <@discord.User> <duration in minutes>'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
-            raise
-            
+            print('send bug')
                 
 def setup(bot):
     bot.add_cog(JailService(bot))

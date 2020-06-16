@@ -1,8 +1,9 @@
 import os
 import sys
 
-import discord
 from discord import Member as DiscordMember
+from discord import Embed, Colour
+
 
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
@@ -17,9 +18,9 @@ class CustomMessages:
         if color_code == 0:
             signal = 0x319f6b
         else:
-            signal = discord.Colour.red()
+            signal = Colour.red()
 
-        sys_embed = discord.Embed(title="System Message",
+        sys_embed = Embed(title="System Message",
                                   description=description,
                                   colour=signal)
         sys_embed.add_field(name='Message',
@@ -39,9 +40,9 @@ class CustomMessages:
         :param data: data as list of dict
         :return:
         """
-        emb = discord.Embed(title=title,
+        emb = Embed(title=title,
                             description=description,
-                            colour=discord.Colour.gold())
+                            colour=Colour.gold())
         for d in data:
             emb.add_field(name=d['name'],
                           value=d['value'],
@@ -56,14 +57,14 @@ class CustomMessages:
         if color_code == 0:
             signal = 0x319f6b
         else:
-            signal = discord.Colour.red()
+            signal = Colour.red()
 
         if sys_msg_title is None:
             sys_msg_title = '__System Message__'
         else:
             pass
 
-        sys_embed = discord.Embed(title="__System Message__",
+        sys_embed = Embed(title="__System Message__",
                                   description=sys_msg_title,
                                   colour=signal)
         sys_embed.add_field(name='Message',
@@ -74,3 +75,22 @@ class CustomMessages:
             await ctx.author.send(embed=sys_embed)
         else:
             await ctx.channel.send(embed=sys_embed, delete_after=100)
+            
+    async def bug_messages(self, ctx, error, destination):
+        animus_embed = Embed(title='Bug notifcationa', 
+                             description=':bug: was found, below are details',
+                             Colour=Colour.magenta())
+
+        animus_embed.add_field(name='Error details',
+                               value=f'{error}',
+                               inline=False)
+        animus_embed.add_field(name='Community',
+                               value=f'{ctx.message.guild} id: {ctx.message.guild.id}',
+                               inline=False)
+        animus_embed.add_field(name='Author of command',
+                               value=f'{ctx.message.author} id: {ctx.message.author.id}',
+                               inline=False)
+        animus_embed.add_field(name='Command written',
+                               value=f'{ctx.message.content}',
+                               inline=False)
+        await destination.send(embed=animus_embed)
