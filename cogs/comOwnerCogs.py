@@ -17,7 +17,7 @@ from discord.ext.commands import Greedy
 from backoffice.jailManagementDb import JailManagement
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
-from cogs.toolsCog.checks import is_public, is_jail_not_registered, is_community_owner, is_spam_not_registered, is_overwatch
+from cogs.toolsCog.checks import is_public, is_jail_not_registered, is_community_owner, is_spam_not_registered, is_overwatch, is_support_not_registered
 from colorama import Fore
 
 helper = Helpers()
@@ -79,8 +79,9 @@ class CommunityOwnerCommands(commands.Cog):
                      {'name': f'{bot_setup["command"]}service register spam',
                       'value': "Register community for spam prevention system for bot invasion"},
                      {'name': f'{bot_setup["command"]}service register jail',
-                      'value': "Register community for bad language prevention system and auto-jail and un-jail. (IN DEVELOPMENT)"}
-                     
+                      'value': "Register community for bad language prevention system and auto-jail and un-jail. (IN DEVELOPMENT)"},
+                     {'name': f'{bot_setup["command"]}service register support',
+                      'value': "Register community for support ticket to the staff members"}
                      ]
 
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
@@ -109,6 +110,8 @@ class CommunityOwnerCommands(commands.Cog):
             status_embed.add_field(name='Spam prevention system status',
                     value="Deactivate or not registered for service",
                     inline=False)
+            
+        #TODO add support command 
             
         await ctx.channel.send(embed=status_embed)
     
@@ -163,8 +166,15 @@ class CommunityOwnerCommands(commands.Cog):
             else:
                 print('Role Verified could not be created')
         else:
-            print('Role Unverified could not be created')
-            
+            print('Role Unverified could not be created')   
+    
+    @register.command()
+    @commands.check(is_support_not_registered)
+    async def support(self, ctx):
+        #TODO integrate registration procedure
+        pass
+    
+    
     @service.error
     async def service_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
@@ -179,6 +189,7 @@ class CommunityOwnerCommands(commands.Cog):
         else:
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
             await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
+            
     @register.error
     async def register_error(self, ctx, error):
         if isinstance(error, commands.CheckAnyFailure):
@@ -195,6 +206,16 @@ class CommunityOwnerCommands(commands.Cog):
     async def spam_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
             message = f'You have already register community for ***SPAM PROTECTION***  system! Proceed with ***{bot_setup["command"]} spam***'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        else:
+            dest = await self.bot.fetch_user(user_id=int(360367188432912385))
+            await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
+            
+
+    @spam.error
+    async def spam_error(self, ctx, error):
+        if isinstance(error, commands.CheckFailure):
+            message = f'You have already register community for ***SUPPORT ***  system! Proceed with ***{bot_setup["command"]} support***'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))

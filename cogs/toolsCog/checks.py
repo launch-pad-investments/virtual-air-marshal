@@ -1,9 +1,12 @@
 import discord
 from backoffice.spamSystemDb import SpamSystemManager
 from backoffice.jailSystemDb import JailSystemManager
+from backoffice.supportSystemDb import SupportSystemManager
 
 spam_sys_mng = SpamSystemManager()
 jail_sys_mgn = JailSystemManager()
+support_sys_mng = SupportSystemManager()
+
 
 def is_spam_not_registered(ctx):
     return spam_sys_mng.check_if_not_registered(community_id=ctx.message.guild.id)
@@ -26,3 +29,7 @@ def is_community_registered(ctx):
 
 def is_jail_activated(message):
     return jail_sys_mgn.jail_activated(community_id=message.guild.id)
+
+def is_support_not_registered(ctx):
+    return support_sys_mng.check_if_not_registered(community_id=ctx.message.guild.id)
+    
