@@ -232,7 +232,6 @@ class JailService(commands.Cog):
             role = discord.utils.get(ctx.guild.roles, name="Jailed") 
             await user.add_roles(role, reason='Jailed......')       
             print(Fore.RED + f'User {user} has been jailed by {ctx.message.author} on {ctx.message.guild.id}!!!!')
-            
             print(Fore.GREEN + 'Removing active roles from user')                                         
             for role in active_roles:
                 role = ctx.guild.get_role(role_id=int(role))  # Get the role
