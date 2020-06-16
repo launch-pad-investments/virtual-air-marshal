@@ -212,6 +212,8 @@ class AutoFunctions(commands.Cog):
         if not message.author.bot:
             if jail_sys_mng.jail_activated(community_id=message.guild.id):  # Check if community has jail activated
                 if profanity.contains_profanity(message.content):
+                    await message.delete()
+                    await message.channel.send(f'{message.author.mention} You cant use bad words on {message.guild}!', delete_after=15)
                     if not jail_manager.check_if_jailed(discord_id=int(user_id)):      # If user is not jailed yet
                         if jail_manager.check_if_in_counter(discord_id=user_id):
                             current_score = jail_manager.increase_count(discord_id=user_id)
@@ -276,9 +278,8 @@ class AutoFunctions(commands.Cog):
                             jail_manager.apply_user(discord_id=user_id)
                             await message.channel.send(content='You have received your first strike. once you reach 3...you will be spanked and thrown to jail where only Animus can save you', delete_after=50)
                             await message.delete()
-
-                    await message.delete()
-                    await message.channel.send(f'{message.author.mention} You cant use bad words here!', delete_after=15)
+                    else:
+                        pass
                 else:
                     pass
             else:

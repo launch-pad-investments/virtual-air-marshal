@@ -66,7 +66,8 @@ async def jail_sentence_checker():
                             await member.remove_roles(role_rmw, reason='Jail time served')
                             
                     print(Fore.LIGHTGREEN_EX + f"{member} Successfully released from jail on {guild} and state restored ")
-                print(Fore.LIGHTRED_EX + f'Member {member} is not on {guild} anymore')
+                else:
+                    print(Fore.LIGHTRED_EX + f'Member {member} is not on {guild} anymore')
         print(Fore.GREEN + f'@{time_of_release} --> {len(overdue_members)} members have been unjailed!')
     else:
         pass
