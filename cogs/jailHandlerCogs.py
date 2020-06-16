@@ -38,13 +38,17 @@ class JailService(commands.Cog):
     @commands.check_any(commands.has_guild_permissions(administrator=True),commands.check(is_overwatch), commands.check(is_community_owner), commands.check(is_community_registered))
     async def jail(self, ctx):
         if ctx.invoked_subcommand is None:
-            title = '__Available commands under ***Jail*** category!'
+            title = '__Available commands under ***Jail*** category!__'
             description = 'Jail system was designed with intentions to keep the language of the community clean and social. If member breaches language for 3 minutes, he/she is sent to jail for 2 minutes.' 
             ' All roles are removed and given back once jail-time has expired.'
             value = [{'name': f'{bot_setup["command"]}jail on',
                       'value': "Turns the jail ON"},
                      {'name': f'{bot_setup["command"]}jail off',
                       'value': "Turns the jail system off"}
+                     {'name': f'{bot_setup["command"]}jail release <@discord.User>',
+                      'value': "Releases the user from jail before the expiration time. Can be used only by users with special rights"}
+                     {'name': f'{bot_setup["command"]}jail punish <@discord.User> <duration in minutes>',
+                      'value': "Manually puts user to Jail for N amount of minutes. Can be used only by users with special rights"}
                      ]
 
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
