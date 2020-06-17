@@ -269,26 +269,26 @@ class JailService(commands.Cog):
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
             
-    # @punish.error
-    # async def punish_error(self, ctx, error):
-    #     if isinstance(error, commands.CheckFailure):
-    #         message = f'This error occured from possible reasons:\n--> Command not executed on public channels of the {ctx.message.guild}\n --> jail service not registered ({self.bot.user.mention}service'
-    #         await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
-    #     elif isinstance(error,commands.CheckAnyFailure):
-    #         message = f'You do not have rights to access this area of {self.bot.user.mention} on {ctx.message.guild}.'
-    #         await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
-    #     elif isinstance(error,commands.BadArgument):
-    #         message = f'Wrong argument provided:\n __{error}__. \nCommand structure is:\n***{self.bot.user.mention} jail punish <@discord.User> <duration in minutes>***'
-    #         await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
-    #     elif isinstance(error,commands.MissingRequiredArgument):
-    #         message = f'You forgot to provide all required arguments. \n***{self.bot.user.mention} jail punish <@discord.User> <duration in minutes> <message=Optional>***'
-    #         await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
-    #     else:
-    #         title='__:bug: Found__'
-    #         message = f'Bug has been found while executing command and {self.bot.user} service team has been automatically notified. We apologize for inconvinience!'
-    #         await custom_message.system_message(ctx, message=message, color_code=1, destination=1,sys_msg_title=title)
-    #         dest = await self.bot.fetch_user(user_id=int(360367188432912385))
-            # await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
+    @punish.error
+    async def punish_error(self, ctx, error):
+        if isinstance(error, commands.CheckFailure):
+            message = f'This error occured from possible reasons:\n--> Command not executed on public channels of the {ctx.message.guild}\n --> jail service not registered ({self.bot.user.mention}service'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        elif isinstance(error,commands.CheckAnyFailure):
+            message = f'You do not have rights to access this area of {self.bot.user.mention} on {ctx.message.guild}.'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        elif isinstance(error,commands.BadArgument):
+            message = f'Wrong argument provided:\n __{error}__. \nCommand structure is:\n***{self.bot.user.mention} jail punish <@discord.User> <duration in minutes>***'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        elif isinstance(error,commands.MissingRequiredArgument):
+            message = f'You forgot to provide all required arguments. \n***{self.bot.user.mention} jail punish <@discord.User> <duration in minutes> <message=Optional>***'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        else:
+            title='__:bug: Found__'
+            message = f'Bug has been found while executing command and {self.bot.user} service team has been automatically notified. We apologize for inconvinience!'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1,sys_msg_title=title)
+            dest = await self.bot.fetch_user(user_id=int(360367188432912385))
+            await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
             
     @release.error
     async def release_error(self, ctx, error):
