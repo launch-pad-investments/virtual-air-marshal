@@ -105,6 +105,11 @@ class TeamCommands(commands.Cog):
         :param reason:
         :return:
         """
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+        
         if ctx.author.guild_permissions.kick_members:
             kicked_members = ''
             for user in users:
@@ -143,6 +148,11 @@ class TeamCommands(commands.Cog):
         :param reason:
         :return:
         """
+        
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         if ctx.author.guild_permissions.ban_members:
             kicked_members = ''
             for user in users:
@@ -173,16 +183,28 @@ class TeamCommands(commands.Cog):
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(role_mng), commands.check(admin_predicate))
     async def role(self, ctx):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         pass
     
     @role.command()
     async def remove(self, ctx, user: discord.Member, role: discord.Role):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         await user.remove_roles(role, reason='Naughty boy')
         message = f'Role {role.name} with ID {role.id}has ben removed from {user.display_name}'
         await customMessages.system_message(ctx=ctx, color_code=0, destination=1, message=message)
 
     @role.command()
     async def add(self, ctx, user: discord.Member, role: discord.Role):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         await user.add_roles(role, reason='Role given')
         message = f'Role {role.name} with ID {role.id}has ben given to the user {user.display_name}'
         await customMessages.system_message(ctx=ctx, color_code=0, destination=1, message=message)

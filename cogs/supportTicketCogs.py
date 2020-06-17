@@ -128,6 +128,10 @@ class SpamService(commands.Cog):
     @ticket.command()
     @commands.check(is_public)
     async def marketing(self, ctx, *,message:str):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         if self.length_checker(message=message):
             ticket_no =  str(uuid4())
             time_of_request = datetime.utcnow()
@@ -153,6 +157,10 @@ class SpamService(commands.Cog):
     @ticket.command()
     @commands.check(is_public)
     async def report(self, ctx, *, message:str):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         if self.length_checker(message=message):
             ticket_no =  str(uuid4())
             time_of_request = datetime.utcnow()
@@ -178,6 +186,10 @@ class SpamService(commands.Cog):
     @ticket.command()
     @commands.check(is_public)
     async def general(self, ctx, *, message:str):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         if self.length_checker(message=message):
             print('#1')
             ticket_no =  str(uuid4())

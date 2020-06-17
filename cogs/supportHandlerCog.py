@@ -34,6 +34,10 @@ class SupportService(commands.Cog):
     @commands.bot_has_guild_permissions(administrator=True, manage_messages=True, manage_roles=True)
     @commands.check_any(commands.has_guild_permissions(administrator=True),commands.check(is_overwatch), commands.check(is_community_owner))
     async def support(self, ctx):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         if ctx.invoked_subcommand is None:
             title = '__Available commands under ***Support*** category!__'
             description = 'Support System was designed to allow community owners collection of support requests to one channel and respond to users. Bellow are availabale commands'
@@ -50,6 +54,10 @@ class SupportService(commands.Cog):
     @support.command()
     @commands.check(is_support_registered)
     async def set_channel(self, ctx, chn: TextChannel):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         if sup_sys_mng.modify_channel(community_id=ctx.message.guild.id,channel_id=int(chn.id),channel_name=f'{chn}'):
             info_embed= Embed(title='__Support System Message__',
                               description='You have successfully set channel to listen for ticket supports.',

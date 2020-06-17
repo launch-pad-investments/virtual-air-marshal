@@ -92,6 +92,10 @@ class CommunityOwnerCommands(commands.Cog):
     @commands.check(is_public)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
     async def status(self, ctx):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         status_embed = Embed(title='__System status__',
                        description='Current status of community on services',
                        colour = Colour.blue())
@@ -148,6 +152,11 @@ class CommunityOwnerCommands(commands.Cog):
     @register.command()
     @commands.check(is_jail_not_registered)
     async def jail(self, ctx):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+        
         if await self.check_role_status(ctx=ctx,role_name='Jailed'):
             if jail_sys_mgn.register_community_for_jail_service(community_id=int(ctx.message.guild.id),
                                                                 community_name=f'{ctx.message.guild}',
@@ -165,6 +174,10 @@ class CommunityOwnerCommands(commands.Cog):
     @register.command()
     @commands.check(is_spam_not_registered)
     async def spam(self, ctx):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         
         if await self.check_role_status(ctx=ctx,role_name='Unverified'):
             if await self.check_role_status(ctx=ctx,role_name='Visitor'):
@@ -182,6 +195,11 @@ class CommunityOwnerCommands(commands.Cog):
     @register.command()
     @commands.check(is_support_not_registered)
     async def support(self, ctx):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+        
         if sup_sys_mng.register_community_for_support_service(community_id=ctx.message.guild.id, 
                                                       community_name=f'{ctx.message.guild}', 
                                                       owner_id=ctx.message.guild.owner_id,

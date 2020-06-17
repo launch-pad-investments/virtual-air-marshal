@@ -32,6 +32,10 @@ class SupportAndHelpCommands(commands.Cog):
     @commands.command()
     @commands.check(is_community_owner)
     async def support(self, ctx, *, support_msg:str):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         support_channel = self.bot.get_channel(id=int(self.support_channel_id))
         if  20 <= len(support_msg) <= 200:
             if isinstance(ctx.message.channel, TextChannel):
@@ -84,6 +88,11 @@ class SupportAndHelpCommands(commands.Cog):
     @commands.command()
     @commands.check(is_overwatch)
     async def support_reply(self, ctx, user_id:int, ticket_id:str, *, answer:str):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+        
         time_of_response = datetime.utcnow()
         recipient = await self.bot.fetch_user(user_id=int(user_id))
         answer = Embed(title='__Support response message__',

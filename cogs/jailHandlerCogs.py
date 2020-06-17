@@ -38,6 +38,11 @@ class JailService(commands.Cog):
     @commands.bot_has_guild_permissions(administrator=True, manage_messages=True, manage_roles=True)
     @commands.check_any(commands.has_guild_permissions(administrator=True),commands.check(is_overwatch), commands.check(is_community_owner))
     async def jail(self, ctx):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+        
         if ctx.invoked_subcommand is None:
             title = '__Available commands under ***Jail*** category!__'
             description = 'Jail system was designed with intentions to keep the language of the community clean and social. If member breaches language for 3 minutes, he/she is sent to jail for 2 minutes.' 

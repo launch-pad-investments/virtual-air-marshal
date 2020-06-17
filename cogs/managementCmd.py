@@ -30,6 +30,11 @@ class ManagementCommands(commands.Cog):
         :param user:
         :return:
         """
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+        
         user_id = int(user.id)
         data = helper.read_json_file(file_name='mainBotConfig.json')
         list_of_user = data['userAccess']
@@ -48,6 +53,10 @@ class ManagementCommands(commands.Cog):
     @commands.command()
     @commands.check(is_overwatch)
     async def update(self, ctx):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         extensions = ['managementCmd', 'autoCogs', 'adminCogs']
         notification_str = ''
         try:
