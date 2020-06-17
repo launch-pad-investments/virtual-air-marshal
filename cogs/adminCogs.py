@@ -79,15 +79,16 @@ class TeamCommands(commands.Cog):
         if ctx.invoked_subcommand is None:
             title = 'Admin available commands'
             description = 'All available commands for administrators of the community.'
-            value = [{'name': f'{bot_setup["command"]}admin kick <list of users> <reason>',
+            value = [{'name': f'{bot_setup["command"]} kick <list of users> <reason>',
                       'value': f"Kicks selected user/users and provides reason. requires to have *kick_members*"
                                f" permission"},
-                     {'name': f'{bot_setup["command"]}admin ban <list of users> <reason>',
+                     {'name': f'{bot_setup["command"]} ban <list of users> <reason>',
                       'value': f"Bans the selected users and deletes messages for past 7 days. Requires to have"
                                f" *ban_members* permission"},
-                     {'name': f'{bot_setup["command"]}admin check',
-                      'value': f"Sub category of admin to query various data from the user. Use"
-                               f" ***{bot_setup['command']}admin check*** to get data on available sub-commands"},
+                     {'name': f'{bot_setup["command"]} add_role <@discord.User> <#discord.Role to give>',
+                      'value': f"Adds role to the user"},
+                     {'name': f'{bot_setup["command"]} remove_role <@discord.User> <#discord.Role to give>',
+                      'value': f"Remove role from user"}
                      ]
 
             await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
@@ -184,6 +185,11 @@ class TeamCommands(commands.Cog):
         message = f'Role {role.name} with ID {role.id}has ben given to the user {user.display_name}'
         await customMessages.system_message(ctx=ctx, color_code=0, destination=1, message=message)
 
+    @commands.command()
+    @commands.check(is_public)
+    @commands.check_any(commands.is_owner(),commands.check(admin_predicate))
+    async def create_channel(self, ctx, channel_name:str):
+        await ctx.guild.create_text_channel(name=channel_name)
             
     @kick.error
     async def kick_error(self, ctx, error):
