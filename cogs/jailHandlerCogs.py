@@ -143,7 +143,7 @@ class JailService(commands.Cog):
     @commands.check(is_public)
     @commands.check(is_community_registered)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
-    async def punish(self, ctx, user:DiscordMember, duration:int, *, subject = None):
+    async def punish(self, ctx, jailee:DiscordMember, duration:int, *, subject = None):
         """
         Punish user and throw him to jail
         """
@@ -166,14 +166,14 @@ class JailService(commands.Cog):
         end_date_time_stamp = datetime.utcfromtimestamp(expiry)
                                             
         # guild = self.bot.get_guild(id=int(message.guild.id))  # Get guild
-        active_roles = [role.id for role in user.roles][1:] # Get active roles
+        active_roles = [role.id for role in jailee.roles][1:] # Get active roles
 
             
         #jail user in database
-        if jail_manager.throw_to_jail(user_id=user.id,community_id=ctx.guild.id,expiration=expiry,role_ids=active_roles):
+        if jail_manager.throw_to_jail(user_id=jailee.id,community_id=ctx.guild.id,expiration=expiry,role_ids=active_roles):
             
             # Remove user from active counter database
-            if jail_manager.remove_from_counter(discord_id=int(user.id)):
+            if jail_manager.remove_from_counter(discord_id=int(jailee.id)):
                 print('Removed from counter')
                 
             # Send message
@@ -194,18 +194,18 @@ class JailService(commands.Cog):
                                 value=f'{end_date_time_stamp} UTC',
                                 inline=False)
             jailed_info.set_thumbnail(url=self.bot.user.avatar_url)
-            await user.send(embed=jailed_info)
+            await jailee.send(embed=jailed_info)
 
             # Send notf to user who executed
             executor = discord.Embed(title='__User Jailed__',
-                                        description=f' You have successfully jailed {user} on {ctx.guild} for {duration} minutes. Status will be restored once Jail Time Expires.',
+                                        description=f' You have successfully jailed {jailee} on {ctx.guild} for {duration} minutes. Status will be restored once Jail Time Expires.',
                                         color = discord.Color.red())
             executor.set_thumbnail(url=self.bot.user.avatar_url)
             jailed_info.add_field(name=f'Reason',
                                 value=f'{subject}',
                                 inline=False)
             executor.add_field(name=f'Jailed User:',
-                                value=f'{user} id: {user.id}',
+                                value=f'{jailee} \n id: {jailee.id}',
                                 inline=False)
             executor.add_field(name=f'Jail time duration:',
                                 value=f'{duration} minutes',
@@ -220,27 +220,16 @@ class JailService(commands.Cog):
             
             # Send notf to channel 
             await ctx.author.send(embed=jailed_info)
-
-            chn = discord.Embed(title='__User Jailed__',
-                                        color = discord.Color.red())
-            chn.add_field(name=f'Jailed!',
-                                value=f'{user} with id: {user.id} jailed by {ctx.message.author} for duration of {duration} minutes!',
-                                inline=False)
-            jailed_info.add_field(name=f'Reason',
-                                value=f'{subject}',
-                                inline=False)
-            chn.set_thumbnail(url=self.bot.user.avatar_url)
-            await ctx.channel.send(embed=jailed_info, delete_after=10)
-            
+           
             # ADD Jailed role to user
             print(Fore.GREEN + 'Getting Jailed role on community')
             role = discord.utils.get(ctx.guild.roles, name="Jailed") 
-            await user.add_roles(role, reason='Jailed......')       
-            print(Fore.RED + f'User {user} has been jailed by {ctx.message.author} on {ctx.message.guild.id}!!!!')
+            await jailee.add_roles(role, reason='Jailed......')       
+            print(Fore.RED + f'User {jailee} has been jailed by {ctx.message.author} on {ctx.message.guild.id}!!!!')
             print(Fore.GREEN + 'Removing active roles from user')                                         
             for role in active_roles:
                 role = ctx.guild.get_role(role_id=int(role))  # Get the role
-                await user.remove_roles(role, reason='Jail time')
+                await jailee.remove_roles(role, reason='Jail time')
                 
     @jail.error
     async def jail_error(self, ctx, error):
