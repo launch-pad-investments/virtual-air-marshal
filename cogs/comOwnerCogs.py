@@ -95,31 +95,33 @@ class CommunityOwnerCommands(commands.Cog):
         status_embed = Embed(title='__System status__',
                        description='Current status of community on services',
                        colour = Colour.blue())
+        status_embed.add_field(name='Symbols',
+                               value=":green_circle: --> Service is activated\n :red_circle: --> Service is deactivated or has not been registered yet")
         if spam_sys_mng.check_if_security_activated(community_id=ctx.message.guild.id) == 1:
             status_embed.add_field(name='Spam prevention system status',
-                             value="Activated",
+                             value=":green_circle: ",
                              inline=False)
         else:
             status_embed.add_field(name='Spam prevention system status',
-                    value="Deactivated or not registered",
+                    value=":red_circle:",
                     inline=False)
         
         if jail_sys_mgn.get_jail_status(community_id=ctx.message.guild.id) == 1:
             status_embed.add_field(name='Jail and profanity system status',
-                    value="Activated",
+                    value=":green_circle: ",
                     inline=False)
         else:
             status_embed.add_field(name='Jail prevention system status',
-                    value="Deactivate or not registered for service",
+                    value=":red_circle:",
                     inline=False)
             
         if sup_sys_mng.check_if_support_activated(community_id=ctx.message.guild.id) == 1:
             status_embed.add_field(name='Support System Status',
-                    value="Activated",
+                    value=":green_circle: ",
                     inline=False)
         else:
             status_embed.add_field(name='Support System Status',
-                    value="Deactivate or not registered for service",
+                    value=":red_circle:",
                     inline=False)
             
         await ctx.channel.send(embed=status_embed)
