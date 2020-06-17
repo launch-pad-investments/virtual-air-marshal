@@ -109,11 +109,18 @@ class CommunityOwnerCommands(commands.Cog):
                     value="Activated",
                     inline=False)
         else:
-            status_embed.add_field(name='Spam prevention system status',
+            status_embed.add_field(name='Jail prevention system status',
                     value="Deactivate or not registered for service",
                     inline=False)
             
-        #TODO add support command 
+        if sup_sys_mng.check_if_support_activated(community_id=ctx.message.guild.id) == 1:
+            status_embed.add_field(name='Support System Status',
+                    value="Activated",
+                    inline=False)
+        else:
+            status_embed.add_field(name='Support System Status',
+                    value="Deactivate or not registered for service",
+                    inline=False)
             
         await ctx.channel.send(embed=status_embed)
     
@@ -173,7 +180,7 @@ class CommunityOwnerCommands(commands.Cog):
     @register.command()
     @commands.check(is_support_not_registered)
     async def support(self, ctx):
-        if sup_sys_mng.register_community_for_service(community_id=ctx.message.guild.id, 
+        if sup_sys_mng.register_community_for_support_service(community_id=ctx.message.guild.id, 
                                                       community_name=f'{ctx.message.guild}', 
                                                       owner_id=ctx.message.guild.owner_id,
                                                       owner_name=f'{ctx.message.guild.owner}'):
