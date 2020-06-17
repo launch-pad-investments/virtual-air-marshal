@@ -10,7 +10,7 @@ import discord
 from discord.ext import commands
 from datetime import datetime, timedelta
 import time
-from discord import DMChannel
+from discord import DMChannel, Embed, Colour
 from utils.jsonReader import Helpers
 from toolsCog.systemMessages import CustomMessages
 from backoffice.jailManagementDb import JailManagement
@@ -30,7 +30,6 @@ CONST_JAIL_DURATION = 5
 class AutoFunctions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.bad_words = helper.read_json_file('badWords.json')['words']
         
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -124,7 +123,31 @@ class AutoFunctions(commands.Cog):
                 print(Fore.LIGHTWHITE_EX + f'{member} is BOT who joined {member.guild} with ID {member.guild.id}')
         else:
             print(f'Community {member.guild} not registered for spam prevention service')
-            
+
+    @commands.Cog.listener()
+    async def on_member_remove(self, member):
+        print('Member left community... checking if exists in database')
+    
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        dest = self.bot.get_channel(id=int(722048385078788217))
+        
+        new_guild = 
+        print('Bot has been invited to new guild')
+        
+    @commands.Cog.listener()
+    async def on_guild_remove(self, guild):
+        #TODO integrate database clearing bt guild id and everything else, inform the channel of vam of bot removal
+        print('Guild has kicked out the bot')
+    
+    @commands.Cog.listener()
+    async def on_guild_channel_delete(self, guild):
+        print('Guild has deleted channel')
+        
+    @commands.Cog.listener()
+    async def on_guild_role_delete(self, role):
+        print('Gets called when guild removes role')
+        
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, reaction):
         """
@@ -299,7 +322,7 @@ class AutoFunctions(commands.Cog):
         if isinstance(error, commands.CommandNotFound):
             title = 'System Command Error'
             message = f':no_entry: Sorry, this command does not exist! Please' \
-                      f'type `{bot_setup["command"]}help` to check available commands.'
+                      f'type `{bot_setup["command"]} help` to check available commands.'
             await custom_messages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
                                                  sys_msg_title=title)
 def setup(bot):
