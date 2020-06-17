@@ -105,12 +105,26 @@ class JailService(commands.Cog):
             user_details = jail_manager.get_jailed_user(discord_id=user.id)
             if user_details:            
                 if jail_manager.remove_from_jailed(discord_id=user.id):
+                    release = datetime.utcnow()
                     all_role_ids = user_details["roleIds"]                                    
                     free = discord.Embed(title='__Jail message__',
                                         color=discord.Color.green())
                     free.set_thumbnail(url=self.bot.user.avatar_url)
+                    free.add_field(name='Time of release',
+                                   value=f'{release}',
+                                   inline=False)
                     free.add_field(name='Message',
                                 value=f'You have been manually unjailed by the {ctx.message.author} on {ctx.message.guild}')
+                    await user.send(embed=free)
+
+                    free = discord.Embed(title='__Jail message__',
+                                        color=discord.Color.green())
+                    free.set_thumbnail(url=self.bot.user.avatar_url)
+                    free.add_field(name='Time of release',
+                                   value=f'{release}',
+                                   inline=False)
+                    free.add_field(name='Message',
+                                value=f'You have successfully unjailed {user} on {ctx.message.guild}')
                     await user.send(embed=free)
 
                     # Check if member still exists
@@ -120,7 +134,7 @@ class JailService(commands.Cog):
                             if to_give:
                                 await user.add_roles(to_give, reason='Returning back roles')    
                                 
-                            role_rmw = discord.utils.get(ctx.guild.roles, name="Jailed")
+                    role_rmw = discord.utils.get(ctx.guild.roles, name="Jailed")
                     
                     if role_rmw: 
                         if role_rmw in user.roles:
