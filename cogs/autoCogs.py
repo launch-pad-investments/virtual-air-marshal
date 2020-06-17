@@ -237,7 +237,7 @@ class AutoFunctions(commands.Cog):
                     if profanity.contains_profanity(message.content):
                         await message.delete()
                         await message.channel.send(f'{message.author.mention} You cant use bad words on {message.guild}!', delete_after=15)
-                        if not jail_manager.check_if_jailed(discord_id=int(user_id)):      # If user is not jailed yet
+                        if not jail_manager.check_if_in_jail(user_id=int(user_id)):      # If user is not jailed yet
                             if jail_manager.check_if_in_counter(discord_id=user_id):
                                 current_score = jail_manager.increase_count(discord_id=user_id)
                                 if current_score >= 3:

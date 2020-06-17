@@ -76,6 +76,16 @@ class JailManagement():
         else:
             return False
         
+    def check_if_in_jail(self, user_id:int):
+        """
+        For on_message
+        """
+        result = self.jailed.find_one({"userId":user_id})
+        if result:
+            return True
+        else:
+            return False
+        
     def increase_count(self, discord_id:int):
         self.counter.update_one({"userId":discord_id},
                                          {"$inc":{"count":1}})
