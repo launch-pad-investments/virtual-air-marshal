@@ -290,5 +290,17 @@ class AutoFunctions(commands.Cog):
                 print('#2')
                 pass
 
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+        if isinstance(error, commands.CommandNotFound):
+            title = 'System Command Error'
+            message = f':no_entry: Sorry, this command does not exist! Please' \
+                      f'type `{bot_setup["command"]}help` to check available commands.'
+            await custom_messages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
+                                                 sys_msg_title=title)
 def setup(bot):
     bot.add_cog(AutoFunctions(bot))
