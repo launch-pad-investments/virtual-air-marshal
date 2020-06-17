@@ -185,19 +185,52 @@ class TeamCommands(commands.Cog):
         message = f'Role {role.name} with ID {role.id}has ben given to the user {user.display_name}'
         await customMessages.system_message(ctx=ctx, color_code=0, destination=1, message=message)
 
-    @commands.command()
+    @commands.group()
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(),commands.check(admin_predicate))
-    async def create_channel(self, ctx, channel_name:str):
+    async def create(self, ctx):
+        pass
+    
+    @create.command()
+    async def text_channel(self, ctx, channel_name:str, *, channel_topic:str=None):
         try:
             await ctx.message.delete()
         except Exception:
             pass
         
-        channel = await ctx.guild.create_text_channel(name=channel_name)
-        await channel.send(content=f'{ctx.author.mention} you have successfully created new Text Channel!')
+        try:
+            channel = await ctx.guild.create_text_channel(name=channel_name, topic=channel_topic)
+            await channel.send(content=f'{ctx.author.mention} you have successfully created new Text Channel!')
+        except discord.Forbidden as e:
+            message = f'Voice Channel could not be created.. Here are details {e}.'
+            await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
+        except discord.HTTPException as e:
+            message = f'Voice Channel could not be created.. Here are details {e}.'
+            await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
+        except discord.InvalidArgument as e:
+            message = f'Voice Channel could not be created.. Here are details {e}.'
+            await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
+
+    @create.command()
+    async def voice_channel(self, ctx, channel_name:str, *, channel_topic:str=None):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
         
-            
+        try:
+            channel = await ctx.guild.create_voice_channel(name=channel_name, topic=channel_topic)
+        except discord.Forbidden as e:
+            message = f'Voice Channel could not be created.. Here are details {e}.'
+            await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
+        except discord.HTTPException as e:
+            message = f'Voice Channel could not be created.. Here are details {e}.'
+            await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
+        except discord.InvalidArgument as e:
+            message = f'Voice Channel could not be created.. Here are details {e}.'
+            await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
+
+
     @kick.error
     async def kick_error(self, ctx, error):
         if isinstance(error, commands.BadArgument):
