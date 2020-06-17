@@ -37,11 +37,11 @@ class SupportService(commands.Cog):
         if ctx.invoked_subcommand is None:
             title = '__Available commands under ***Support*** category!__'
             description = 'Support System was designed to allow community owners collection of support requests to one channel and respond to users. Bellow are availabale commands'
-            value = [{'name': f'{bot_setup["command"]}support set_channel <discord channel>',
+            value = [{'name': f'{bot_setup["command"]} support set_channel <discord channel>',
                       'value': "Sets the channel where requested support tickets will be sent"},
-                     {'name': f'{bot_setup["command"]}support on',
+                     {'name': f'{bot_setup["command"]} support on',
                       'value': "Sets the support service ON"},
-                     {'name': f'{bot_setup["command"]}support off ',
+                     {'name': f'{bot_setup["command"]} support off ',
                       'value': "Sets support service off"}
                      ]
 
