@@ -210,16 +210,10 @@ class AutoFunctions(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         if not message.author.bot:
-            print('#1')
             if not isinstance(message.channel, DMChannel):
-                print('#1')
                 user_id = message.author.id
-                print(message.guild.id)
-                print(jail_sys_mng.jail_activated(community_id=message.guild.id))
                 if jail_sys_mng.jail_activated(community_id=message.guild.id):  # Check if community has jail activated
-                    print('#1')
                     if profanity.contains_profanity(message.content):
-                        print('#1')
                         await message.delete()
                         await message.channel.send(f'{message.author.mention} You cant use bad words on {message.guild}!', delete_after=15)
                         if not jail_manager.check_if_jailed(discord_id=int(user_id)):      # If user is not jailed yet
