@@ -131,8 +131,6 @@ class AutoFunctions(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         dest = self.bot.get_channel(id=int(722048385078788217))
-        
-        new_guild = 
         print('Bot has been invited to new guild')
         
     @commands.Cog.listener()
