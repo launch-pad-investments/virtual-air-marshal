@@ -92,7 +92,7 @@ class TeamCommands(commands.Cog):
 
             await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
 
-    @admin.command()
+    @commands.command()
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(kick_predicate), commands.check(admin_predicate),
                         commands.check(is_overwatch))
@@ -130,7 +130,7 @@ class TeamCommands(commands.Cog):
                                                 destination=0,
                                                 sys_msg_title='Kicking failed')
 
-    @admin.command()
+    @commands.command()
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(ban_predicate), commands.check(admin_predicate),
                         commands.check(is_overwatch))
@@ -168,7 +168,7 @@ class TeamCommands(commands.Cog):
                                                 destination=0,
                                                 sys_msg_title='Kicking failed')
 
-    @admin.command()
+    @commands.command()
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(role_mng), commands.check(admin_predicate))
     async def remove_role(self, ctx, user: discord.Member, role: discord.Role):
@@ -176,7 +176,7 @@ class TeamCommands(commands.Cog):
         message = f'Role {role.name} with ID {role.id}has ben removed from {user.display_name}'
         await customMessages.system_message(ctx=ctx, color_code=0, destination=1, message=message)
 
-    @admin.command()
+    @commands.command()
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(role_mng), commands.check(admin_predicate))
     async def add_role(self, ctx, user: discord.Member, role: discord.Role):
