@@ -97,7 +97,7 @@ class TeamCommands(commands.Cog):
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(kick_predicate), commands.check(admin_predicate),
                         commands.check(is_overwatch))
-    async def kick(self, ctx, users: Greedy[DiscordMember], *, reason: str):
+    async def kick(self, ctx, users: Greedy[DiscordMember], *, reason: str=None):
         """
         Kicks the member from the community
         :param ctx:
@@ -135,7 +135,7 @@ class TeamCommands(commands.Cog):
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(ban_predicate), commands.check(admin_predicate),
                         commands.check(is_overwatch))
-    async def ban(self, ctx, users: Greedy[DiscordMember], *, reason: str):
+    async def ban(self, ctx, users: Greedy[DiscordMember], *, reason: str=None):
         """
         Bans the member from the community
         :param ctx:
@@ -169,18 +169,20 @@ class TeamCommands(commands.Cog):
                                                 destination=0,
                                                 sys_msg_title='Kicking failed')
 
-    @commands.command()
+    @commands.group()
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(role_mng), commands.check(admin_predicate))
-    async def remove_role(self, ctx, user: discord.Member, role: discord.Role):
-        await user.remove_roles(role, reason='Naught boy')
+    async def role(self, ctx):
+        pass
+    
+    @role.command()
+    async def remove(self, ctx, user: discord.Member, role: discord.Role):
+        await user.remove_roles(role, reason='Naughty boy')
         message = f'Role {role.name} with ID {role.id}has ben removed from {user.display_name}'
         await customMessages.system_message(ctx=ctx, color_code=0, destination=1, message=message)
 
-    @commands.command()
-    @commands.check(is_public)
-    @commands.check_any(commands.is_owner(), commands.check(role_mng), commands.check(admin_predicate))
-    async def add_role(self, ctx, user: discord.Member, role: discord.Role):
+    @role.command()
+    async def add(self, ctx, user: discord.Member, role: discord.Role):
         await user.add_roles(role, reason='Role given')
         message = f'Role {role.name} with ID {role.id}has ben given to the user {user.display_name}'
         await customMessages.system_message(ctx=ctx, color_code=0, destination=1, message=message)
@@ -220,6 +222,7 @@ class TeamCommands(commands.Cog):
         
         try:
             channel = await ctx.guild.create_voice_channel(name=channel_name, topic=channel_topic)
+            await ctx.channel.send(content=f'{ctx.message.author.mention} Voice channel has been successfully created')
         except discord.Forbidden as e:
             message = f'Voice Channel could not be created.. Here are details {e}.'
             await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
