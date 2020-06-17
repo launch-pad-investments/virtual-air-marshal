@@ -114,12 +114,13 @@ class JailService(commands.Cog):
                     await user.send(embed=free)
 
                     # Check if member still exists
-                    for taken_role in all_role_ids:
-                        to_give= ctx.message.guild.get_role(role_id=int(taken_role))
-                        if to_give:
-                            await user.add_roles(to_give, reason='Returning back roles')    
-                            
-                        role_rmw = discord.utils.get(ctx.guild.roles, name="Jailed")
+                    if all_role_ids:
+                        for taken_role in all_role_ids:
+                            to_give= ctx.message.guild.get_role(role_id=int(taken_role))
+                            if to_give:
+                                await user.add_roles(to_give, reason='Returning back roles')    
+                                
+                            role_rmw = discord.utils.get(ctx.guild.roles, name="Jailed")
                     
                     if role_rmw: 
                         if role_rmw in user.roles:
@@ -128,7 +129,7 @@ class JailService(commands.Cog):
                     print(Fore.LIGHTGREEN_EX + f"{user} Successfully released from jail on {ctx.message.guild} and state restored ")
                     
                     message = f'You have successfully release {user} from the jail, and his pre-jail perks have been returned.'
-                    await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+                    await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
                 else:
                     message = f'User {user} could not be unjailed due to system error. Please try again later. '
                     await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
