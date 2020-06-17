@@ -147,7 +147,7 @@ class JailService(commands.Cog):
         """
         Punish user and throw him to jail
         """
-        
+        print('Trying to punish')
         try:
             await ctx.message.delete()
         except Exception:
@@ -201,7 +201,7 @@ class JailService(commands.Cog):
                                         description=f' You have successfully jailed {jailee} on {ctx.guild} for {duration} minutes. Status will be restored once Jail Time Expires.',
                                         color = discord.Color.red())
             executor.set_thumbnail(url=self.bot.user.avatar_url)
-            jailed_info.add_field(name=f'Reason',
+            executor.add_field(name=f'Reason',
                                 value=f'{subject}',
                                 inline=False)
             executor.add_field(name=f'Jailed User:',
@@ -219,7 +219,7 @@ class JailService(commands.Cog):
             executor.set_thumbnail(url=self.bot.user.avatar_url)
             
             # Send notf to channel 
-            await ctx.author.send(embed=jailed_info)
+            await ctx.author.send(embed=executor)
            
             # ADD Jailed role to user
             print(Fore.GREEN + 'Getting Jailed role on community')
@@ -250,10 +250,13 @@ class JailService(commands.Cog):
             message = f'Command is allowed to be executed only on the public channels of the {ctx.message.guild}.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         elif isinstance(error,commands.CheckAnyFailure):
-            message = f'You do not have rights to access this area of {self.bot.user} on {ctx.message.guild}.'
+            message = f'You do not have rights to access this area of {self.bot.user.mention} on {ctx.message.guild}.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         elif isinstance(error,commands.BadArgument):
-            message = f'Wrong argument provided:\n {error}. Command structure is {bot_setup["command"]} jail punish <@discord.User> <duration in minutes>'
+            message = f'Wrong argument provided:\n __{error}__. \nCommand structure is:\n***{self.bot.user.mention} jail punish <@discord.User> <duration in minutes>***'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        elif isinstance(error,commands.MissingRequiredArgument):
+            message = f'You forgot to provide all required arguments. \n***{self.bot.user.mention} jail punish <@discord.User> <duration in minutes> <message=Optional>***'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             title='__:bug: Found__'
@@ -268,10 +271,10 @@ class JailService(commands.Cog):
             message = f'Command is allowed to be executed only on the public channels of the {ctx.message.guild}.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         elif isinstance(error,commands.CheckAnyFailure):
-            message = f'You do not have rights to access this area of {self.bot.user} on {ctx.message.guild}.'
+            message = f'You do not have rights to access this area of {self.bot.user.mention} on {ctx.message.guild}.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         elif isinstance(error,commands.BadArgument):
-            message = f'Wrong argument provided:\n {error}. Command structure is {bot_setup["command"]} jail release <@discord.User>'
+            message = f'Wrong argument provided:\n {error}.\n Command structure is:\n ***{self.bot.user.mention} jail release <@discord.User>***'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             title='__:bug: Found__'
