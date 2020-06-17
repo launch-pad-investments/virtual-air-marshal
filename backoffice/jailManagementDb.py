@@ -69,8 +69,8 @@ class JailManagement():
             return False
     
     
-    def check_if_jailed(self, discord_id:int):
-        result = self.jailed.find_one({"userId":discord_id})
+    def check_if_jailed(self, user_id:int, community_id):
+        result = self.jailed.find_one({"userId":user_id, "community":community_id})
         if result:
             return True
         else:
