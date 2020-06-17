@@ -189,7 +189,14 @@ class TeamCommands(commands.Cog):
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(),commands.check(admin_predicate))
     async def create_channel(self, ctx, channel_name:str):
-        await ctx.guild.create_text_channel(name=channel_name)
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+        
+        channel = await ctx.guild.create_text_channel(name=channel_name)
+        await channel.send(content=f'{ctx.author.mention} you have successfully created new Text Channel!')
+        
             
     @kick.error
     async def kick_error(self, ctx, error):
