@@ -155,9 +155,6 @@ class AutoFunctions(commands.Cog):
         new_guild.add_field(name='Premium Subscribers',
                             value=f'{guild.premium_subscription_count}',
                             inline=False)
-        new_guild.add_field(name='Premium Subscribers',
-                            value=f'{guild.premium_subscription_count)}',
-                            inline=False)
         new_guild.add_field(name='Guild Structure',
                             value=f'Roles: {len(guild.roles)}Channel category cound: {len(guild.categories)}\nChannel count {len(guild.channels)}\nGuild voice channels{len(guild.voice_channels)}\n Text Channels: {guild.text_channels}\n')
 
