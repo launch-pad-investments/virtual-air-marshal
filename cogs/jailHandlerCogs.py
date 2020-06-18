@@ -167,8 +167,7 @@ class JailService(commands.Cog):
             await ctx.message.delete()
         except Exception:
             pass
-        
-        
+               
         print(Fore.GREEN + 'Manual Jail')
         # Current time
         start = datetime.utcnow()
@@ -182,86 +181,96 @@ class JailService(commands.Cog):
         end_date_time_stamp = datetime.utcfromtimestamp(expiry)
                                             
         # guild = self.bot.get_guild(id=int(message.guild.id))  # Get guild
-        active_roles = [role.id for role in jailee.roles][1:] # Get active roles
-        if not jailee.bot:
-            if ctx.author.id != jailee.id:
-                #jail user in database
-                if not jail_manager.check_if_jailed(user_id=int(jailee.id), community_id=ctx.guild.id):
-                    if jail_manager.throw_to_jail(user_id=jailee.id,community_id=ctx.guild.id,expiration=expiry,role_ids=active_roles):
-                        
-                        # Remove user from active counter database
-                        if jail_manager.remove_from_counter(discord_id=int(jailee.id)):
-                            print('Removed from counter')
-                            
-                        # Send message
-                        jailed_info = discord.Embed(title='__You have been jailed!__',
-                                                    description=f' You have been manually jailed by {ctx.message.author} on {ctx.guild} for {duration} minutes. Status will be restored once Jail Time Expires.',
-                                                    color = discord.Color.red())
-                        jailed_info.set_thumbnail(url=self.bot.user.avatar_url)
-                        jailed_info.add_field(name=f'Reason',
-                                            value=f'{subject}',
-                                            inline=False)
-                        jailed_info.add_field(name=f'Jail time duration:',
-                                            value=f'{duration} minutes',
-                                            inline=False)
-                        jailed_info.add_field(name=f'Sentence started @:',
-                                            value=f'{start} UTC',
-                                            inline=False)
-                        jailed_info.add_field(name=f'Sentece ends on:',
-                                            value=f'{end_date_time_stamp} UTC',
-                                            inline=False)
-                        jailed_info.set_thumbnail(url=self.bot.user.avatar_url)
-                        await jailee.send(embed=jailed_info)
+        if ctx.author.top_role.position > jailee.top_role.position:
+            active_roles = [role.id for role in jailee.roles][1:] # Get active roles
+            if jailee.id != ctx.message.guild.owner_id:
+                if not jailee.bot:
+                    if ctx.author.id != jailee.id:
+                        #jail user in database
+                        if not jail_manager.check_if_jailed(user_id=int(jailee.id), community_id=ctx.guild.id):
+                            if jail_manager.throw_to_jail(user_id=jailee.id,community_id=ctx.guild.id,expiration=expiry,role_ids=active_roles):
+                                
+                                # Remove user from active counter database
+                                if jail_manager.remove_from_counter(discord_id=int(jailee.id)):
+                                    print('Removed from counter')
+                                    
+                                # Send message
+                                jailed_info = discord.Embed(title='__You have been jailed!__',
+                                                            description=f' You have been manually jailed by {ctx.message.author} on {ctx.guild} for {duration} minutes. Status will be restored once Jail Time Expires.',
+                                                            color = discord.Color.red())
+                                jailed_info.set_thumbnail(url=self.bot.user.avatar_url)
+                                jailed_info.add_field(name=f'Reason',
+                                                    value=f'{subject}',
+                                                    inline=False)
+                                jailed_info.add_field(name=f'Jail time duration:',
+                                                    value=f'{duration} minutes',
+                                                    inline=False)
+                                jailed_info.add_field(name=f'Sentence started @:',
+                                                    value=f'{start} UTC',
+                                                    inline=False)
+                                jailed_info.add_field(name=f'Sentece ends on:',
+                                                    value=f'{end_date_time_stamp} UTC',
+                                                    inline=False)
+                                jailed_info.set_thumbnail(url=self.bot.user.avatar_url)
+                                await jailee.send(embed=jailed_info)
 
-                        # Send notf to user who executed
-                        executor = discord.Embed(title='__User Jailed__',
-                                                    description=f' You have successfully jailed {jailee} on {ctx.guild} for {duration} minutes. Status will be restored once Jail Time Expires.',
-                                                    color = discord.Color.red())
-                        executor.set_thumbnail(url=self.bot.user.avatar_url)
-                        executor.add_field(name=f'Reason',
-                                            value=f'{subject}',
-                                            inline=False)
-                        executor.add_field(name=f'Jailed User:',
-                                            value=f'{jailee} \n id: {jailee.id}',
-                                            inline=False)
-                        executor.add_field(name=f'Jail time duration:',
-                                            value=f'{duration} minutes',
-                                            inline=False)
-                        executor.add_field(name=f'Sentence started @:',
-                                            value=f'{start} UTC',
-                                            inline=False)
-                        executor.add_field(name=f'Sentece ends on:',
-                                            value=f'{end_date_time_stamp} UTC',
-                                            inline=False)
-                        executor.set_thumbnail(url=self.bot.user.avatar_url)
-                        
-                        # Send notf to channel 
-                        await ctx.author.send(embed=executor)
+                                # Send notf to user who executed
+                                executor = discord.Embed(title='__User Jailed__',
+                                                            description=f' You have successfully jailed {jailee} on {ctx.guild} for {duration} minutes. Status will be restored once Jail Time Expires.',
+                                                            color = discord.Color.red())
+                                executor.set_thumbnail(url=self.bot.user.avatar_url)
+                                executor.add_field(name=f'Reason',
+                                                    value=f'{subject}',
+                                                    inline=False)
+                                executor.add_field(name=f'Jailed User:',
+                                                    value=f'{jailee} \n id: {jailee.id}',
+                                                    inline=False)
+                                executor.add_field(name=f'Jail time duration:',
+                                                    value=f'{duration} minutes',
+                                                    inline=False)
+                                executor.add_field(name=f'Sentence started @:',
+                                                    value=f'{start} UTC',
+                                                    inline=False)
+                                executor.add_field(name=f'Sentece ends on:',
+                                                    value=f'{end_date_time_stamp} UTC',
+                                                    inline=False)
+                                executor.set_thumbnail(url=self.bot.user.avatar_url)
+                                
+                                # Send notf to channel 
+                                await ctx.author.send(embed=executor)
 
-                        # ADD Jailed role to user
-                        print(Fore.GREEN + 'Getting Jailed role on community')
-                        role = discord.utils.get(ctx.guild.roles, name="Jailed") 
-                        await jailee.add_roles(role, reason='Jailed......')       
-                        print(Fore.RED + f'User {jailee} has been jailed by {ctx.message.author} on {ctx.message.guild.id}!!!!')
-                        print(Fore.GREEN + 'Removing active roles from user')                                         
-                        for role in active_roles:
-                            role = ctx.guild.get_role(role_id=int(role))  # Get the role
-                            await jailee.remove_roles(role, reason='Jail time')
+                                # ADD Jailed role to user
+                                print(Fore.GREEN + 'Getting Jailed role on community')
+                                role = discord.utils.get(ctx.guild.roles, name="Jailed") 
+                                await jailee.add_roles(role, reason='Jailed......')       
+                                print(Fore.RED + f'User {jailee} has been jailed by {ctx.message.author} on {ctx.message.guild.id}!!!!')
+                                print(Fore.GREEN + 'Removing active roles from user')                                         
+                                for role in active_roles:
+                                    role = ctx.guild.get_role(role_id=int(role))  # Get the role
+                                    await jailee.remove_roles(role, reason='Jail time')
+                            else:
+                                title='__Manual Jail Function Error__'
+                                message = f'Member {jailee} could not be jailed at this moment due to the backend system error!'
+                                await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)  
+                        else:
+                            title='__User already Jailed!__'
+                            message = f'Member {jailee} is already jailed!'
+                            await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)  
                     else:
-                        title='__Manual Jail Function Error__'
-                        message = f'Member {jailee} could not be jailed at this moment due to the backend system error!'
+                        title='__Jail error!__'
+                        message = f'Why would someone want to jail himself?'
                         await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)  
-                else:
-                    title='__User already Jailed!__'
-                    message = f'Member {jailee} is already jailed!'
+                else:   
+                    title='__Jail error!__'
+                    message = f'AI Sticks together... You cant jail {jailee} as it is a bot!'
                     await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)  
-            else:
+            else:   
                 title='__Jail error!__'
-                message = f'Why would someone want to jail himself?'
+                message = f'Owner of the guild can not be jailed!'
                 await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)  
         else:   
             title='__Jail error!__'
-            message = f'AI Sticks together... You cant jail {jailee} as it is a bot!'
+            message = f'You cant jail member who has higher ranked role than you.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)  
                     
     @jail.error
