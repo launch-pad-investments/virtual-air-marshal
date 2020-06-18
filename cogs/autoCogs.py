@@ -153,7 +153,7 @@ class AutoFunctions(commands.Cog):
                             value=f'{len(guild.members)} ({guild.member_count})',
                             inline=False)
         new_guild.add_field(name='Premium Subscribers',
-                            value=f'{guild.premium_subscription_count)}',
+                            value=f'{guild.premium_subscription_count}',
                             inline=False)
         new_guild.add_field(name='Premium Subscribers',
                             value=f'{guild.premium_subscription_count)}',
