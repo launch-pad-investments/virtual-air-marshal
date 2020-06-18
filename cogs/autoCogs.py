@@ -234,7 +234,7 @@ class AutoFunctions(commands.Cog):
             if not isinstance(message.channel, DMChannel):
                 user_id = message.author.id
                 if jail_sys_mng.jail_activated(community_id=message.guild.id):  # Check if community has jail activated
-                    if message.author.id != messsage.guild.owner_id:
+                    if message.author.id != message.guild.owner_id:
                         if profanity.contains_profanity(message.content):
                             await message.delete()
                             await message.channel.send(f'{message.author.mention} You cant use bad words on {message.guild}!', delete_after=15)
