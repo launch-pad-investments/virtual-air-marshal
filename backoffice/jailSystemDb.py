@@ -8,6 +8,7 @@ import sys
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
 from pymongo import MongoClient, errors
+from colorama import Fore
 
 class JailSystemManager:
     def __init__(self):
@@ -31,6 +32,13 @@ class JailSystemManager:
             return True
         except errors.PyMongoError:
             return False
+        
+    def remove_from_jail_system(self, community_id:int):
+        try:
+            result = self.jailSystem.delete_one({"communityId":community_id})
+            print(Fore.LIGHTWHITE_EX + f'Jail system community deleted = {result.deleted_count}')
+        except errors.PyMongoError as e:
+            print(Fore.LIGHTRED_EX + f'Jail system could not remove {community_id}: {e}')
 
     def turn_on_off(self, community_id, direction:int):
         try:

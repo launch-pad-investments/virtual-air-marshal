@@ -8,6 +8,7 @@ import sys
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
 from pymongo import MongoClient, errors
+from colorama import Fore
 
 class SpamSystemManager:
     def __init__(self):
@@ -32,6 +33,13 @@ class SpamSystemManager:
             return True
         except errors.PyMongoError:
             return False
+        
+    def remove_from_spam_system(self, community_id:int):
+        try:
+            result = self.spamSystem.delete_one({"communityId":community_id})
+            print(Fore.LIGHTWHITE_EX + f'Spam system community deleted = {result.deleted_count}')
+        except errors.PyMongoError as e:
+            print(Fore.LIGHTRED_EX + f'Spam system could not remove {community_id}: {e}')
         
     def check_welcome_channel_status(self, community_id:int):
         result = self.spamSystem.find_one({"communityId":int(community_id)},

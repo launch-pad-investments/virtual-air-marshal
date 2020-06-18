@@ -3,6 +3,7 @@ from pymongo import MongoClient
 from pymongo import errors
 import os
 import sys
+from colorama import Fore
 
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
@@ -60,6 +61,7 @@ class JailManagement():
             return True
         except errors.PyMongoError:
             return False
+        
     
     def remove_from_jailed(self, discord_id:int):
         try:
@@ -67,7 +69,21 @@ class JailManagement():
             return True
         except errors.PyMongoError:
             return False
-    
+
+    def clear_community_counter(self, community_id:int):
+        try:
+            result = self.counter.delete_many({"community":community_id})
+            print(Fore.LIGHTWHITE_EX + f'Counter clear of users = {result.deleted_count}')
+        except errors.PyMongoError as e:
+            print(Fore.LIGHTRED_EX + f'Counter could not be cleared of {community_id}: {e}')
+
+    def clear_community_jail(self, community_id:int):
+        try:
+            result = self.jail.delete_many({"community":community_id})
+            print(Fore.LIGHTWHITE_EX + f'Jail clear of users = {result.deleted_count}')
+        except errors.PyMongoError as e:
+            print(Fore.LIGHTRED_EX + f'Jail could not be cleared of {community_id}: {e}')
+        
     
     def check_if_jailed(self, user_id:int, community_id):
         result = self.jailed.find_one({"userId":user_id, "community":community_id})

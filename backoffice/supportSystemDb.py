@@ -8,6 +8,7 @@ import sys
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
 from pymongo import MongoClient, errors
+from colorama import Fore
 
 class SupportSystemManager:
     def __init__(self):
@@ -33,6 +34,15 @@ class SupportSystemManager:
         except errors.PyMongoError:
             return False
     
+    def remove_from_support_system(self, community_id:int):
+        try:
+            result = self.supportSystem.delete_one({"communityId":community_id})
+            print(Fore.LIGHTWHITE_EX + f'Support system community deleted = {result.deleted_count}')
+        except errors.PyMongoError as e:
+            print(Fore.LIGHTRED_EX + f'Support system could not remove {community_id}: {e}')
+        
+
+        
     def get_channel(self,community_id:int):
         result = self.supportSystem.find_one({"communityId":int(community_id)},
                                             {"_id":0,

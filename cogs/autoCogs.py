@@ -16,6 +16,7 @@ from toolsCog.systemMessages import CustomMessages
 from backoffice.jailManagementDb import JailManagement
 from backoffice.jailSystemDb import JailSystemManager
 from backoffice.spamSystemDb import SpamSystemManager
+from backoffice.supportSystemDb import SupportSystemManager
 from better_profanity import profanity
 
 jail_manager = JailManagement()
@@ -23,6 +24,7 @@ helper = Helpers()
 custom_messages = CustomMessages()
 spam_sys_mng  = SpamSystemManager()
 jail_sys_mng = JailSystemManager()
+sup_sys_mng = SupportSystemManager()
 
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 CONST_JAIL_DURATION = 5
@@ -162,8 +164,43 @@ class AutoFunctions(commands.Cog):
         
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
-        #TODO integrate database clearing bt guild id and everything else, inform the channel of vam of bot removal
-        print('Guild has kicked out the bot')
+        print(Fore.LIGHTCYAN_EX+f'BOT REMOVED: Bot has been removed from guild {guild}')
+        dest = self.bot.get_channel(id=int(722048385078788217))
+        new_guild = Embed(title='__NEW GUILD!!!!__',
+                          description=f'{self.bot.user} has joined new guild',
+                          colour=Colour.green())
+        new_guild.add_field(name='Guild name and id:',
+                            value=f'{guild} {guild.id}',
+                            inline=False)
+        new_guild.add_field(name='Guild created:',
+                            value=f'{guild.created_at}',
+                            inline=False)
+        new_guild.add_field(name='Guild Owner:',
+                            value=f'{guild.owner} {guild.owner_id}',
+                            inline=False)
+        new_guild.add_field(name='Guild Region:',
+                            value=f'{guild.region}',
+                            inline=False)
+        new_guild.add_field(name='Guild Description:',
+                            value=f'{guild.description}',
+                            inline=False)
+        new_guild.add_field(name='Member Count',
+                            value=f'{len(guild.members)} ({guild.member_count})',
+                            inline=False)
+        new_guild.add_field(name='Premium Subscribers',
+                            value=f'{guild.premium_subscription_count}',
+                            inline=False)
+        new_guild.add_field(name='Guild Structure',
+                            value=f'Roles: {len(guild.roles)}Channel category cound: {len(guild.categories)}\nChannel count {len(guild.channels)}\nGuild voice channels{len(guild.voice_channels)}\n Text Channels: {guild.text_channels}\n')
+
+        await dest.send(embed=new_guild,content='@here')
+
+        print(Fore.LIGHTWHITE_EX + f'Initiating clean up process for {guild} with ID {guild.id}')
+        sup_sys_mng.remove_from_support_system(community_id=int(guild.id))
+        spam_sys_mng.remove_from_spam_system(community_id=int(guild.id))
+        jail_sys_mng.remove_from_jail_system(community_id=int(guild.id))
+        jail_manager.clear_community_counter(community_id=int(guild.id))           
+        jail_manager.clear_community_jail(community_id=int(guild.id))
     
     @commands.Cog.listener()
     async def on_guild_channel_delete(self, guild):
