@@ -131,7 +131,37 @@ class AutoFunctions(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         dest = self.bot.get_channel(id=int(722048385078788217))
-        print('Bot has been invited to new guild')
+        new_guild = Embed(title='__NEW GUILD!!!!__',
+                          description=f'{self.bot.user} has joined new guild',
+                          colour=Colour.green())
+        new_guild.add_field(name='Guild name and id:',
+                            value=f'{guild} {guild.id}',
+                            inline=False)
+        new_guild.add_field(name='Guild created:',
+                            value=f'{guild.created_at}',
+                            inline=False)
+        new_guild.add_field(name='Guild Owner:',
+                            value=f'{guild.owner} {guild.owner_id}',
+                            inline=False)
+        new_guild.add_field(name='Guild Region:',
+                            value=f'{guild.region}',
+                            inline=False)
+        new_guild.add_field(name='Guild Description:',
+                            value=f'{guild.description}',
+                            inline=False)
+        new_guild.add_field(name='Member Count',
+                            value=f'{len(guild.members)} ({guild.member_count})',
+                            inline=False)
+        new_guild.add_field(name='Premium Subscribers',
+                            value=f'{guild.premium_subscription_count)}',
+                            inline=False)
+        new_guild.add_field(name='Premium Subscribers',
+                            value=f'{guild.premium_subscription_count)}',
+                            inline=False)
+        new_guild.add_field(name='Guild Structure',
+                            value=f'Roles: {len(guild.roles)}Channel category cound: {len(guild.categories)}\nChannel count {len(guild.channels)}\nGuild voice channels{len(guild.voice_channels)}\n Text Channels: {guild.text_channels}\n')
+
+        await dest.send(embed=new_guild,content='@here')
         
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
