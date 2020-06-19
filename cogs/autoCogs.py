@@ -168,8 +168,8 @@ class AutoFunctions(commands.Cog):
             pass
         
         print(Fore.LIGHTWHITE_EX + f'Initiating clean up process for member {member} with ID {member.id}')
-        jail_manager.clear_community_counter(community_id=int(guild.id))           
-        jail_manager.clear_community_jail(community_id=int(guild.id))
+        jail_manager.clear_community_counter(community_id=int(member.id))           
+        jail_manager.clear_community_jail(community_id=int(member.id))
         
         
         
