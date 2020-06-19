@@ -181,7 +181,7 @@ class JailService(commands.Cog):
         end_date_time_stamp = datetime.utcfromtimestamp(expiry)
                                             
         # guild = self.bot.get_guild(id=int(message.guild.id))  # Get guild
-        if ctx.author.top_role.position > jailee.top_role.position:
+        if ctx.author.top_role.position >= jailee.top_role.position:
             active_roles = [role.id for role in jailee.roles][1:] # Get active roles
             if jailee.id != ctx.message.guild.owner_id:
                 if not jailee.bot:
