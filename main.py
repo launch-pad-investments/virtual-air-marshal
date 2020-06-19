@@ -78,6 +78,7 @@ async def jail_sentence_checker():
         print(Fore.GREEN + f'@{time_of_release} --> {len(overdue_members)} members have been unjailed!')
     else:
         pass
+    Style.RESET_ALL
     return 
 
 
@@ -99,7 +100,7 @@ if __name__ == '__main__':
     notification_str += Fore.MAGENTA + '+++++++++++++++++++++++++++++++++++++++'
     # Discord Token
     print(notification_str)
-    print(Style.RESET_ALL)
+    Style.RESET_ALL
     start_scheduler()
     bot.run(bot_setup['token'], reconnect=True)
 
