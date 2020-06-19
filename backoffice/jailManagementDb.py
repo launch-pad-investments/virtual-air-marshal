@@ -77,13 +77,26 @@ class JailManagement():
         except errors.PyMongoError as e:
             print(Fore.LIGHTRED_EX + f'Counter could not be cleared of {community_id}: {e}')
 
+    def clear_community_member_counter(self, community_id:int, member_id:int):
+        try:
+            result = self.counter.delete_one({"community":community_id, "userId":member_id})
+            print(Fore.LIGHTWHITE_EX + f'User cleard from counter {community_id} = {result.deleted_count}')
+        except errors.PyMongoError as e:
+            print(Fore.LIGHTRED_EX + f'Counter could not remove member with {member_id} on community {community_id}: {e}')
+
     def clear_community_jail(self, community_id:int):
         try:
             result = self.jail.delete_many({"community":community_id})
             print(Fore.LIGHTWHITE_EX + f'Jail clear of users = {result.deleted_count}')
         except errors.PyMongoError as e:
             print(Fore.LIGHTRED_EX + f'Jail could not be cleared of {community_id}: {e}')
-        
+
+    def clear_community_member_jail(self, community_id:int, member_id:int):
+        try:
+            result = self.jail.delete_one({"community":community_id, "userId":member_id})
+            print(Fore.LIGHTWHITE_EX + f'Jail clear of users = {result.deleted_count}')
+        except errors.PyMongoError as e:
+            print(Fore.LIGHTRED_EX + f'Member {member_id} could not be removed from Jail on community {community_id}: {e}')
     
     def check_if_jailed(self, user_id:int, community_id):
         result = self.jailed.find_one({"userId":user_id, "community":community_id})
