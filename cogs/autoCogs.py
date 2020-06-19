@@ -33,6 +33,34 @@ class AutoFunctions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
+    async def guild_notify(self, member, direction:int):
+        #0 = left
+        #1 = joined
+        #kavic tag
+        kavic = await self.bot.fetch_user(user_id=int(455916314238648340))
+        animus = await self.bot.fetch_user(user_id=int(360367188432912385))
+        info_channel = self.bot.get_channel(id=int(722048385078788217))
+        
+        await info_channel(content=f'{kavic.mention} :arrow_double_down: ')
+        
+        time_joined = datetime.utcnow()
+        if direction == 0:
+            embed_info = Embed(title=f'User left {member.guild}',
+                            colour=Colour.orange())
+        elif direction == 1:
+            embed_info = Embed(title=f'New user Joined {member.guild}',
+                            colour=Colour.orange())
+        embed_info.add_field(name='Time:',
+                             value=f'{time_joined}')
+        embed_info.add_field(name='User details',
+                             value=f'{member}\n{member.id}')
+        embed_info.add_field(name='Bot?',
+                             value=f'{member.bot}\n')
+        embed_info.set_thumbnail(url=member.avatar_url)
+        await info_channel(embed=embed_info)
+
+
+        
     @commands.Cog.listener()
     async def on_member_join(self, member):
         """
@@ -41,6 +69,11 @@ class AutoFunctions(commands.Cog):
         :return:
         """
         print(Fore.LIGHTYELLOW_EX+f'{member} joining {member.guild} ')
+        if member.guild.id == 667607865199951872:
+            await self.guild_notify(member=member, direction=1)
+        else:
+            pass
+        
         if spam_sys_mng.check_community_reg_status(community_id=member.guild.id):
             if not member.bot:
                 sec_value = spam_sys_mng.check_if_security_activated(community_id=int(member.guild.id))
@@ -128,8 +161,14 @@ class AutoFunctions(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        print('Member left community... checking if exists in database')
-    
+        print(f'User {member} left community...')
+        if member.guild.id == 667607865199951872:
+            await self.guild_notify(member=member, direction=0)
+        else:
+            pass
+        
+        
+        
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         dest = self.bot.get_channel(id=int(722048385078788217))
