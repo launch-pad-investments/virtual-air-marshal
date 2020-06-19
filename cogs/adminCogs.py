@@ -243,7 +243,7 @@ class TeamCommands(commands.Cog):
             pass
         
         try:
-            channel = await ctx.guild.create_voice_channel(name=channel_name, topic=channel_topic)
+            await ctx.guild.create_voice_channel(name=channel_name, topic=channel_topic)
             await ctx.channel.send(content=f'{ctx.message.author.mention} Voice channel has been successfully created')
         except discord.Forbidden as e:
             message = f'Voice Channel could not be created.. Here are details {e}.'
