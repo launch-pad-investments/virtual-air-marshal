@@ -34,8 +34,13 @@ class AutoFunctions(commands.Cog):
         self.bot = bot
         
     async def guild_notify(self, member, direction:int):
-        #0 = left
-        #1 = joined
+        """
+        Custom notifications to desired channel
+        Args:
+            member ([discord.Member]): [description]
+            direction (int): [0 if leaves, 1 if joins]
+        """
+
         #kavic tag
         kavic = await self.bot.fetch_user(user_id=int(455916314238648340))
         # animus = await self.bot.fetch_user(user_id=int(360367188432912385))
@@ -64,9 +69,9 @@ class AutoFunctions(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member):
         """
-        On member join role handling and spam protection
-        :param member:
-        :return:
+        When member joins community bot will recognize it and activates spam protection proceddure
+        Args:
+            member (discord.Member): Member which joines the community
         """
         print(Fore.LIGHTYELLOW_EX+f'{member} joining {member.guild} ')
         if member.guild.id == 667607865199951872:
@@ -161,6 +166,12 @@ class AutoFunctions(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
+        """
+        Clean up process once member leaves the guild
+
+        Args:
+            member ([type]): [description]
+        """
         print(f'User {member} left community...')
         if member.guild.id == 667607865199951872:
             await self.guild_notify(member=member, direction=0)

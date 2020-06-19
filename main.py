@@ -29,6 +29,9 @@ extensions = ['cogs.adminCogs',
               'cogs.supportTicketCogs']
 
 async def jail_sentence_checker():
+    """
+    Function to check jailed users for expired jail times
+    """
     now = datetime.utcnow().timestamp()  # Gets current time of the system in unix format
     overdue_members = jail_manager.get_served_users(timestamp=int(now))  # Gets all overdue members from database
     if overdue_members:
@@ -83,6 +86,9 @@ async def jail_sentence_checker():
 
 
 def start_scheduler():
+    """
+    Starting scheduler for functions
+    """
     scheduler.add_job(jail_sentence_checker, CronTrigger(second="00"))
     scheduler.start()
         
