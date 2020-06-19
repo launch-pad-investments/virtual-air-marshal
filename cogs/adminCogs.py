@@ -187,6 +187,9 @@ class TeamCommands(commands.Cog):
             await ctx.message.delete()
         except Exception:
             pass
+        if ctx.invoked_subcommand is None:
+            #TODO write guidliness
+            pass
         pass
     
     @role.command()
@@ -213,7 +216,23 @@ class TeamCommands(commands.Cog):
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(),commands.check(admin_predicate))
     async def create(self, ctx):
-        pass
+        if ctx.invoked_subcommand is None:
+            #TODO modify
+            title = 'Admin available commands'
+            description = 'All available commands for administrators of the community.'
+            value = [{'name': f'{bot_setup["command"]} kick <list of users> <reason>',
+                      'value': f"Kicks selected user/users and provides reason. requires to have *kick_members*"
+                               f" permission"},
+                     {'name': f'{bot_setup["command"]} ban <list of users> <reason>',
+                      'value': f"Bans the selected users and deletes messages for past 7 days. Requires to have"
+                               f" *ban_members* permission"},
+                     {'name': f'{bot_setup["command"]} add_role <@discord.User> <#discord.Role to give>',
+                      'value': f"Adds role to the user"},
+                     {'name': f'{bot_setup["command"]} remove_role <@discord.User> <#discord.Role to give>',
+                      'value': f"Remove role from user"}
+                     ]
+
+            await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
     
     @create.command()
     async def text_channel(self, ctx, channel_name:str, *, channel_topic:str=None):
