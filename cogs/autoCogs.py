@@ -186,6 +186,12 @@ class AutoFunctions(commands.Cog):
         
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
+        """
+        Triggering message to system channel when bot joins new guild
+
+        Args:
+            guild ([discord.Guild])
+        """
         dest = self.bot.get_channel(id=int(722048385078788217))
         new_guild = Embed(title='__NEW GUILD!!!!__',
                           description=f'{self.bot.user} has joined new guild',
@@ -218,6 +224,12 @@ class AutoFunctions(commands.Cog):
         
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
+        """
+        Triggered when bot is removed from guild and system message is sent to channel on removal
+
+        Args:
+            guild (discord.Guild): [description]
+        """
         print(Fore.LIGHTCYAN_EX+f'BOT REMOVED: Bot has been removed from guild {guild}')
         dest = self.bot.get_channel(id=int(722048385078788217))
         new_guild = Embed(title='__NEW GUILD!!!!__',
@@ -259,18 +271,31 @@ class AutoFunctions(commands.Cog):
         
     @commands.Cog.listener()
     async def on_guild_channel_delete(self, guild):
+        """
+        Function called when guild deletes channel
+
+        Args:
+            guild ([discord.Guild]): 
+        """
         print('Guild has deleted channel')
         
     @commands.Cog.listener()
     async def on_guild_role_delete(self, role):
+        """
+        Function called when guild deletes role
+
+        Args:
+            role (discord.Role):
+        """
         print('Gets called when guild removes role')
         
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, reaction):
         """
-        Waits for reaction to specific message and once user agrees it will automatically sign role to him
-        :param reaction: discord.Reaction
-        :return: None
+        Function triggered when reaction is added to the mssage. Part of VAM spam prevention system
+
+        Args:
+            reaction ([type]): [description]
         """
 
         author = reaction.member  # Author of reaction
@@ -350,6 +375,12 @@ class AutoFunctions(commands.Cog):
     
     @commands.Cog.listener()
     async def on_message(self, message):
+        """
+        Function called everytime a message is sent on channel. Used for profanity system and jail management
+
+        Args:
+            message (discord.Message): 
+        """
         if not message.author.bot:
             if not isinstance(message.channel, DMChannel):
                 user_id = message.author.id
@@ -441,6 +472,13 @@ class AutoFunctions(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
+        """
+        Triggered everytime there is command error
+
+        Args:
+            ctx (discord.Context): [description]
+            error (discord.Error): [description]
+        """
         try:
             await ctx.message.delete()
         except Exception:
