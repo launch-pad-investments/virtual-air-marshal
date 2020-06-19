@@ -1,6 +1,6 @@
 import os
 import sys
-from colorama import Fore
+from colorama import Fore, Style
 
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
@@ -38,7 +38,7 @@ class AutoFunctions(commands.Cog):
         #1 = joined
         #kavic tag
         kavic = await self.bot.fetch_user(user_id=int(455916314238648340))
-        animus = await self.bot.fetch_user(user_id=int(360367188432912385))
+        # animus = await self.bot.fetch_user(user_id=int(360367188432912385))
         info_channel = self.bot.get_channel(id=int(722048385078788217))
         
         await info_channel(content=f'{kavic.mention} :arrow_double_down: ')
@@ -168,9 +168,10 @@ class AutoFunctions(commands.Cog):
             pass
         
         print(Fore.LIGHTWHITE_EX + f'Initiating clean up process for member {member} with ID {member.id}')
-        jail_manager.clear_community_member_counter(community_id=int(member.id))           
-        jail_manager.clear_community_member_jail(community_id=int(member.id))
-        
+        jail_manager.clear_community_member_counter(community_id=member.guild.id,member_id=member.id)      
+        jail_manager.clear_community_member_jail(community_id=member.guild.id,member_id=member.id)
+        print(Fore.GREEN+f'Cleaning process finished')
+        Style.RESET_ALL
         
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
@@ -243,7 +244,8 @@ class AutoFunctions(commands.Cog):
         jail_sys_mng.remove_from_jail_system(community_id=int(guild.id))
         jail_manager.clear_community_counter(community_id=int(guild.id))           
         jail_manager.clear_community_jail(community_id=int(guild.id))
-    
+        Style.RESET_ALL
+        
     @commands.Cog.listener()
     async def on_guild_channel_delete(self, guild):
         print('Guild has deleted channel')
@@ -333,7 +335,8 @@ class AutoFunctions(commands.Cog):
                 pass
         else:
             pass
-            
+        Style.RESET_ALL
+    
     @commands.Cog.listener()
     async def on_message(self, message):
         if not message.author.bot:
@@ -421,6 +424,9 @@ class AutoFunctions(commands.Cog):
                     pass
             else:
                 pass
+        else:
+            pass
+        Style.RESET_ALL
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
