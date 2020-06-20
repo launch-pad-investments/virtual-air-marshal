@@ -1,4 +1,6 @@
 import discord
+from discord import ChannelType
+from colorama import Fore
 from backoffice.spamSystemDb import SpamSystemManager
 from backoffice.jailSystemDb import JailSystemManager
 from backoffice.supportSystemDb import SupportSystemManager
@@ -12,7 +14,11 @@ def is_spam_not_registered(ctx):
     return spam_sys_mng.check_if_not_registered(community_id=ctx.message.guild.id)
 
 def is_public(ctx):
-    return ctx.message.channel.type != discord.ChannelType.private
+    print(Fore.RED + f'checking for author{ctx.message.author}')
+    print(ctx.message.channel.type)
+    print(ChannelType.private)
+    print(f'Not private test {ctx.message.channel.type != ChannelType.private}')
+    return ctx.message.channel.type != ChannelType.private
 
 def is_overwatch(ctx):
     access_list = [455916314238648340, 360367188432912385]
