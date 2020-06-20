@@ -2,11 +2,24 @@
 
 ## About
 
-Virtual Air Marshal is a multi Discord Management Bot with various integrated manual and automatic services.
-The bot is owned by Launc Pad Investments Discord Group offering wide variety of services for their members.
+Virtual Air Marshal is a multi Discord Management Bot with various integrated manual and automatic services and commands to manage community.
+The bot is owned by Launch Pad Investments Discord Group offering wide variety of services for their members.
 
 ## Bot command
 @Virtual Air Marshal#8238 
+
+## General management commands
+
+### Admin 
+Entry command for administration subcommands. In order to make them accessible a admin or a needs to be initiated after bot command to access sub-levels.
+
+#### Kick user/users
+
+Kicks the user from community.
+
+```text
+@Virtual Air Marshal#8238 admin kick <@discord.User or Multiple users tagged> <reason=Optional parameter>
+```
 
 ## Services
 
