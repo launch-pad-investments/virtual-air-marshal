@@ -42,7 +42,7 @@ class JailService(commands.Cog):
             await ctx.message.delete()
         except Exception:
             pass
-        
+        print(f'{ctx.message.author} using jail')
         if ctx.invoked_subcommand is None:
             title = '__Available commands under ***Jail*** category!__'
             description = 'Jail system was designed with intentions to keep the language of the community clean and social. If member breaches language for 3 minutes, he/she is sent to jail for 2 minutes.' 
@@ -279,7 +279,7 @@ class JailService(commands.Cog):
             message = f'Command is allowed to be executed only on the public channels of the {ctx.message.guild} and community needs to be registered into the ***JAIL*** system.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         elif isinstance(error,commands.CheckAnyFailure):
-            message = f'You do not have rights to access this area of {self.bot.user} on {ctx.message.guild}.'
+            message = f'In order to use jail on {ctx.guild} you either need to be on ***Overwatch roster, owern of the community or have administrator*** rights!.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         elif isinstance(error,commands.BotMissingPermissions):
             message = 'Bot has insufficient permissions which are required to register for services. It requires at least administrator priileges with message and role management permissions!'
@@ -289,10 +289,10 @@ class JailService(commands.Cog):
     @punish.error
     async def punish_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
-            message = f'***ERROR{error}*** \nThis error occured from possible reasons:\n--> Command not executed on public channels of the {ctx.message.guild}\n --> jail service not registered ({self.bot.user.mention} service'
+            message = f'***ERROR{error}*** \nThis error occured from possible reasons:\n--> Command not executed on public channels of the {ctx.message.guild}\n --> jail service not registered ({self.bot.user.mention} service)'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         elif isinstance(error,commands.CheckAnyFailure):
-            message = f'You do not have rights to access this area of {self.bot.user.mention} on {ctx.message.guild}.'
+            message = f'In order to use jail on {ctx.guild} you either need to be on ***Overwatch roster, owern of the community or have administrator*** rights!.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         elif isinstance(error,commands.BadArgument):
             message = f'Wrong argument provided:\n __{error}__. \nCommand structure is:\n***{self.bot.user.mention} jail punish <@discord.User> <duration in minutes>***'

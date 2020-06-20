@@ -14,10 +14,6 @@ def is_spam_not_registered(ctx):
     return spam_sys_mng.check_if_not_registered(community_id=ctx.message.guild.id)
 
 def is_public(ctx):
-    print(Fore.RED + f'checking for author{ctx.message.author}')
-    print(ctx.message.channel.type)
-    print(ChannelType.private)
-    print(f'Not private test {ctx.message.channel.type != ChannelType.private}')
     return ctx.message.channel.type != ChannelType.private
 
 def is_overwatch(ctx):

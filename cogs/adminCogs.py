@@ -60,7 +60,7 @@ class TeamCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.group()
+    @commands.group(aliases=['a'])
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(kick_predicate), commands.check(admin_predicate),
                         commands.check(ban_predicate), commands.check(is_overwatch))
@@ -84,11 +84,7 @@ class TeamCommands(commands.Cog):
                                f" permission"},
                      {'name': f'{bot_setup["command"]} ban <list of users> <reason>',
                       'value': f"Bans the selected users and deletes messages for past 7 days. Requires to have"
-                               f" *ban_members* permission"},
-                     {'name': f'{bot_setup["command"]} add_role <@discord.User> <#discord.Role to give>',
-                      'value': f"Adds role to the user"},
-                     {'name': f'{bot_setup["command"]} remove_role <@discord.User> <#discord.Role to give>',
-                      'value': f"Remove role from user"}
+                               f" *ban_members* permission"}
                      ]
 
             await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
@@ -188,9 +184,15 @@ class TeamCommands(commands.Cog):
         except Exception:
             pass
         if ctx.invoked_subcommand is None:
-            #TODO write guidliness
-            pass
-        pass
+            title = 'Admin available commands'
+            description = 'All available commands for administrators of the community.'
+            value = [{'name': f'{bot_setup["command"]} role remove <@discord.Member> <@discord.Role>',
+                      'value': f""},
+                     {'name': f'{bot_setup["command"]} role add <@discord.Member> <@discord.Role>',
+                      'value': f""},
+                     ]
+
+            await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
     
     @role.command()
     async def remove(self, ctx, user: discord.Member, role: discord.Role):
