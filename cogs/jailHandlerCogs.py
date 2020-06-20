@@ -38,6 +38,12 @@ class JailService(commands.Cog):
     @commands.bot_has_guild_permissions(administrator=True, manage_messages=True, manage_roles=True)
     @commands.check_any(commands.has_guild_permissions(administrator=True),commands.check(is_overwatch), commands.check(is_community_owner))
     async def jail(self, ctx):
+        """
+        Entry point for jail actions.
+
+        Args:
+            ctx (discord.Context)
+        """
         try:
             await ctx.message.delete()
         except Exception:
@@ -62,6 +68,12 @@ class JailService(commands.Cog):
     @jail.command()
     @commands.check(is_community_registered)
     async def on(self,ctx):
+        """
+        Command turns the jail and profanity system ON
+
+        Args:
+            ctx (discord.Context)
+        """
         try:
             await ctx.message.delete()
         except Exception:
@@ -78,6 +90,12 @@ class JailService(commands.Cog):
     @jail.command() 
     @commands.check(is_community_registered)
     async def off(self,ctx):
+        """
+        Command turns the jail and profanity system OFF
+
+        Args:
+            ctx (discord.Context)
+        """
         try:
             await ctx.message.delete()
         except Exception:
@@ -95,6 +113,13 @@ class JailService(commands.Cog):
     @commands.check(is_public)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
     async def release(self, ctx, user:DiscordMember):
+        """
+        Allows user with either overwatch or community owner rights to release discord member from the jail.
+
+        Args:
+            ctx (dscrod.Context): 
+            user (discord.Member): 
+        """
         try:
             await ctx.message.delete()
         except Exception:
@@ -158,11 +183,16 @@ class JailService(commands.Cog):
     @commands.check(is_public)
     @commands.check(is_community_registered)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
-    async def punish(self, ctx, jailee:DiscordMember, duration:int, *, subject = None):
+    async def punish(self, ctx, jailee:DiscordMember, duration:int, *, subject:str = None):
         """
-        Punish user and throw him to jail
+        Command throws user to the jail
+
+        Args:
+            ctx (discord.Context): 
+            jailee (discord.Member): 
+            duration (int): Duration in minutes
+            subject ([String], optional): Optional argument if explanation provided. Defaults to None.
         """
-        print('Trying to punish')
         try:
             await ctx.message.delete()
         except Exception:
