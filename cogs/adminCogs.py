@@ -186,9 +186,9 @@ class TeamCommands(commands.Cog):
         if ctx.invoked_subcommand is None:
             title = 'Admin available commands'
             description = 'All available commands for administrators of the community.'
-            value = [{'name': f'{bot_setup["command"]} role remove <@discord.Member> <@discord.Role>',
+            value = [{'name': f'{bot_setup["command"]} admin role remove <@discord.Member> <@discord.Role>',
                       'value': f""},
-                     {'name': f'{bot_setup["command"]} role add <@discord.Member> <@discord.Role>',
+                     {'name': f'{bot_setup["command"]} admin role add <@discord.Member> <@discord.Role>',
                       'value': f""},
                      ]
 
@@ -231,14 +231,14 @@ class TeamCommands(commands.Cog):
             await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
     
     @create.command()
-    async def text_channel(self, ctx, channel_name:str, *, channel_topic:str=None):
+    async def text_channel(self, ctx, *, channel_name:str=None):
         try:
             await ctx.message.delete()
         except Exception:
             pass
         
         try:
-            channel = await ctx.guild.create_text_channel(name=channel_name, topic=channel_topic)
+            channel = await ctx.guild.create_text_channel(name=channel_name)
             await channel.send(content=f'{ctx.author.mention} you have successfully created new Text Channel!')
         except discord.Forbidden as e:
             message = f'Voice Channel could not be created.. Here are details {e}.'
@@ -251,14 +251,14 @@ class TeamCommands(commands.Cog):
             await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
 
     @create.command()
-    async def voice_channel(self, ctx, channel_name:str, *, channel_topic:str=None):
+    async def voice_channel(self, ctx, *, channel_name:str):
         try:
             await ctx.message.delete()
         except Exception:
             pass
         
         try:
-            await ctx.guild.create_voice_channel(name=channel_name, topic=channel_topic)
+            await ctx.guild.create_voice_channel(name=channel_name)
             await ctx.channel.send(content=f'{ctx.message.author.mention} Voice channel has been successfully created')
         except discord.Forbidden as e:
             message = f'Voice Channel could not be created.. Here are details {e}.'
