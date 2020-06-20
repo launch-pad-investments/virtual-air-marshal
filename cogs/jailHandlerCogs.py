@@ -34,7 +34,7 @@ class JailService(commands.Cog):
 
 
     @commands.group()
-    @commands.check(is_public)
+    # @commands.check(is_public)
     @commands.bot_has_guild_permissions(administrator=True, manage_messages=True, manage_roles=True)
     @commands.check_any(commands.has_guild_permissions(administrator=True),commands.check(is_overwatch), commands.check(is_community_owner))
     async def jail(self, ctx):
@@ -278,7 +278,7 @@ class JailService(commands.Cog):
         if isinstance(error, commands.CheckFailure):
             message = f'Command is allowed to be executed only on the public channels of the {ctx.message.guild} and community needs to be registered into the ***JAIL*** system.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
-        elif isinstance(error,commands.CheckAnyFailure):
+        if isinstance(error,commands.CheckAnyFailure):
             message = f'In order to use jail on {ctx.guild} you either need to be on ***Overwatch roster, owern of the community or have administrator*** rights!.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         elif isinstance(error,commands.BotMissingPermissions):

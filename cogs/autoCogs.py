@@ -470,24 +470,24 @@ class AutoFunctions(commands.Cog):
             pass
         Style.RESET_ALL
 
-    # @commands.Cog.listener()
-    # async def on_command_error(self, ctx, error):
-    #     """
-    #     Triggered everytime there is command error
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        """
+        Triggered everytime there is command error
 
-    #     Args:
-    #         ctx (discord.Context): [description]
-    #         error (discord.Error): [description]
-    #     """
-    #     try:
-    #         await ctx.message.delete()
-    #     except Exception:
-    #         pass
-    #     if isinstance(error, commands.CommandNotFound):
-    #         title = 'System Command Error'
-    #         message = f':no_entry: Sorry, this command does not exist! Please' \
-    #                   f'type `{bot_setup["command"]} help` to check available commands.'
-    #         await custom_messages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
-    #                                              sys_msg_title=title)
+        Args:
+            ctx (discord.Context): [description]
+            error (discord.Error): [description]
+        """
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+        if isinstance(error, commands.CommandNotFound):
+            title = 'System Command Error'
+            message = f':no_entry: Sorry, this command does not exist! Please' \
+                      f'type `{bot_setup["command"]} help` to check available commands.'
+            await custom_messages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
+                                                 sys_msg_title=title)
 def setup(bot):
     bot.add_cog(AutoFunctions(bot))
