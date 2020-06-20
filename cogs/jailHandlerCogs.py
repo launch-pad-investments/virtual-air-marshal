@@ -285,7 +285,6 @@ class JailService(commands.Cog):
             message = 'Bot has insufficient permissions which are required to register for services. It requires at least administrator priileges with message and role management permissions!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
-            
     @punish.error
     async def punish_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
@@ -324,6 +323,18 @@ class JailService(commands.Cog):
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1,sys_msg_title=title)
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
             await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
+            
+    @on.error
+    async def on_error(self, ctx, error):
+        if isinstance(error, commands.CheckFailure):
+            message = f'{ctx.guild} has not been registered yet for ***JAIL*** service. Please start with ***{bot_setup["command"]} service register jail***'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+    
+    @off.error
+    async def off_error(self, ctx, error):
+        if isinstance(error, commands.CheckFailure):
+            message = f'{ctx.guild} has not been registered yet for ***JAIL*** service. Please start with ***{bot_setup["command"]} service register jail***'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
                 
 def setup(bot):
     bot.add_cog(JailService(bot))
