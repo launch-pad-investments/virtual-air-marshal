@@ -9,7 +9,8 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from backoffice.jailManagementDb import JailManagement
 from utils.jsonReader import Helpers
-from colorama import Fore, Style
+from colorama import Fore, Style, init
+init(autoreset=True)
 
 jail_manager = JailManagement()
 helper = Helpers()
@@ -33,11 +34,12 @@ async def jail_sentence_checker():
     Function to check jailed users for expired jail times
     """
     now = datetime.utcnow().timestamp()  # Gets current time of the system in unix format
+    time_of_release = datetime.utcnow()
     overdue_members = jail_manager.get_served_users(timestamp=int(now))  # Gets all overdue members from database
+    print(Fore.LIGHTMAGENTA_EX + f"============================\nChecking global jail status @ {time_of_release}\n============================")
     if overdue_members:
-        print(Fore.LIGHTYELLOW_EX + f'{len(overdue_members)} served sentence')
+        print(Fore.LIGHTYELLOW_EX + f'{len(overdue_members)} members served sentence')
         time_of_release = datetime.utcnow()
-        print(Fore.LIGHTYELLOW_EX + f'Released @ {time_of_release} ')
         
         for unjailed in overdue_members:
             user_id = unjailed["userId"]
@@ -78,10 +80,9 @@ async def jail_sentence_checker():
                     print(Fore.LIGHTGREEN_EX + f"{member} Successfully released from jail on {guild} and state restored ")
                 else:
                     print(Fore.LIGHTRED_EX + f'Member {member} is not on {guild} anymore')
-        print(Fore.GREEN + f'@{time_of_release} --> {len(overdue_members)} members have been unjailed!')
+        print(Fore.LIGHTYELLOW_EX + f'@{time_of_release} --> {len(overdue_members)} members have been unjailed!')
     else:
-        pass
-    Style.RESET_ALL
+        print(Fore.LIGHTYELLOW_EX + f'Non of members served sentence yet')
     return 
 
 
