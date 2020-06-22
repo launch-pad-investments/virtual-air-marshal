@@ -189,6 +189,7 @@ class AutoFunctions(commands.Cog):
         reach = len(self.bot.users)
         print(Fore.LIGHTGREEN_EX + f'Integrated into: {len(guilds)} guilds')
         print(Fore.LIGHTGREEN_EX + f'Member reach: {reach} members')
+        print(Fore.LIGHTYELLOW_EX + '===================================')
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
@@ -249,6 +250,12 @@ class AutoFunctions(commands.Cog):
 
         await dest.send(embed=new_guild,content='@here')
         print(f'==============DONE=================')
+        print(Fore.LIGHTYELLOW_EX + '===================================\nGlobal Stats Updated...\n===================================')
+        guilds = await self.bot.fetch_guilds(limit=150).flatten()
+        reach = len(self.bot.users)
+        print(Fore.LIGHTGREEN_EX + f'Integrated into: {len(guilds)} guilds')
+        print(Fore.LIGHTGREEN_EX + f'Member reach: {reach} members')
+        print(Fore.LIGHTYELLOW_EX + '===================================')
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
         """
@@ -295,6 +302,12 @@ class AutoFunctions(commands.Cog):
         jail_manager.clear_community_counter(community_id=int(guild.id))           
         jail_manager.clear_community_jail(community_id=int(guild.id))
         print(f'==============DONE=================')
+        print(Fore.LIGHTYELLOW_EX + '===================================\nGlobal Stats Updated...\n===================================')
+        guilds = await self.bot.fetch_guilds(limit=150).flatten()
+        reach = len(self.bot.users)
+        print(Fore.LIGHTGREEN_EX + f'Integrated into: {len(guilds)} guilds')
+        print(Fore.LIGHTGREEN_EX + f'Member reach: {reach} members')
+        print(Fore.LIGHTYELLOW_EX + '===================================')
         
     @commands.Cog.listener()
     async def on_guild_channel_delete(self, guild):
