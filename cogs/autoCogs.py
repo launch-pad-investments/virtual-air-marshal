@@ -182,6 +182,13 @@ class AutoFunctions(commands.Cog):
                 print(Fore.LIGHTWHITE_EX + f'{member} is BOT who joined {member.guild} with ID {member.guild.id}')
         else:
             print(f'Community {member.guild} not registered for spam prevention service')
+        
+        print(
+            Fore.LIGHTYELLOW_EX + '===================================\nGlobal Stats Updated...\n===================================')
+        guilds = await self.bot.fetch_guilds(limit=150).flatten()
+        reach = len(self.bot.users)
+        print(Fore.LIGHTGREEN_EX + f'Integrated into: {len(guilds)} guilds')
+        print(Fore.LIGHTGREEN_EX + f'Member reach: {reach} members')
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
