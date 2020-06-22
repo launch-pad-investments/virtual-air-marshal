@@ -1,6 +1,6 @@
 import os
 import sys
-from colorama import Fore, Style
+from colorama import Fore, Style, init
 
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
@@ -18,6 +18,8 @@ from backoffice.jailSystemDb import JailSystemManager
 from backoffice.spamSystemDb import SpamSystemManager
 from backoffice.supportSystemDb import SupportSystemManager
 from better_profanity import profanity
+
+init(autoreset=True)
 
 jail_manager = JailManagement()
 helper = Helpers()
@@ -65,6 +67,23 @@ class AutoFunctions(commands.Cog):
         await info_channel(embed=embed_info)
 
 
+    @commands.Cog.listener()
+    async def on_ready(self):
+        """
+        Print out to console once bot logs in
+        :return:
+        """
+        print(
+            Fore.LIGHTYELLOW_EX + '===================================\nLogging in...\n===================================')
+        print(Fore.LIGHTGREEN_EX + 'Logged in as:')
+        print(Fore.LIGHTGREEN_EX + f'Username: {self.bot.user.name}')
+        print(Fore.LIGHTGREEN_EX + f'User ID: {self.bot.user.id}')
+        guilds = await self.bot.fetch_guilds(limit=150).flatten()
+        reach = len(self.bot.users)
+        print(Fore.LIGHTGREEN_EX + f'Integrated into: {len(guilds)} guilds')
+        print(Fore.LIGHTGREEN_EX + f'Member reach: {reach} members')
+
+        print(f'==============DONE=================')
         
     @commands.Cog.listener()
     async def on_member_join(self, member):
