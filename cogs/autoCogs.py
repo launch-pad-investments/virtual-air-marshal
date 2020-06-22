@@ -191,7 +191,7 @@ class AutoFunctions(commands.Cog):
         Args:
             member ([type]): [description]
         """
-        print(f'User {member} left community...')
+        print(Fore.LIGHTYELLOW_EX + f'{member} left {member.guild}...')
         if member.guild.id == 667607865199951872:
             await self.guild_notify(member=member, direction=0)
         else:
@@ -201,7 +201,7 @@ class AutoFunctions(commands.Cog):
         jail_manager.clear_community_member_counter(community_id=member.guild.id,member_id=member.id)      
         jail_manager.clear_community_member_jail(community_id=member.guild.id,member_id=member.id)
         print(Fore.GREEN+f'Cleaning process finished')
-        Style.RESET_ALL
+        print(f'==============DONE=================')
         
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
@@ -211,6 +211,7 @@ class AutoFunctions(commands.Cog):
         Args:
             guild ([discord.Guild])
         """
+        print(Fore.LIGHTMAGENTA_EX +f'{self.bot.user} joined {guild} ')
         dest = self.bot.get_channel(id=int(722048385078788217))
         new_guild = Embed(title='__NEW GUILD!!!!__',
                           description=f'{self.bot.user} has joined new guild',
@@ -240,7 +241,7 @@ class AutoFunctions(commands.Cog):
                             value=f'Roles: {len(guild.roles)}Channel category cound: {len(guild.categories)}\nChannel count {len(guild.channels)}\nGuild voice channels{len(guild.voice_channels)}\n Text Channels: {guild.text_channels}\n')
 
         await dest.send(embed=new_guild,content='@here')
-        
+        print(f'==============DONE=================')
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
         """
@@ -249,7 +250,7 @@ class AutoFunctions(commands.Cog):
         Args:
             guild (discord.Guild): [description]
         """
-        print(Fore.LIGHTCYAN_EX+f'BOT REMOVED: Bot has been removed from guild {guild}')
+        print(Fore.LIGHTMAGENTA_EX +f'{self.bot.user} left {guild} ')
         dest = self.bot.get_channel(id=int(722048385078788217))
         new_guild = Embed(title='__NEW GUILD!!!!__',
                           description=f'{self.bot.user} has joined new guild',
@@ -286,7 +287,7 @@ class AutoFunctions(commands.Cog):
         jail_sys_mng.remove_from_jail_system(community_id=int(guild.id))
         jail_manager.clear_community_counter(community_id=int(guild.id))           
         jail_manager.clear_community_jail(community_id=int(guild.id))
-        Style.RESET_ALL
+        print(f'==============DONE=================')
         
     @commands.Cog.listener()
     async def on_guild_channel_delete(self, guild):
