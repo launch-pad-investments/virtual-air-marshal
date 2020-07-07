@@ -258,9 +258,9 @@ class AutoFunctions(commands.Cog):
         """
         print(Fore.LIGHTMAGENTA_EX +f'{self.bot.user} left {guild} ')
         dest = self.bot.get_channel(id=int(722048385078788217))
-        new_guild = Embed(title='__NEW GUILD!!!!__',
-                          description=f'{self.bot.user} has joined new guild',
-                          colour=Colour.green())
+        new_guild = Embed(title='__REMOVED!!!!__',
+                          description=f'{self.bot.user} has been removed',
+                          colour=Colour.red())
         new_guild.add_field(name='Guild name and id:',
                             value=f'{guild} {guild.id}',
                             inline=False)
