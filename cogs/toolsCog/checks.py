@@ -13,6 +13,9 @@ support_sys_mng = SupportSystemManager()
 def is_spam_not_registered(ctx):
     return spam_sys_mng.check_if_not_registered(community_id=ctx.message.guild.id)
 
+def is_spam_registered(ctx):
+    return spam_sys_mng.check_community_reg_status(community_id=ctx.guild.id)
+
 def is_public(ctx):
     return ctx.message.channel.type != ChannelType.private
 

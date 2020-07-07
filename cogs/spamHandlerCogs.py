@@ -20,7 +20,7 @@ from discord.ext.commands import Greedy
 from backoffice.jailManagementDb import JailManagement
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
-from cogs.toolsCog.checks import is_overwatch, is_community_owner, is_community_registered, is_public
+from cogs.toolsCog.checks import is_overwatch, is_community_owner, is_community_registered, is_public, is_spam_registered
 from colorama import Fore
 
 helper = Helpers()
@@ -35,7 +35,7 @@ class SpamService(commands.Cog):
     @commands.group()
     @commands.check(is_public)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
-    @commands.check(is_community_registered)
+    @commands.check(is_spam_registered)
     async def spam(self, ctx):
         try:
             await ctx.message.delete()
