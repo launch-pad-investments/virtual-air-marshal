@@ -233,17 +233,8 @@ class AutoFunctions(commands.Cog):
         new_guild.add_field(name='Guild Owner:',
                             value=f'{guild.owner} {guild.owner_id}',
                             inline=False)
-        new_guild.add_field(name='Guild Region:',
-                            value=f'{guild.region}',
-                            inline=False)
-        new_guild.add_field(name='Guild Description:',
-                            value=f'{guild.description}',
-                            inline=False)
         new_guild.add_field(name='Member Count',
                             value=f'{len(guild.members)} ({guild.member_count})',
-                            inline=False)
-        new_guild.add_field(name='Premium Subscribers',
-                            value=f'{guild.premium_subscription_count}',
                             inline=False)
         new_guild.add_field(name='Guild Structure',
                             value=f'Roles: {len(guild.roles)}Channel category cound: {len(guild.categories)}\nChannel count {len(guild.channels)}\nGuild voice channels{len(guild.voice_channels)}\n Text Channels: {guild.text_channels}\n')
@@ -256,6 +247,7 @@ class AutoFunctions(commands.Cog):
         print(Fore.LIGHTGREEN_EX + f'Integrated into: {len(guilds)} guilds')
         print(Fore.LIGHTGREEN_EX + f'Member reach: {reach} members')
         print(Fore.LIGHTYELLOW_EX + '===================================')
+        
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
         """
@@ -278,21 +270,12 @@ class AutoFunctions(commands.Cog):
         new_guild.add_field(name='Guild Owner:',
                             value=f'{guild.owner} {guild.owner_id}',
                             inline=False)
-        new_guild.add_field(name='Guild Region:',
-                            value=f'{guild.region}',
-                            inline=False)
-        new_guild.add_field(name='Guild Description:',
-                            value=f'{guild.description}',
-                            inline=False)
         new_guild.add_field(name='Member Count',
                             value=f'{len(guild.members)} ({guild.member_count})',
                             inline=False)
         new_guild.add_field(name='Premium Subscribers',
                             value=f'{guild.premium_subscription_count}',
                             inline=False)
-        new_guild.add_field(name='Guild Structure',
-                            value=f'Roles: {len(guild.roles)}Channel category cound: {len(guild.categories)}\nChannel count {len(guild.channels)}\nGuild voice channels{len(guild.voice_channels)}\n Text Channels: {guild.text_channels}\n')
-
         await dest.send(embed=new_guild,content='@here')
 
         print(Fore.LIGHTWHITE_EX + f'Initiating clean up process for {guild} with ID {guild.id}')
