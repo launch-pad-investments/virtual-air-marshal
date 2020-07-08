@@ -49,7 +49,6 @@ class AutoFunctions(commands.Cog):
                        inline=False)
         await destination(embed=glob)
 
-
     async def guild_notify(self, member, direction: int):
         """
         Custom notifications to desired channel
@@ -206,7 +205,6 @@ class AutoFunctions(commands.Cog):
         else:
             print(f'Community {member.guild} not registered for spam prevention service')
 
-
     @commands.Cog.listener()
     async def on_member_remove(self, member):
         """
@@ -255,20 +253,16 @@ class AutoFunctions(commands.Cog):
 
         support_channels = bot_setup['supportChannel']
         for chn in support_channels:
-            print('=================')
-            print(chn)
-            for sys_channel in chn:
-                print(sys_channel)
-                print( sys_channel['userTags'])
-                separator = ' '
-                for user in sys_channel['userTags']:
-                    usr = await self.bot.fetch_user(id = user)
-                    separator += usr.mention + ""
+            print(chn['userTags'])
+            separator = ' '
+            for user in chn['userTags']:
+                usr = await self.bot.fetch_user(id=user)
+                separator += usr.mention + ""
 
-                print(separator)
-                dest = self.bot.get_channel(id=int(sys_channel["channel"]))
-                await dest.send(embed=new_guild, content=separator)
-                await self.send_global_stats(destination=dest)
+            print(separator)
+            dest = self.bot.get_channel(id=int(chn["channel"]))
+            await dest.send(embed=new_guild, content=separator)
+            await self.send_global_stats(destination=dest)
 
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
@@ -309,15 +303,13 @@ class AutoFunctions(commands.Cog):
 
         support_channels = bot_setup['supportChannel']
         for chn in support_channels:
-            for sys_channel in chn:
-                separator = ' '
-                for user in sys_channel['userTags']:
-                    usr = await self.bot.fetch_user(id = user)
-                    separator += usr.mention + ""
-                dest = self.bot.get_channel(id=int(sys_channel["channel"]))
-                await dest.send(embed=new_guild, content=separator)
-                await self.send_global_stats(destination=dest)
-
+            separator = ' '
+            for user in chn['userTags']:
+                usr = await self.bot.fetch_user(id=user)
+                separator += usr.mention + ""
+            dest = self.bot.get_channel(id=int(chn["channel"]))
+            await dest.send(embed=new_guild, content=separator)
+            await self.send_global_stats(destination=dest)
 
     @commands.Cog.listener()
     async def on_guild_channel_delete(self, guild):
