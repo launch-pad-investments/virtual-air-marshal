@@ -4,15 +4,15 @@ COGS: used for help and support commands
 
 import os
 import sys
-from uuid import uuid4
 from datetime import datetime
+from uuid import uuid4
 
+from discord import Embed, Colour, TextChannel
 from discord.ext import commands
-from discord import Permissions, Embed, DMChannel, Colour, TextChannel
 
-from utils.jsonReader import Helpers
-from cogs.toolsCog.systemMessages import CustomMessages
 from cogs.toolsCog.checks import is_community_owner, is_overwatch
+from cogs.toolsCog.systemMessages import CustomMessages
+from utils.jsonReader import Helpers
 
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
@@ -65,8 +65,10 @@ class SupportAndHelpCommands(commands.Cog):
                 user_msg.set_thumbnail(url=self.bot.user.avatar_url)
 
                 user_msg.add_field(name='Sys message',
-                                   value=f'We would like to inform you that your support ticket has been recieved successfully. One of the '
-                                         f'support staff wiill be in contact with you in next 24 hours! Thank your for {self.bot.user}',
+                                   value=f'We would like to inform you that your support ticket has been'
+                                         f' recieved successfully. One of the '
+                                         f'support staff wiill be in contact with you in next 24 hours! '
+                                         f'Thank your for {self.bot.user}',
                                    inline=False)
                 user_msg.add_field(name="Reference Support Ticker Number",
                                    value=ticket_no,
@@ -78,9 +80,11 @@ class SupportAndHelpCommands(commands.Cog):
                 await ctx.author.send(embed=user_msg)
 
             else:
-                message = "In order to issue support ticket you need to execute command  on public channel of the community where the bot is present."
+                message = "In order to issue support ticket you need to execute command  on public channel " \
+                          "of the community where the bot is present."
                 await custom_message.system_message(ctx=ctx, color_code=1, message=message, destination=0)
         else:
+            message = 'Message is to short or to long!'
             await custom_message.system_message(ctx=ctx, color_code=1, message=message, destination=0)
 
     @commands.command()
@@ -104,7 +108,7 @@ class SupportAndHelpCommands(commands.Cog):
                          value=f'{ctx.message.author}\n{ctx.message.author.id}',
                          inline=False)
         answer.add_field(name='Support Response',
-                         value='answer',
+                         value=f'{answer}',
                          inline=False)
         answer.set_footer(text='Service provided by Launch Pad Investments')
         await recipient.send(embed=answer)
