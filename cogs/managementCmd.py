@@ -49,7 +49,12 @@ class ManagementCommands(commands.Cog):
             message = f'User {user} could not be added to the Master Access list'
             await customMessages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
                                                 sys_msg_title=title)
-               
+
+    @commands.command()
+    @commands.is_owner()
+    async def invite(self, ctx):
+        await ctx.author.send(content='https://discordapp.com/oauth2/authorize?client_id=686851192680480768&scope=bot&permissions=268958846')
+
     @commands.command()
     @commands.check(is_overwatch)
     async def update(self, ctx):
