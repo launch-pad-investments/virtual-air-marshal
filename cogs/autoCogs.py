@@ -257,9 +257,11 @@ class AutoFunctions(commands.Cog):
         for chn in support_channels:
             for sys_channel in chn:
                 separator = ' '
-                user_tags = separator.join(sys_channel['userTags'])
+                for user in sys_channel['userTags']:
+                    usr = await self.bot.fetch_user(id = user)
+                    separator += usr.mention + ""
                 dest = self.bot.get_channel(id=int(sys_channel["channel"]))
-                await dest.send(embed=new_guild, content=user_tags)
+                await dest.send(embed=new_guild, content=separator)
                 await self.send_global_stats(destination=dest)
 
     @commands.Cog.listener()
@@ -303,9 +305,11 @@ class AutoFunctions(commands.Cog):
         for chn in support_channels:
             for sys_channel in chn:
                 separator = ' '
-                user_tags = separator.join(sys_channel['userTags'])
+                for user in sys_channel['userTags']:
+                    usr = await self.bot.fetch_user(id = user)
+                    separator += usr.mention + ""
                 dest = self.bot.get_channel(id=int(sys_channel["channel"]))
-                await dest.send(embed=new_guild, content=user_tags)
+                await dest.send(embed=new_guild, content=separator)
                 await self.send_global_stats(destination=dest)
 
 
