@@ -256,7 +256,7 @@ class AutoFunctions(commands.Cog):
             print(chn['userTags'])
             separator = ' '
             for user in chn['userTags']:
-                usr = await self.bot.fetch_user(id=user)
+                usr = await self.bot.fetch_user(user_id=user)
                 separator += usr.mention + ""
 
             print(separator)
@@ -305,7 +305,7 @@ class AutoFunctions(commands.Cog):
         for chn in support_channels:
             separator = ' '
             for user in chn['userTags']:
-                usr = await self.bot.fetch_user(id=user)
+                usr = await self.bot.fetch_user(user_id=user)
                 separator += usr.mention + ""
             dest = self.bot.get_channel(id=int(chn["channel"]))
             await dest.send(embed=new_guild, content=separator)
