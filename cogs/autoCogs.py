@@ -256,10 +256,13 @@ class AutoFunctions(commands.Cog):
         support_channels = bot_setup['supportChannel']
         for chn in support_channels:
             for sys_channel in chn:
+                print( sys_channel['userTags'])
                 separator = ' '
                 for user in sys_channel['userTags']:
                     usr = await self.bot.fetch_user(id = user)
                     separator += usr.mention + ""
+
+                print(separator)
                 dest = self.bot.get_channel(id=int(sys_channel["channel"]))
                 await dest.send(embed=new_guild, content=separator)
                 await self.send_global_stats(destination=dest)
@@ -292,7 +295,7 @@ class AutoFunctions(commands.Cog):
         new_guild.add_field(name='Premium Subscribers',
                             value=f'{guild.premium_subscription_count}',
                             inline=False)
-        await dest.send(embed=new_guild, content='@here')
+        await dest.send(embed=new_guild)
 
         print(Fore.LIGHTWHITE_EX + f'Initiating clean up process for {guild} with ID {guild.id}')
         sup_sys_mng.remove_from_support_system(community_id=int(guild.id))
