@@ -255,7 +255,10 @@ class AutoFunctions(commands.Cog):
 
         support_channels = bot_setup['supportChannel']
         for chn in support_channels:
+            print('=================')
+            print(chn)
             for sys_channel in chn:
+                print(sys_channel)
                 print( sys_channel['userTags'])
                 separator = ' '
                 for user in sys_channel['userTags']:
