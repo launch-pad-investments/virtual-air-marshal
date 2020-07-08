@@ -36,19 +36,6 @@ class AutoFunctions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    async def send_global_stats(self, destination):
-        guilds = await self.bot.fetch_guilds(limit=150).flatten()
-        reach = len(self.bot.users)
-
-        glob = Embed(title=f'{self.bot.user} Current Global Stats')
-        glob.add_field(name='Guild Count',
-                       value=f'{len(guilds)}',
-                       inline=False)
-        glob.add_field(name='Member Reach',
-                       value=f"{reach}",
-                       inline=False)
-        await destination(embed=glob)
-
     async def guild_notify(self, member, direction: int):
         """
         Custom notifications to desired channel
@@ -257,12 +244,25 @@ class AutoFunctions(commands.Cog):
             separator = ' '
             for user in chn['userTags']:
                 usr = await self.bot.fetch_user(user_id=user)
-                separator += usr.mention + ""
-
+                print(usr.mention)
+                separator += usr.mention + " "
             print(separator)
+
             dest = self.bot.get_channel(id=int(chn["channel"]))
             await dest.send(embed=new_guild, content=separator)
-            await self.send_global_stats(destination=dest)
+            guilds = await self.bot.fetch_guilds(limit=150).flatten()
+            reach = len(self.bot.users)
+
+            glob = Embed(title=f'{self.bot.user} Current Global Stats')
+            glob.add_field(name='Guild Count',
+                           value=f'{len(guilds)}',
+                           inline=False)
+            glob.add_field(name='Member Reach',
+                           value=f"{reach}",
+                           inline=False)
+            await dest.send(embed=new_guild, content=separator)
+            await dest.send(embed=glob)
+
 
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
@@ -306,10 +306,22 @@ class AutoFunctions(commands.Cog):
             separator = ' '
             for user in chn['userTags']:
                 usr = await self.bot.fetch_user(user_id=user)
-                separator += usr.mention + ""
+                separator += usr.mention + "  "
+
             dest = self.bot.get_channel(id=int(chn["channel"]))
+            guilds = await self.bot.fetch_guilds(limit=150).flatten()
+            reach = len(self.bot.users)
+
+            glob = Embed(title=f'{self.bot.user} Current Global Stats')
+            glob.add_field(name='Guild Count',
+                           value=f'{len(guilds)}',
+                           inline=False)
+            glob.add_field(name='Member Reach',
+                           value=f"{reach}",
+                           inline=False)
             await dest.send(embed=new_guild, content=separator)
-            await self.send_global_stats(destination=dest)
+            await dest.send(embed=glob)
+
 
     @commands.Cog.listener()
     async def on_guild_channel_delete(self, guild):
