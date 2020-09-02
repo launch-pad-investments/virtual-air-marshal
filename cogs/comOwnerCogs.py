@@ -198,9 +198,13 @@ class CommunityOwnerCommands(commands.Cog):
                     message = f'There has been an error while trying register community into the system. Please contact support staff'
                     await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
             else:
-                print('Role Verified could not be created')
+                message = f'Role ***Visitor*** could not be created therefore registration process has been cancelled.' \
+                          f' Please try again later, or create role manually with exact name and repeat the process.'
+                await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
-            print('Role Unverified could not be created')
+            message = f'Role ***Visitor*** could not be created therefore registration process has been cancelled.' \
+                      f' Please try again later, or create role manually with exact name and repeat the process.''
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
     @register.command()
     @commands.check(is_support_not_registered)
