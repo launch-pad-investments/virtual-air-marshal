@@ -3,12 +3,11 @@ import sys
 
 import discord
 from discord.ext import commands
-from discord import Permissions, Colour
 from git import Repo, InvalidGitRepositoryError
 
-from utils.jsonReader import Helpers
-from cogs.toolsCog.systemMessages import CustomMessages
 from cogs.toolsCog.checks import is_overwatch
+from cogs.toolsCog.systemMessages import CustomMessages
+from utils.jsonReader import Helpers
 
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
@@ -21,7 +20,7 @@ bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 class ManagementCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-       
+
     @commands.command()
     @commands.check(is_overwatch)
     async def add_overwatch(self, ctx, user: discord.User):
@@ -34,7 +33,7 @@ class ManagementCommands(commands.Cog):
             await ctx.message.delete()
         except Exception:
             pass
-        
+
         user_id = int(user.id)
         data = helper.read_json_file(file_name='mainBotConfig.json')
         list_of_user = data['userAccess']
@@ -53,7 +52,8 @@ class ManagementCommands(commands.Cog):
     @commands.command()
     @commands.check(is_overwatch)
     async def invite(self, ctx):
-        await ctx.author.send(content='https://discordapp.com/oauth2/authorize?client_id=686851192680480768&scope=bot&permissions=268958846')
+        await ctx.author.send(
+            content='https://discordapp.com/oauth2/authorize?client_id=686851192680480768&scope=bot&permissions=268958846')
 
     @commands.command()
     @commands.check(is_overwatch)
@@ -97,6 +97,7 @@ class ManagementCommands(commands.Cog):
     @update.error
     async def update_error_handler(self, ctx, error):
         await ctx.channel.send(content=error)
+
 
 def setup(bot):
     bot.add_cog(ManagementCommands(bot))
