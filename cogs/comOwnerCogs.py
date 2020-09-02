@@ -76,13 +76,13 @@ class CommunityOwnerCommands(commands.Cog):
         if ctx.invoked_subcommand is None:
             title = '__Available settings categories for community__'
             description = 'All available commands for owners of the community. Choose one, and further commands will be displayed'
-            value = [{'name': f'{bot_setup["command"]}service status',
+            value = [{'name': f'{self.bot.mention}service status',
                       'value': "Register community for spam prevention system for bot invasion"},
-                     {'name': f'{bot_setup["command"]}service register spam',
+                     {'name': f'{self.bot.mention}service register spam',
                       'value': "Register community for spam prevention system for bot invasion"},
-                     {'name': f'{bot_setup["command"]}service register jail',
+                     {'name': f'{self.bot.mention}service register jail',
                       'value': "Register community for bad language prevention system and auto-jail and un-jail. (IN DEVELOPMENT)"},
-                     {'name': f'{bot_setup["command"]}service register support',
+                     {'name': f'{self.bot.mention}service register support',
                       'value': "Register community for support ticket to the staff members"}
                      ]
 
