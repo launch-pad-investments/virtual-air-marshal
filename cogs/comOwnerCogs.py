@@ -4,22 +4,17 @@ import sys
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
 
-from datetime import datetime
-from datetime import timedelta
-import time
 from backoffice.spamSystemDb import SpamSystemManager
 from backoffice.jailSystemDb import JailSystemManager
 from backoffice.supportSystemDb import SupportSystemManager
 import discord
 from discord import Embed, Colour, Permissions
-from discord import Member as DiscordMember
 from discord.ext import commands
-from discord.ext.commands import Greedy
 from backoffice.jailManagementDb import JailManagement
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
-from cogs.toolsCog.checks import is_public, is_jail_not_registered, is_community_owner, is_spam_not_registered, is_overwatch, is_support_not_registered
-from colorama import Fore
+from cogs.toolsCog.checks import is_public, is_jail_not_registered, is_community_owner, is_spam_not_registered, \
+    is_overwatch, is_support_not_registered
 
 helper = Helpers()
 sup_sys_mng = SupportSystemManager()
@@ -28,27 +23,33 @@ jail_sys_mgn = JailSystemManager()
 jail_manager = JailManagement()
 custom_message = CustomMessages()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
-    
+
+
 class CommunityOwnerCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        
+
     async def check_role_status(self, ctx, role_name):
         role = discord.utils.get(ctx.guild.roles, name=role_name)
         if not role:
             try:
                 if role_name == 'Jailed':
                     # Creates the role for Jailed system
-                    perms = Permissions(send_messages=False, read_messages=True, view_channel=True, read_message_history = True)
-                    await ctx.guild.create_role(name='Jailed', permissions=perms, hoist=True,colour=Colour.red(), mentionable=True)
+                    perms = Permissions(send_messages=False, read_messages=True, view_channel=True,
+                                        read_message_history=True)
+                    await ctx.guild.create_role(name='Jailed', permissions=perms, hoist=True, colour=Colour.red(),
+                                                mentionable=True)
                 elif role_name == 'Visitor':
                     # Creates the role for verified users
-                    perms = Permissions(send_messages=False, read_messages=True, view_channel=True,read_message_history = True)
-                    await ctx.guild.create_role(name='Visitor', permissions=perms, colour=Colour.green(), mentionable=True)
+                    perms = Permissions(send_messages=False, read_messages=True, view_channel=True,
+                                        read_message_history=True)
+                    await ctx.guild.create_role(name='Visitor', permissions=perms, colour=Colour.green(),
+                                                mentionable=True)
                 elif role_name == 'Unverified':
                     # Creates role for un-verified users
                     perms = Permissions(send_messages=False, read_messages=True, view_channel=True, add_reactions=True)
-                    await ctx.guild.create_role(name='Unverified', permissions=perms,colour=Colour.magenta(), mentionable=True)
+                    await ctx.guild.create_role(name='Unverified', permissions=perms, colour=Colour.magenta(),
+                                                mentionable=True)
                 return True
             except discord.errors.Forbidden:
                 await ctx.channel.send(content='Bot does not have permission to create roles')
@@ -56,7 +57,7 @@ class CommunityOwnerCommands(commands.Cog):
         else:
             print('Role already exists on community')
             return True
-        
+
     @commands.group()
     @commands.bot_has_guild_permissions(administrator=True, manage_messages=True, manage_roles=True)
     @commands.check(is_public)
@@ -97,39 +98,39 @@ class CommunityOwnerCommands(commands.Cog):
         except Exception:
             pass
         status_embed = Embed(title='__System status__',
-                       description='Current status of community on services',
-                       colour = Colour.blue())
+                             description='Current status of community on services',
+                             colour=Colour.blue())
         status_embed.add_field(name='Symbols',
                                value=":green_circle: --> Service is activated\n :red_circle: --> Service is deactivated or has not been registered yet")
         if spam_sys_mng.check_if_security_activated(community_id=ctx.message.guild.id) == 1:
             status_embed.add_field(name='Spam prevention system status',
-                             value=":green_circle: ",
-                             inline=False)
+                                   value=":green_circle: ",
+                                   inline=False)
         else:
             status_embed.add_field(name='Spam prevention system status',
-                    value=":red_circle:",
-                    inline=False)
-        
+                                   value=":red_circle:",
+                                   inline=False)
+
         if jail_sys_mgn.get_jail_status(community_id=ctx.message.guild.id) == 1:
             status_embed.add_field(name='Jail and profanity system status',
-                    value=":green_circle: ",
-                    inline=False)
+                                   value=":green_circle: ",
+                                   inline=False)
         else:
             status_embed.add_field(name='Jail prevention system status',
-                    value=":red_circle:",
-                    inline=False)
-            
+                                   value=":red_circle:",
+                                   inline=False)
+
         if sup_sys_mng.check_if_support_activated(community_id=ctx.message.guild.id) == 1:
             status_embed.add_field(name='Support System Status',
-                    value=":green_circle: ",
-                    inline=False)
+                                   value=":green_circle: ",
+                                   inline=False)
         else:
             status_embed.add_field(name='Support System Status',
-                    value=":red_circle:",
-                    inline=False)
-            
+                                   value=":red_circle:",
+                                   inline=False)
+
         await ctx.channel.send(embed=status_embed)
-    
+
     @service.group()
     @commands.check(is_public)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
@@ -148,7 +149,7 @@ class CommunityOwnerCommands(commands.Cog):
                       'value': "Register community for spam service, which prevents community from unwanted discord community bot invasions."}]
 
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
-            
+
     @register.command()
     @commands.check(is_jail_not_registered)
     async def jail(self, ctx):
@@ -156,13 +157,13 @@ class CommunityOwnerCommands(commands.Cog):
             await ctx.message.delete()
         except Exception:
             pass
-        
-        if await self.check_role_status(ctx=ctx,role_name='Jailed'):
+
+        if await self.check_role_status(ctx=ctx, role_name='Jailed'):
             if jail_sys_mgn.register_community_for_jail_service(community_id=int(ctx.message.guild.id),
                                                                 community_name=f'{ctx.message.guild}',
                                                                 owner_id=ctx.message.guild.owner_id,
                                                                 owner_name=f'{ctx.message.guild.owner}'):
-                
+
                 message = f'You have successfully registered community to ***{self.bot.user.mention} JAIL*** system. Be sure to create role named ***Jailed***'
                 await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
             else:
@@ -170,7 +171,7 @@ class CommunityOwnerCommands(commands.Cog):
                 await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
         else:
             print('Role could not be created')
-    
+
     @register.command()
     @commands.check(is_spam_not_registered)
     async def spam(self, ctx):
@@ -178,10 +179,13 @@ class CommunityOwnerCommands(commands.Cog):
             await ctx.message.delete()
         except Exception:
             pass
-        
-        if await self.check_role_status(ctx=ctx,role_name='Unverified'):
-            if await self.check_role_status(ctx=ctx,role_name='Visitor'):
-                if spam_sys_mng.register_community_for_service(community_id=ctx.message.guild.id, community_name=f'{ctx.message.guild}', owner_id=ctx.message.guild.owner_id,owner_name=f'{ctx.message.guild.owner}'):
+
+        if await self.check_role_status(ctx=ctx, role_name='Unverified'):
+            if await self.check_role_status(ctx=ctx, role_name='Visitor'):
+                if spam_sys_mng.register_community_for_service(community_id=ctx.message.guild.id,
+                                                               community_name=f'{ctx.message.guild}',
+                                                               owner_id=ctx.message.guild.owner_id,
+                                                               owner_name=f'{ctx.message.guild.owner}'):
                     message = f'You have successfully registered community to ***{self.bot.user.mention} SPAM*** system.'
                     await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
                 else:
@@ -190,8 +194,8 @@ class CommunityOwnerCommands(commands.Cog):
             else:
                 print('Role Verified could not be created')
         else:
-            print('Role Unverified could not be created')   
-    
+            print('Role Unverified could not be created')
+
     @register.command()
     @commands.check(is_support_not_registered)
     async def support(self, ctx):
@@ -199,20 +203,18 @@ class CommunityOwnerCommands(commands.Cog):
             await ctx.message.delete()
         except Exception:
             pass
-        
-        if sup_sys_mng.register_community_for_support_service(community_id=ctx.message.guild.id, 
-                                                      community_name=f'{ctx.message.guild}', 
-                                                      owner_id=ctx.message.guild.owner_id,
-                                                      owner_name=f'{ctx.message.guild.owner}'):
+
+        if sup_sys_mng.register_community_for_support_service(community_id=ctx.message.guild.id,
+                                                              community_name=f'{ctx.message.guild}',
+                                                              owner_id=ctx.message.guild.owner_id,
+                                                              owner_name=f'{ctx.message.guild.owner}'):
             message = f'You have successfully registered community to ***{self.bot.user.mention} SUPPORT*** system.'
             await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
 
         else:
             message = f'There has been an error while trying register community for ***SUPPORT*** system. Please contact support staff or try again later!'
             await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
-        
-    
-    
+
     @service.error
     async def service_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
@@ -221,13 +223,13 @@ class CommunityOwnerCommands(commands.Cog):
         if isinstance(error, commands.CheckAnyFailure):
             message = 'Access to this areas is allowed only for the owner of the community or than the Bot Overwatch members!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
-        elif isinstance(error,commands.BotMissingPermissions):
+        elif isinstance(error, commands.BotMissingPermissions):
             message = 'Bot has insufficient permissions which are required to register for services. It requires at least administrator priileges with message and role management permissions!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
-            await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
-            
+            await custom_message.bug_messages(ctx=ctx, error=error, destination=dest)
+
     @register.error
     async def register_error(self, ctx, error):
         if isinstance(error, commands.CheckAnyFailure):
@@ -238,7 +240,7 @@ class CommunityOwnerCommands(commands.Cog):
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
-            await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
+            await custom_message.bug_messages(ctx=ctx, error=error, destination=dest)
 
     @spam.error
     async def spam_error(self, ctx, error):
@@ -247,8 +249,7 @@ class CommunityOwnerCommands(commands.Cog):
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
-            await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
-            
+            await custom_message.bug_messages(ctx=ctx, error=error, destination=dest)
 
     @support.error
     async def support_error(self, ctx, error):
@@ -257,8 +258,8 @@ class CommunityOwnerCommands(commands.Cog):
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
-            await custom_message.bug_messages(ctx=ctx,error=error,destination=dest)
-    
+            await custom_message.bug_messages(ctx=ctx, error=error, destination=dest)
+
 
 def setup(bot):
     bot.add_cog(CommunityOwnerCommands(bot))
