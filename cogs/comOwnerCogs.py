@@ -55,7 +55,6 @@ class CommunityOwnerCommands(commands.Cog):
                 await ctx.channel.send(content='Bot does not have permission to create roles')
                 return False
         else:
-            print('Role already exists on community')
             return True
 
     @commands.group()
@@ -76,13 +75,15 @@ class CommunityOwnerCommands(commands.Cog):
 
         if ctx.invoked_subcommand is None:
             title = '__Available settings categories for community__'
-            description = 'All available commands for owners of the community. Choose one, and further commands will be displayed'
+            description = 'All available commands for owners of the community. Choose one, and further commands' \
+                          ' will be displayed'
             value = [{'name': f'{self.bot.mention}service status',
                       'value': "Register community for spam prevention system for bot invasion"},
                      {'name': f'{self.bot.mention}service register spam',
                       'value': "Register community for spam prevention system for bot invasion"},
                      {'name': f'{self.bot.mention}service register jail',
-                      'value': "Register community for bad language prevention system and auto-jail and un-jail. (IN DEVELOPMENT)"},
+                      'value': "Register community for jail system. This allows to strip memmber roles for "
+                               " N amount of time, and auto reasignes them uppon expiration"},
                      {'name': f'{self.bot.mention}service register support',
                       'value': "Register community for support ticket to the staff members"}
                      ]
@@ -101,7 +102,8 @@ class CommunityOwnerCommands(commands.Cog):
                              description='Current status of community on services',
                              colour=Colour.blue())
         status_embed.add_field(name='Symbols',
-                               value=":green_circle: --> Service is activated\n :red_circle: --> Service is deactivated or has not been registered yet")
+                               value=":green_circle: --> Service is activated\n :red_circle: --> Service "
+                                     "is deactivated or has not been registered yet")
         if spam_sys_mng.check_if_security_activated(community_id=ctx.message.guild.id) == 1:
             status_embed.add_field(name='Spam prevention system status',
                                    value=":green_circle: ",
@@ -171,7 +173,8 @@ class CommunityOwnerCommands(commands.Cog):
                           f' Be sure to create role named ***Jailed***'
                 await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
             else:
-                message = f'There has been an error while trying register community into the JAIL system. Please contact support staff or try again later'
+                message = f'There has been an error while trying register community into the JAIL system. ' \
+                          f'Please contact support staff or try again later'
                 await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
         else:
             message = f'Role ***Jailed*** Could not be created and therefore registration was cancelled. Try again ' \
@@ -192,18 +195,21 @@ class CommunityOwnerCommands(commands.Cog):
                                                                community_name=f'{ctx.message.guild}',
                                                                owner_id=ctx.message.guild.owner_id,
                                                                owner_name=f'{ctx.message.guild.owner}'):
-                    message = f'You have successfully registered community to ***{self.bot.user.mention} SPAM*** system.'
+                    message = f'You have successfully registered community to ***{self.bot.user.mention} SPAM*** ' \
+                              f'system.'
                     await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
                 else:
-                    message = f'There has been an error while trying register community into the system. Please contact support staff'
+                    message = f'There has been an error while trying register community into the system. ' \
+                              f'Please contact support staff'
                     await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
             else:
-                message = f'Role ***Visitor*** could not be created therefore registration process has been cancelled.' \
+                message = f'Role ***Visitor*** could not be created therefore registration process has been' \
+                          f' cancelled.' \
                           f' Please try again later, or create role manually with exact name and repeat the process.'
                 await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             message = f'Role ***Visitor*** could not be created therefore registration process has been cancelled.' \
-                      f' Please try again later, or create role manually with exact name and repeat the process.''
+                      f' Please try again later, or create role manually with exact name and repeat the process.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
     @register.command()
