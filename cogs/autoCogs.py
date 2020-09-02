@@ -459,6 +459,15 @@ class AutoFunctions(commands.Cog):
                       f'type `{bot_setup["command"]} help` to check available commands.'
             await custom_messages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
                                                  sys_msg_title=title)
+        elif isinstance(error, commands.BotMissingAnyRole):
+            title = 'System Permission Error'
+            message = f'Bot does not have sufficient rights to execute command '
+            await custom_messages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
+                                                 sys_msg_title=title)
+
+        else:
+            pass
+
 
 
 def setup(bot):
