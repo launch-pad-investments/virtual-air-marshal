@@ -167,10 +167,12 @@ class CommunityOwnerCommands(commands.Cog):
                                                                 owner_id=ctx.message.guild.owner_id,
                                                                 owner_name=f'{ctx.message.guild.owner}'):
 
-                message = f'You have successfully registered community to ***{self.bot.user.mention} JAIL*** system. Be sure to create role named ***Jailed***'
+                message = f'You have successfully registered community to ***{self.bot.user.mention} JAIL*** system.' \
+                          f' Be sure to create role named ***Jailed***'
                 await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
             else:
-                message = f'There has been an error while trying register community into the JAIL system. Please contact support staff or try again later'
+                message = f'There has been an error while trying register community into the JAIL system. Please ' \
+                          f'contact support staff or try again later'
                 await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
         else:
             print('Role could not be created')
