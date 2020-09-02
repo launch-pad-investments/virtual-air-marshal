@@ -14,6 +14,7 @@ from discord.ext.commands import Greedy
 from backoffice.jailManagementDb import JailManagement
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
+from cogs.toolsCog.checks import is_public, is_overwatch, ban_predicate, kick_predicate,admin_predicate,role_mng
 from colorama import Fore
 
 helper = Helpers()
@@ -29,32 +30,6 @@ class custom_checks:
             return member1
         elif member1.top_role.position < member2.top_role.position:
             return member2
-
-
-def is_overwatch(ctx):
-    access_list = bot_setup['userAccess']
-    return [user for user in access_list if ctx.message.author.id == user]
-
-
-def role_mng(ctx):
-    return ctx.author.manage_roles
-
-
-def ban_predicate(ctx):
-    return ctx.author.guild_permissions.ban_members
-
-
-def kick_predicate(ctx):
-    return ctx.author.guild_permissions.kick_members
-
-
-def admin_predicate(ctx):
-    return ctx.message.author.administrator
-
-
-def is_public(ctx):
-    return ctx.message.channel.type != discord.ChannelType.private
-
 
 class TeamCommands(commands.Cog):
     def __init__(self, bot):

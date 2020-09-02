@@ -9,19 +9,12 @@ import sys
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
 
-from datetime import datetime
-from datetime import timedelta
-import time
 from backoffice.spamSystemDb import SpamSystemManager
 import discord
-from discord import Member as DiscordMember
 from discord.ext import commands
-from discord.ext.commands import Greedy
-from backoffice.jailManagementDb import JailManagement
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
-from cogs.toolsCog.checks import is_overwatch, is_community_owner, is_community_registered, is_public, is_spam_registered
-from colorama import Fore
+from cogs.toolsCog.checks import is_overwatch, is_community_owner, is_public, is_spam_registered
 
 helper = Helpers()
 spam_sys_mng = SpamSystemManager()
