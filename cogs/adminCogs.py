@@ -31,6 +31,7 @@ class custom_checks:
         elif member1.top_role.position < member2.top_role.position:
             return member2
 
+
 class TeamCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

@@ -433,22 +433,10 @@ class AutoFunctions(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         """
-        Function called everytime a message is sent on channel. Used for profanity system and jail management
 
         Args:
             message (discord.Message): 
         """
-        # if not message.author.bot:
-        #     if not isinstance(message.channel, DMChannel):
-        #         user_id = message.author.id
-        #         if message.author.id != message.guild.owner_id:
-        #
-        #         else:
-        #             pass
-        #     else:
-        #         print('Someone wanted to jail over DM')
-        # else:
-        #     pass
         pass
 
 
