@@ -142,11 +142,14 @@ class CommunityOwnerCommands(commands.Cog):
 
         if ctx.invoked_subcommand is None:
             title = '__Available settings categories for service register__'
-            description = 'Before you can use one of the availabale services you need to register it first into the system.'
-            value = [{'name': f'{bot_setup["command"]}service register jail',
-                      'value': "Register community into the system which automatically monitors use of language, and executes consequences ob breach."},
-                     {'name': f'{bot_setup["command"]}service register spam',
-                      'value': "Register community for spam service, which prevents community from unwanted discord community bot invasions."}]
+            description = 'Before you can use one of the availabale services you need to register it ' \
+                          'first into the system.'
+            value = [{'name': f'{self.bot.mention}service register jail',
+                      'value': "Register community into the system which automatically monitors use of "
+                               "language, and executes consequences ob breach."},
+                     {'name': f'{self.bot.mention}service register spam',
+                      'value': "Register community for spam service, which prevents community from unwanted "
+                               "discord community bot invasions."}]
 
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
 
