@@ -94,6 +94,9 @@ class ManagementCommands(commands.Cog):
 
         await customMessages.system_message(ctx=ctx, message=notification_str, color_code=0, destination=0)
 
+    @update.error
+    async def update_error_handler(self, ctx, error):
+        await ctx.channel.send(content=error)
 
 def setup(bot):
     bot.add_cog(ManagementCommands(bot))
