@@ -222,7 +222,8 @@ class CommunityOwnerCommands(commands.Cog):
             await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
 
         else:
-            message = f'There has been an error while trying register community for ***SUPPORT*** system. Please contact support staff or try again later!'
+            message = f'There has been an error while trying register community for ***SUPPORT*** system.' \
+                      f' Please contact support staff or try again later!'
             await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
 
     @service.error
