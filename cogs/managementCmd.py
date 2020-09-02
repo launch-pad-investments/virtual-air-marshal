@@ -51,7 +51,7 @@ class ManagementCommands(commands.Cog):
                                                 sys_msg_title=title)
 
     @commands.command()
-    @commands.is_owner()
+    @commands.check(is_overwatch)
     async def invite(self, ctx):
         await ctx.author.send(content='https://discordapp.com/oauth2/authorize?client_id=686851192680480768&scope=bot&permissions=268958846')
 
@@ -62,6 +62,7 @@ class ManagementCommands(commands.Cog):
             await ctx.message.delete()
         except Exception:
             pass
+        await ctx.channel.send(content='Trying to update')
         extensions = ['managementCmd', 'autoCogs', 'adminCogs']
         notification_str = ''
         try:
