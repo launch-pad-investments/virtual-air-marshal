@@ -45,7 +45,8 @@ class SpamService(commands.Cog):
             user_msg.set_thumbnail(url=self.bot.user.avatar_url)
 
             user_msg.add_field(name='Sys message',
-                               value=f'We would like to inform you that your support ticket has been recieved successfully. One of the '
+                               value=f'We would like to inform you that your support ticket'
+                                     f' has been recieved successfully. One of the '
                                      f'support staff from {ctx.guild} will be in contact with you as soon as possible!',
                                inline=False)
             user_msg.add_field(name='Community:',
@@ -110,7 +111,8 @@ class SpamService(commands.Cog):
             pass
         if ctx.invoked_subcommand is None:
             title = '__Available commands for issuing a  ***Support*** ticket!'
-            description = 'Ticket can be opened directly to the staff of the community. Bellow is representation of all available ticket types'
+            description = 'Ticket can be opened directly to the staff of the community. ' \
+                          'Bellow is representation of all available ticket types'
             value = [{'name': f'General inquiries department',
                       'value': f"{bot_setup['command']} ticket general <message>"},
                      {'name': f'Marketing department',
@@ -141,16 +143,19 @@ class SpamService(commands.Cog):
                         return
                     else:
                         title = '__Support System Internal Error__'
-                        message = f'System could deliver a copy of the ticket to your DM however support has recieved it and will be in touch as soon as possible. We apologize for inconvinience!'
+                        message = f'System could deliver a copy of the ticket to your DM however ' \
+                                  f'support has recieved it and will be in touch as soon as possible. We apologize for inconvinience!'
                         await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
                                                             sys_msg_title=title)
                 else:
                     title = '__Support System Internal Error__'
-                    message = f'System could not process you request at this moment. Please try again later. We apologize for inconvinience!'
+                    message = f'System could not process you request at this moment. Please try again later. ' \
+                              f'We apologize for inconvinience!'
                     await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
                                                         sys_msg_title=title)
             else:
-                message = f'{ctx.guild} does not have activate support ticket service. Please contact administrators directly'
+                message = f'{ctx.guild} does not have activate support ticket service. Please contact' \
+                          f' administrators directly'
                 await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             message = f'Message needs to be between 20 and 200 characters in length!'
@@ -176,16 +181,20 @@ class SpamService(commands.Cog):
                         return
                     else:
                         title = '__Support System Internal Error__'
-                        message = f'System could deliver a copy of the ticket to your DM however support has recieved it and will be in touch as soon as possible. We apologize for inconvinience!'
+                        message = f'System could deliver a copy of the ticket to your DM however support ' \
+                                  f'has recieved it and will be in touch as soon as possible. We apologize for' \
+                                  f' inconvinience!'
                         await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
                                                             sys_msg_title=title)
                 else:
                     title = '__Support System Internal Error__'
-                    message = f'System could not process you request at this moment. Please try again later. We apologize for inconvinience!'
+                    message = f'System could not process you request at this moment. Please try again later.' \
+                              f' We apologize for inconvinience!'
                     await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
                                                         sys_msg_title=title)
             else:
-                message = f'{ctx.guild} does not have activate support ticket service. Please contact administrators directly'
+                message = f'{ctx.guild} does not have activate support ticket service. Please contact' \
+                          f' administrators directly'
                 await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             message = f'Message needs to be between 20 and 200 characters in length!'
@@ -211,16 +220,20 @@ class SpamService(commands.Cog):
                         return
                     else:
                         title = '__Support System Internal Error__'
-                        message = f'System could deliver a copy of the ticket to your DM however support has recieved it and will be in touch as soon as possible. We apologize for inconvinience!'
+                        message = f'System could deliver a copy of the ticket to your DM however support' \
+                                  f' has recieved it and will be in touch as soon as possible. ' \
+                                  f'We apologize for inconvinience!'
                         await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
                                                             sys_msg_title=title)
                 else:
                     title = '__Support System Internal Error__'
-                    message = f'System could not process you request at this moment. Please try again later. We apologize for inconvinience!'
+                    message = f'System could not process you request at this moment. Please try again later.' \
+                              f' We apologize for inconvinience!'
                     await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
                                                         sys_msg_title=title)
             else:
-                message = f'{ctx.guild} does not have activate support ticket service. Please contact administrators directly'
+                message = f'{ctx.guild} does not have activate support ticket service. Please contact ' \
+                          f'administrators directly'
                 await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             message = f'Message needs to be between 20 and 200 characters in length!'
@@ -238,7 +251,8 @@ class SpamService(commands.Cog):
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)
         else:
             title = '__:bug: Found__'
-            message = f'Bug has been found while executing command and {self.bot.user} service team has been automatically notified. We apologize for inconvinience!'
+            message = f'Bug has been found while executing command and {self.bot.user} service team has been' \
+                      f' automatically notified. We apologize for inconvinience!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)
 
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
@@ -256,7 +270,8 @@ class SpamService(commands.Cog):
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)
         else:
             title = '__:bug: Found__'
-            message = f'Bug has been found while executing command and {self.bot.user} service team has been automatically notified. We apologize for inconvinience!'
+            message = f'Bug has been found while executing command and {self.bot.user} service team has been' \
+                      f' automatically notified. We apologize for inconvinience!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)
 
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
@@ -274,7 +289,8 @@ class SpamService(commands.Cog):
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)
         else:
             title = '__:bug: Found__'
-            message = f'Bug has been found while executing command and {self.bot.user} service team has been automatically notified. We apologize for inconvinience!'
+            message = f'Bug has been found while executing command and {self.bot.user} service team has ' \
+                      f'been automatically notified. We apologize for inconvinience!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)
 
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
@@ -284,12 +300,14 @@ class SpamService(commands.Cog):
     async def ticket_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
             title = '__Support System Check Error__'
-            message = f'Support request needs to be issued on one of the public Text Channels on community {ctx.guild} and community needs to have support system activated: {error}'
+            message = f'Support request needs to be issued on one of the public Text Channels on' \
+                      f' community {ctx.guild} and community needs to have support system activated: {error}'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)
 
         else:
             title = '__:bug: Found__'
-            message = f'Bug has been found while executing command and {self.bot.user} service team has been automatically notified. We apologize for inconvinience!'
+            message = f'Bug has been found while executing command and {self.bot.user} service team ' \
+                      f'has been automatically notified. We apologize for inconvinience!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)
 
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
