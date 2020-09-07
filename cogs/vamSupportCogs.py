@@ -111,14 +111,16 @@ class StaffContactCmd(commands.Cog):
             pass
         if ctx.invoked_subcommand is None:
             title = '__Available commands for issuing a  ***Support*** ticket!'
-            description = 'Ticket can be opened directly to the staff of the community. ' \
-                          'Bellow is representation of all available ticket types'
-            value = [{'name': f'General inquiries department',
-                      'value': f"{bot_setup['command']} ticket general <message>"},
-                     {'name': f'Marketing department',
-                      'value': f"{bot_setup['command']} ticket marketing <message>"},
-                     {'name': f'Complaints department',
-                      'value': f"{bot_setup['command']} ticket report <message>"}
+            description = 'Message can be sent directly to Virtual Air Marshal development team and they will be in ' \
+                          'touch ASAP.'
+            value = [{'name': f'Feature request Message',
+                      'value': f"{bot_setup['command']} sys feature <message>"},
+                     {'name': f'Bug Report Message',
+                      'value': f"{bot_setup['command']} sys bug <message>"},
+                     {'name': f'Marketing inquiry',
+                      'value': f"{bot_setup['command']} sys marketing <message>"},
+                     {'name': f'Other messages',
+                      'value': f"{bot_setup['command']} sys other <message>"}
                      ]
 
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
