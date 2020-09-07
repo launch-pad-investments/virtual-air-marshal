@@ -56,6 +56,7 @@ Spam/Bot prevention system allows community owners to protect their
 
 ## Invite the bot
 Bot requires following Discord Permissions to operate optimally
+
 ```text
 # Read Message
 # Send Message
@@ -94,6 +95,7 @@ can make tip to one of the following available cryptocurrency jars bellow.
 Jars still to come
 ```
 
+## Contributing
 Bot is written in Python, therefore if you would like to contribute please contact us through command bellow 
 and we will be in touch ASAP.
 
