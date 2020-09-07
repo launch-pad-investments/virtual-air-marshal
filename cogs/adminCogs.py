@@ -14,7 +14,7 @@ from discord.ext.commands import Greedy
 from backoffice.jailManagementDb import JailManagement
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
-from cogs.toolsCog.checks import is_public, is_overwatch, ban_predicate, kick_predicate,admin_predicate,role_mng
+from cogs.toolsCog.checks import is_public, is_overwatch, ban_predicate, kick_predicate, admin_predicate, role_mng
 from colorama import Fore
 
 helper = Helpers()
@@ -69,7 +69,7 @@ class TeamCommands(commands.Cog):
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(kick_predicate), commands.check(admin_predicate),
                         commands.check(is_overwatch))
-    async def kick(self, ctx, users: Greedy[DiscordMember], *, reason: str=None):
+    async def kick(self, ctx, users: Greedy[DiscordMember], *, reason: str = None):
         """
         Kicks the member from the community
         :param ctx:
@@ -81,7 +81,7 @@ class TeamCommands(commands.Cog):
             await ctx.message.delete()
         except Exception:
             pass
-        
+
         if ctx.author.guild_permissions.kick_members:
             kicked_members = ''
             for user in users:
@@ -112,7 +112,7 @@ class TeamCommands(commands.Cog):
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(ban_predicate), commands.check(admin_predicate),
                         commands.check(is_overwatch))
-    async def ban(self, ctx, users: Greedy[DiscordMember], *, reason: str=None):
+    async def ban(self, ctx, users: Greedy[DiscordMember], *, reason: str = None):
         """
         Bans the member from the community
         :param ctx:
@@ -120,7 +120,7 @@ class TeamCommands(commands.Cog):
         :param reason:
         :return:
         """
-        
+
         try:
             await ctx.message.delete()
         except Exception:
@@ -169,7 +169,7 @@ class TeamCommands(commands.Cog):
                      ]
 
             await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
-    
+
     @role.command()
     async def remove(self, ctx, user: discord.Member, role: discord.Role):
         try:
@@ -192,27 +192,27 @@ class TeamCommands(commands.Cog):
 
     @commands.group()
     @commands.check(is_public)
-    @commands.check_any(commands.is_owner(),commands.check(admin_predicate))
+    @commands.check_any(commands.is_owner(), commands.check(admin_predicate))
     async def create(self, ctx):
         if ctx.invoked_subcommand is None:
             title = '__Available commands under ***CREATE*** category.'
             description = 'All available commands for administrators of the community.'
             value = [{'name': f'{bot_setup["command"]} create text_channel <channel name> <topic=optional>',
                       'value': f"Creates new text channel on community"},
-                    {'name': f'{bot_setup["command"]} create voice_channel <channel name> <channel topic>',
-                                        'value': f"Creates new text channel on community"},
+                     {'name': f'{bot_setup["command"]} create voice_channel <channel name> <channel topic>',
+                      'value': f"Creates new text channel on community"},
 
                      ]
 
             await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
-    
+
     @create.command()
-    async def text_channel(self, ctx, *, channel_name:str=None):
+    async def text_channel(self, ctx, *, channel_name: str = None):
         try:
             await ctx.message.delete()
         except Exception:
             pass
-        
+
         try:
             channel = await ctx.guild.create_text_channel(name=channel_name)
             await channel.send(content=f'{ctx.author.mention} you have successfully created new Text Channel!')
@@ -227,12 +227,12 @@ class TeamCommands(commands.Cog):
             await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
 
     @create.command()
-    async def voice_channel(self, ctx, *, channel_name:str):
+    async def voice_channel(self, ctx, *, channel_name: str):
         try:
             await ctx.message.delete()
         except Exception:
             pass
-        
+
         try:
             await ctx.guild.create_voice_channel(name=channel_name)
             await ctx.channel.send(content=f'{ctx.message.author.mention} Voice channel has been successfully created')
@@ -245,7 +245,6 @@ class TeamCommands(commands.Cog):
         except discord.InvalidArgument as e:
             message = f'Voice Channel could not be created.. Here are details {e}.'
             await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
-
 
     @kick.error
     async def kick_error(self, ctx, error):

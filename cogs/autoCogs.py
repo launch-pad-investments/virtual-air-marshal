@@ -207,7 +207,6 @@ class AutoFunctions(commands.Cog):
             pass
 
         print(Fore.LIGHTWHITE_EX + f'Initiating clean up process for member {member} with ID {member.id}')
-        jail_manager.clear_community_member_counter(community_id=member.guild.id, member_id=member.id)
         jail_manager.clear_community_member_jail(community_id=member.guild.id, member_id=member.id)
         print(Fore.GREEN + f'Cleaning process finished')
         print(f'==============DONE=================')
@@ -297,7 +296,6 @@ class AutoFunctions(commands.Cog):
         sup_sys_mng.remove_from_support_system(community_id=int(guild.id))
         spam_sys_mng.remove_from_spam_system(community_id=int(guild.id))
         jail_sys_mng.remove_from_jail_system(community_id=int(guild.id))
-        jail_manager.clear_community_counter(community_id=int(guild.id))
         jail_manager.clear_community_jail(community_id=int(guild.id))
 
         support_channels = bot_setup['supportChannel']
@@ -439,7 +437,6 @@ class AutoFunctions(commands.Cog):
         """
         pass
 
-
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         """
@@ -467,7 +464,6 @@ class AutoFunctions(commands.Cog):
 
         else:
             pass
-
 
 
 def setup(bot):
