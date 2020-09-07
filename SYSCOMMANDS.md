@@ -1,4 +1,4 @@
-# Get in touch with developer tema
+# Get in touch with developer team
 
 ## Predispositions for command with sub commands to work
 
