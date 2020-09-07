@@ -20,7 +20,7 @@ or
 - General Administration Commands
 
 
-### :robot: Spam/Bot Invasion Protection System :robot:
+### Spam/Bot Invasion Protection System :robot:
 Spam/Bot prevention system allows community owners to protect their members from media messages which were not 
 approved by the guilds staff members. Owner set ups the landing channel for all new members, and specifies the message
 user needs to react with "thumbs up" emoji in order to get verified. When user joins "Unverified" role is assigned 
@@ -28,7 +28,7 @@ which, upon appropriate reaction to message, is replaced by Verified.
 
 [Spam protection Setup-Guide and Instructions](SPAMPROTECTION.md)
 
-### :cop: Jail System :cop:
+### Jail System :cop:
 Why ban or kick members who breach the rules of the community, where you could just jail them for N amount of time and
 give them a lesson??? This can be achieved with one command and Virtual Air Marshal will do the rest for you.
 When member gets jailed, he will receive role "Jailed" where his rights and previous roles will be stripped. 
@@ -65,7 +65,9 @@ Bot requires following Discord Permissions to operate optimally
 # Add Reactions
 ```
 
-Invitation Link
-
 [Bot Invite Link](https://discord.com/oauth2/authorize?client_id=706806251321032726&scope=bot&permissions=392256)
 
+
+## Feature Request procedure
+
+## Donations
