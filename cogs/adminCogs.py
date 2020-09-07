@@ -190,7 +190,7 @@ class TeamCommands(commands.Cog):
         message = f'Role {role.name} with ID {role.id}has ben given to the user {user.display_name}'
         await customMessages.system_message(ctx=ctx, color_code=0, destination=1, message=message)
 
-    @commands.group()
+    @admin.group()
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(admin_predicate))
     async def create(self, ctx):
@@ -213,6 +213,9 @@ class TeamCommands(commands.Cog):
         except Exception:
             pass
 
+        if not channel_name:
+            channel_name = 'NewChannel'
+
         try:
             channel = await ctx.guild.create_text_channel(name=channel_name)
             await channel.send(content=f'{ctx.author.mention} you have successfully created new Text Channel!')
@@ -232,6 +235,10 @@ class TeamCommands(commands.Cog):
             await ctx.message.delete()
         except Exception:
             pass
+
+        if not channel_name:
+            channel_name = 'NewVoice'
+
 
         try:
             await ctx.guild.create_voice_channel(name=channel_name)
