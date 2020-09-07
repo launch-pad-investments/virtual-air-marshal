@@ -237,5 +237,9 @@ class StaffContactCmd(commands.Cog):
             message = f'Message needs to be between 20 and 200 characters in length!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
+    @sys.command()
+    @commands.check(is_public)
+    async def other(self, ctx, *, message: str):
+        pass
 def setup(bot):
     bot.add_cog(StaffContactCmd(bot))
