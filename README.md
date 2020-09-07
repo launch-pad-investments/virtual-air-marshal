@@ -12,23 +12,29 @@ The bot is owned by Launch Pad Investments Discord Group offering wide variety o
 or
 @Virtual Air Marshal#8238  # Bot tag
 ``` 
+
+
 ## Available functions and systems
 - Spam/Bot Invasion Prevention System
-- Jail System 
+- Timed Jail System
 - Support Ticket System
-- Administrative Commands
+
 
 ### Spam/Bot Invasion Protection System
-####How to Setup
+Spam/Bot prevention system allows community owners to protect their  
+
+### Jail System 
+
+### Support Ticket System
+
+### Available Administrative commands
 
 
+### Spam/Bot Invasion Protection System
+Spam/Bot prevention system allows community owners to protect their  
 
 
-
-
-## Get started as guild owner
-
-#### Invite the bot
+## Invite the bot
 Bot requires following Discord Permissions to operate optimally
 ```text
 # Read Message
@@ -46,13 +52,3 @@ Bot requires following Discord Permissions to operate optimally
 
 [Bot Invite Link](https://discord.com/oauth2/authorize?client_id=706806251321032726&scope=bot&permissions=392256)
 
-
-
-
-## Available Functions
-
-[Moderation commands!](MODERATIONCMD.md)
-
-[Profanity protection and auto jail system](PROFANITYANDJAIL.md)
-
-[Bot invasion protection system](SPAMPROTECTION.md)
