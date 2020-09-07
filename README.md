@@ -24,6 +24,8 @@ or
 Spam/Bot prevention system allows community owners to protect their  
 
 ### Jail System 
+Why ban or kick members who breach the rules of the community, where you could just jail them for N amount of time,
+with one command and Virtual Air Marshal will do the rest for you?
 
 ### Support Ticket System
 
