@@ -1,7 +1,11 @@
-# Get in touch with development team behind Virtual Marshall
+# Get in touch with developer tema
 
-NOTE: You need to be owner of the community to be able to send message to development team. 
+## Predispositions for command with sub commands to work
 
+```text
+- Command needs to be executed on the public channel of the community
+- Command is accessible only to Guild Owners
+```
 ## Entry point for messaging system
 Get all available types of messages to development.
 
@@ -40,7 +44,7 @@ If you would like to discuss marketing related activities than this is the comma
 Everything else goes in this command
 
 ```text
-^vam sys marketing <Message between 20 and 200 characters>
+^vam sys other <Message between 20 and 200 characters>
 ```
 
 
