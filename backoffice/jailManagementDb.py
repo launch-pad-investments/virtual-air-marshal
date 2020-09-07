@@ -12,7 +12,7 @@ sys.path.append(project_path)
 class JailManagement():
     def __init__(self):
         self.connection = MongoClient("mongodb://localhost:27017")
-        self.jail = self.connection['AirMarshall']
+        self.jail = self.connection['VirtualAirMarshal']
         self.jailed = self.jail.jailedMembers
 
     def get_served_users(self, timestamp):

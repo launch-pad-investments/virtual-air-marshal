@@ -13,7 +13,7 @@ from colorama import Fore
 class JailSystemManager:
     def __init__(self):
         self.connection = MongoClient('mongodb://localhost:27017/')
-        self.airMarshall = self.connection['AirMarshall']
+        self.airMarshall = self.connection['VirtualAirMarshal']
         self.jailSystem = self.airMarshall.jailProfiles
 
     def register_community_for_jail_service(self, community_id,community_name, owner_id, owner_name):

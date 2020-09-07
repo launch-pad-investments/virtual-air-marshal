@@ -13,7 +13,7 @@ from colorama import Fore
 class SpamSystemManager:
     def __init__(self):
         self.connection = MongoClient('mongodb://localhost:27017/')
-        self.airMarshall = self.connection['AirMarshall']
+        self.airMarshall = self.connection['VirtualAirMarshal']
         self.spamSystem = self.airMarshall.spamProfiles
 
     def register_community_for_service(self, community_id,community_name, owner_id, owner_name):
