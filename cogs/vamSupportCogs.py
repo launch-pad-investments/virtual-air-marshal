@@ -24,6 +24,7 @@ support_sys_mng = SupportSystemManager()
 custom_message = CustomMessages()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 
+
 class StaffContactCmd(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

@@ -96,9 +96,5 @@ Jars still to come
 ```
 
 ## Contributing
-Bot is written in Python, therefore if you would like to contribute please contact us through command bellow 
-and we will be in touch ASAP.
+Coming soon...
 
-```text
-^vam sys recruitment <Message>
-```
