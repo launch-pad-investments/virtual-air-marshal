@@ -21,7 +21,10 @@ or
 
 
 ### Spam/Bot Invasion Protection System
-Spam/Bot prevention system allows community owners to protect their  
+Spam/Bot prevention system allows community owners to protect their members from media messages which were not 
+approved by the guilds staff members. Owner set ups the landing channel for all new members, and specifies the message
+user needs to react with "thumbs up" emoji in order to get verified. When user joins "Unverified" role is assigned 
+which, upon appropriate reaction to message, is replaced by Verified. 
 
 ### Jail System 
 Why ban or kick members who breach the rules of the community, where you could just jail them for N amount of time,
