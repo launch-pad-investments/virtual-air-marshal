@@ -14,7 +14,7 @@ or
 
 ## For Guild owners
 Each of the bellow presented systems acts as a standalone entity part of the Virtual Air Marshal. This means, that 
-it requires registration for each system separately (Only one command to execute). For Set-up guildines 
+it requires registration for each system separately (Only one command to execute).
 
 ## Available functions and systems
 - Spam/Bot Invasion Prevention System
@@ -22,8 +22,7 @@ it requires registration for each system separately (Only one command to execute
 - Support Ticket System
 - General Administration Commands
 
-
-### Spam/Bot Invasion Protection System :robot:
+### Spam/Bot Invasion Protection System 
 Spam/Bot prevention system allows community owners to protect their members from media messages which were not 
 approved by the guilds staff members. Owner set ups the landing channel for all new members, and specifies the message
 user needs to react with "thumbs up" emoji in order to get verified. When user joins "Unverified" role is assigned 
@@ -31,7 +30,7 @@ which, upon appropriate reaction to message, is replaced by Verified.
 
 [Spam protection Setup-Guide and Instructions](SPAMPROTECTION.md)
 
-### Jail System :cop:
+### Jail System 
 Why ban or kick members who breach the rules of the community, where you could just jail them for N amount of time and
 give them a lesson??? This can be achieved with one command and Virtual Air Marshal will do the rest for you.
 When member gets jailed, he will receive role "Jailed" where his rights and previous roles will be stripped. 
@@ -48,7 +47,14 @@ one channel so you can have everything on one place.
 [Ticket System Setup-Guide and Instructions](SUPPORTTICKET.md)
 
 ### Available Administrative commands
+This section includes basic administrative commands which get accessible once bot joins the guild. For quick overview
+of the commands execute:
 
+```text
+^vam admin
+```
+
+[Administration commands List and explanations](ADMINISTRATOR.md)
 
 ### Spam/Bot Invasion Protection System
 Spam/Bot prevention system allows community owners to protect their  
