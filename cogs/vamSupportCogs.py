@@ -80,10 +80,12 @@ class StaffContactCmd(commands.Cog):
                              colour=Colour.magenta(),
                              timestamp=time_of_request)
             supp_msg.set_thumbnail(url=ctx.message.author.avatar_url)
-            supp_msg.add_field(name="Department",
+            supp_msg.add_field(name='From Guild',
+                               value=f'{ctx.message.guild}')
+            supp_msg.add_field(name="Subject",
                                value=f'{department}',
                                inline=False)
-            supp_msg.add_field(name="from",
+            supp_msg.add_field(name="From guild owner",
                                value=f'{ctx.message.author} id: {ctx.message.author.id}',
                                inline=False)
             supp_msg.add_field(name="Ticket ID",
@@ -92,7 +94,6 @@ class StaffContactCmd(commands.Cog):
             supp_msg.add_field(name="Message Content",
                                value=f'{message}',
                                inline=False)
-
             await dest.send(content=f"TICKET: {ticket_id}")
             support_msg = await dest.send(embed=supp_msg)
             await support_msg.add_reaction(emoji="⛔")
