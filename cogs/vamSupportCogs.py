@@ -104,7 +104,7 @@ class StaffContactCmd(commands.Cog):
 
     @commands.group()
     @commands.check(is_public)
-    async def staff(self, ctx):
+    async def sys(self, ctx):
         try:
             await ctx.message.delete()
         except Exception:
@@ -123,7 +123,7 @@ class StaffContactCmd(commands.Cog):
 
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
 
-    @staff.command()
+    @sys.command()
     @commands.check(is_public)
     async def feature(self, ctx, *, message: str):
         try:
@@ -161,7 +161,7 @@ class StaffContactCmd(commands.Cog):
             message = f'Message needs to be between 20 and 200 characters in length!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
-    @staff.command()
+    @sys.command()
     @commands.check(is_public)
     async def bug(self, ctx, *, message: str):
         try:
@@ -199,7 +199,7 @@ class StaffContactCmd(commands.Cog):
             message = f'Message needs to be between 20 and 200 characters in length!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
-    @staff.command()
+    @sys.command()
     @commands.check(is_public)
     async def marketing(self, ctx, *, message: str):
         try:

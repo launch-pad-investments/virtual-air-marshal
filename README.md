@@ -12,6 +12,9 @@ or
 @Virtual Air Marshal#8238  # Bot tag
 ``` 
 
+## For Guild owners
+Each of the bellow presented systems acts as a standalone entity part of the Virtual Air Marshal. This means, that 
+it requires registration for each system separately (Only one command to execute). For Set-up guildines 
 
 ## Available functions and systems
 - Spam/Bot Invasion Prevention System
@@ -68,6 +71,19 @@ Bot requires following Discord Permissions to operate optimally
 [Bot Invite Link](https://discord.com/oauth2/authorize?client_id=706806251321032726&scope=bot&permissions=392256)
 
 
-## Feature Request procedure
+## Feature Request, Assistance, etc. request procedure
+Open up VAM support ticket from one of the channels on the community where Virtual Marshal is present. Provide as many
+details as possible and we will be in touch ASAP either directly or through the Virtual Air Marshal. 
+
+Note: You need to be guild owner in order to contact Virtual Air Marshal support staff
+
+to see available types of support execute command 
+
+```text
+^vam sys
+```
+
+or check all available sys sub-commands [here](SYSCOMMANDS.md)
+
 
 ## Donations
