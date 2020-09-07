@@ -83,7 +83,20 @@ to see available types of support execute command
 ^vam sys
 ```
 
-or check all available sys sub-commands [here](SYSCOMMANDS.md)
+[AVAILABLE COMMANDS FOR SYS](SYSCOMMANDS.md)
 
 
 ## Donations
+Virtual Air Marshal is a self-funding project, if you like the product and would like to support us you 
+can make tip to one of the following available cryptocurrency jars bellow.
+
+```text
+Jars still to come
+```
+
+Bot is written in Python, therefore if you would like to contribute please contact us through command bellow 
+and we will be in touch ASAP.
+
+```text
+^vam sys recruitment <Message>
+```

@@ -241,5 +241,7 @@ class StaffContactCmd(commands.Cog):
     @commands.check(is_public)
     async def other(self, ctx, *, message: str):
         pass
+
+
 def setup(bot):
     bot.add_cog(StaffContactCmd(bot))
