@@ -25,6 +25,8 @@ custom_message = CustomMessages()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 
 
+# TODO integrate check if user is owner of the community who wants to send message
+
 class StaffContactCmd(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -138,7 +140,8 @@ class StaffContactCmd(commands.Cog):
             ticket_no = str(uuid4())
             time_of_request = datetime.utcnow()
 
-            if await self.send_ticket_message_channel(ctx=ctx, message=message, department='Marketing', ticket_id=ticket_no):
+            if await self.send_ticket_message_channel(ctx=ctx, message=message, department='Marketing',
+                                                      ticket_id=ticket_no):
                 if await self.send_ticket_message_author(ctx=ctx, time_of_request=time_of_request,
                                                          department='Feature', ticket_id=ticket_no,
                                                          support_msg=message, colour=Colour.magenta()):
@@ -146,7 +149,8 @@ class StaffContactCmd(commands.Cog):
                 else:
                     title = '__Support System Internal Error__'
                     message = f'System could deliver a copy of the ticket to your DM however ' \
-                              f'support has recieved it and will be in touch as soon as possible. We apologize for inconvinience!'
+                              f'support has recieved it and will be in touch as soon as possible. We apologize ' \
+                              f'for inconvinience!'
                     await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
                                                         sys_msg_title=title)
             else:
@@ -169,30 +173,27 @@ class StaffContactCmd(commands.Cog):
         if self.length_checker(message=message):
             ticket_no = str(uuid4())
             time_of_request = datetime.utcnow()
-            if support_sys_mng.check_if_support_activated(community_id=ctx.guild.id):
-                if await self.send_ticket_message_channel(ctx=ctx, message=message, department='Marketing',
-                                                          color_code=Colour.magenta(), ticket_id=ticket_no,
-                                                          time_of_request=time_of_request):
-                    if await self.send_ticket_message_author(ctx=ctx, time_of_request=time_of_request,
-                                                             department='Feature', ticket_id=ticket_no,
-                                                             support_msg=message, colour=Colour.magenta()):
-                        return
-                    else:
-                        title = '__Support System Internal Error__'
-                        message = f'System could deliver a copy of the ticket to your DM however ' \
-                                  f'support has recieved it and will be in touch as soon as possible. We apologize for inconvinience!'
-                        await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
-                                                            sys_msg_title=title)
+
+            if await self.send_ticket_message_channel(ctx=ctx, message=message, department='Marketing',
+                                                      ticket_id=ticket_no):
+                if await self.send_ticket_message_author(ctx=ctx, time_of_request=time_of_request,
+                                                         department='Feature', ticket_id=ticket_no,
+                                                         support_msg=message, colour=Colour.magenta()):
+                    return
                 else:
                     title = '__Support System Internal Error__'
-                    message = f'System could not process you request at this moment. Please try again later. ' \
-                              f'We apologize for inconvinience!'
+                    message = f'System could deliver a copy of the ticket to your DM however ' \
+                              f'support has recieved it and will be in touch as soon as possible. We apologize ' \
+                              f'for inconvinience!'
                     await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
                                                         sys_msg_title=title)
             else:
-                message = f'{ctx.guild} does not have activate support ticket service. Please contact' \
-                          f' administrators directly'
-                await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+                title = '__Support System Internal Error__'
+                message = f'System could not process you request at this moment. Please try again later. ' \
+                          f'We apologize for inconvinience!'
+                await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
+                                                    sys_msg_title=title)
+
         else:
             message = f'Message needs to be between 20 and 200 characters in length!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
@@ -207,30 +208,27 @@ class StaffContactCmd(commands.Cog):
         if self.length_checker(message=message):
             ticket_no = str(uuid4())
             time_of_request = datetime.utcnow()
-            if support_sys_mng.check_if_support_activated(community_id=ctx.guild.id):
-                if await self.send_ticket_message_channel(ctx=ctx, message=message, department='Marketing',
-                                                          color_code=Colour.magenta(), ticket_id=ticket_no,
-                                                          time_of_request=time_of_request):
-                    if await self.send_ticket_message_author(ctx=ctx, time_of_request=time_of_request,
-                                                             department='Feature', ticket_id=ticket_no,
-                                                             support_msg=message, colour=Colour.magenta()):
-                        return
-                    else:
-                        title = '__Support System Internal Error__'
-                        message = f'System could deliver a copy of the ticket to your DM however ' \
-                                  f'support has recieved it and will be in touch as soon as possible. We apologize for inconvinience!'
-                        await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
-                                                            sys_msg_title=title)
+
+            if await self.send_ticket_message_channel(ctx=ctx, message=message, department='Marketing',
+                                                      ticket_id=ticket_no):
+                if await self.send_ticket_message_author(ctx=ctx, time_of_request=time_of_request,
+                                                         department='Feature', ticket_id=ticket_no,
+                                                         support_msg=message, colour=Colour.magenta()):
+                    return
                 else:
                     title = '__Support System Internal Error__'
-                    message = f'System could not process you request at this moment. Please try again later. ' \
-                              f'We apologize for inconvinience!'
+                    message = f'System could deliver a copy of the ticket to your DM however ' \
+                              f'support has recieved it and will be in touch as soon as possible. We apologize ' \
+                              f'for inconvinience!'
                     await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
                                                         sys_msg_title=title)
             else:
-                message = f'{ctx.guild} does not have activate support ticket service. Please contact' \
-                          f' administrators directly'
-                await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+                title = '__Support System Internal Error__'
+                message = f'System could not process you request at this moment. Please try again later. ' \
+                          f'We apologize for inconvinience!'
+                await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
+                                                    sys_msg_title=title)
+
         else:
             message = f'Message needs to be between 20 and 200 characters in length!'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
@@ -238,7 +236,37 @@ class StaffContactCmd(commands.Cog):
     @sys.command()
     @commands.check(is_public)
     async def other(self, ctx, *, message: str):
-        pass
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+        if self.length_checker(message=message):
+            ticket_no = str(uuid4())
+            time_of_request = datetime.utcnow()
+
+            if await self.send_ticket_message_channel(ctx=ctx, message=message, department='Marketing',
+                                                      ticket_id=ticket_no):
+                if await self.send_ticket_message_author(ctx=ctx, time_of_request=time_of_request,
+                                                         department='Feature', ticket_id=ticket_no,
+                                                         support_msg=message, colour=Colour.magenta()):
+                    return
+                else:
+                    title = '__Support System Internal Error__'
+                    message = f'System could deliver a copy of the ticket to your DM however ' \
+                              f'support has recieved it and will be in touch as soon as possible. We apologize ' \
+                              f'for inconvinience!'
+                    await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
+                                                        sys_msg_title=title)
+            else:
+                title = '__Support System Internal Error__'
+                message = f'System could not process you request at this moment. Please try again later. ' \
+                          f'We apologize for inconvinience!'
+                await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
+                                                    sys_msg_title=title)
+
+        else:
+            message = f'Message needs to be between 20 and 200 characters in length!'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
 
 def setup(bot):
