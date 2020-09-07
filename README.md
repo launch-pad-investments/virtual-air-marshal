@@ -1,6 +1,5 @@
 # Virtual Air Marshal
 
-
 ## About
 
 Virtual Air Marshal is a multi Discord Management Bot with various integrated manual and automatic services and commands to manage community.
@@ -25,12 +24,20 @@ Spam/Bot prevention system allows community owners to protect their members from
 approved by the guilds staff members. Owner set ups the landing channel for all new members, and specifies the message
 user needs to react with "thumbs up" emoji in order to get verified. When user joins "Unverified" role is assigned 
 which, upon appropriate reaction to message, is replaced by Verified. 
+[Spam protection Setup-Guide and Instructions](SPAMPROTECTION.md)
 
 ### Jail System 
-Why ban or kick members who breach the rules of the community, where you could just jail them for N amount of time,
-with one command and Virtual Air Marshal will do the rest for you?
+Why ban or kick members who breach the rules of the community, where you could just jail them for N amount of time and
+give them a lesson??? This can be achieved with one command and Virtual Air Marshal will do the rest for you.
+When member gets jailed, he will receive role "Jailed" where his rights and previous roles will be stripped. 
+Virtual Air Marshal will than monitor for expiration, and once sentence passed, will automatically release user 
+and re-assign previous roles member had on the guild. 
+
+[Jail Setup-Guide and Instructions](JAILSYSTEM.md)
 
 ### Support Ticket System
+
+[Ticket System Setup-Guide and Instructions](SUPPORTTICKET.md)
 
 ### Available Administrative commands
 
