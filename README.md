@@ -17,6 +17,7 @@ or
 - Spam/Bot Invasion Prevention System
 - Timed Jail System
 - Support Ticket System
+- General Administration Commands
 
 
 ### :robot: Spam/Bot Invasion Protection System :robot:
@@ -25,7 +26,7 @@ approved by the guilds staff members. Owner set ups the landing channel for all 
 user needs to react with "thumbs up" emoji in order to get verified. When user joins "Unverified" role is assigned 
 which, upon appropriate reaction to message, is replaced by Verified. 
 
-:green_book: [Spam protection Setup-Guide and Instructions](SPAMPROTECTION.md)
+[Spam protection Setup-Guide and Instructions](SPAMPROTECTION.md)
 
 ### :cop: Jail System :cop:
 Why ban or kick members who breach the rules of the community, where you could just jail them for N amount of time and
@@ -34,14 +35,14 @@ When member gets jailed, he will receive role "Jailed" where his rights and prev
 Virtual Air Marshal will than monitor for expiration, and once sentence passed, will automatically release user 
 and re-assign previous roles member had on the guild. 
 
-:green_book: [Jail Setup-Guide and Instructions](JAILSYSTEM.md)
+[Jail Setup-Guide and Instructions](JAILSYSTEM.md)
 
 ### Support Ticket System
 Getting tired of members asking questions on regular channels, where data can get lost, or hard to scroll through?
 Virtual Air Marshal Ticket System provides opportunity to relay all the Support requests from Guild members onto 
 one channel so you can have everything on one place. 
 
-:green_book: [Ticket System Setup-Guide and Instructions](SUPPORTTICKET.md)
+[Ticket System Setup-Guide and Instructions](SUPPORTTICKET.md)
 
 ### Available Administrative commands
 
@@ -64,7 +65,7 @@ Bot requires following Discord Permissions to operate optimally
 # Add Reactions
 ```
 
-:arrow_down: Invitation Link :arrow_down: 
+Invitation Link
 
 [Bot Invite Link](https://discord.com/oauth2/authorize?client_id=706806251321032726&scope=bot&permissions=392256)
 
