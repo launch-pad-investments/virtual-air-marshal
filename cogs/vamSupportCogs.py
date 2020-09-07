@@ -17,15 +17,12 @@ from discord import Colour, Embed
 from utils.jsonReader import Helpers
 from backoffice.supportSystemDb import SupportSystemManager
 from cogs.toolsCog.systemMessages import CustomMessages
-from cogs.toolsCog.checks import is_public
+from cogs.toolsCog.checks import is_public, is_community_owner
 
 helper = Helpers()
 support_sys_mng = SupportSystemManager()
 custom_message = CustomMessages()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
-
-
-# TODO integrate check if user is owner of the community who wants to send message
 
 class StaffContactCmd(commands.Cog):
     def __init__(self, bot):
@@ -50,8 +47,8 @@ class StaffContactCmd(commands.Cog):
 
             user_msg.add_field(name='Sys message',
                                value=f'We would like to inform you that your support ticket'
-                                     f' has been recieved successfully. One of the '
-                                     f'support staff from {ctx.guild} will be in contact with you as soon as possible!',
+                                     f' has been received successfully. One of the '
+                                     f'support staff  will be in contact with you as soon as possible!',
                                inline=False)
             user_msg.add_field(name='Community:',
                                value=f'{ctx.message.guild}',
@@ -62,7 +59,7 @@ class StaffContactCmd(commands.Cog):
             user_msg.add_field(name="Reference Support Ticker Number",
                                value=ticket_id,
                                inline=False)
-            user_msg.add_field(name="Reques message",
+            user_msg.add_field(name="Request message",
                                value=f'{support_msg}',
                                inline=False)
             user_msg.set_footer(text='Service provided by Launch Pad Investments')
@@ -73,7 +70,12 @@ class StaffContactCmd(commands.Cog):
 
     async def send_ticket_message_channel(self, ctx, message, department: str, ticket_id: str):
 
-        # TODO pull the object for kavic and animus based on id and tag them in message
+        mention_str = ''
+        for u in self.user_tags_list:
+            user = await self.bot.fetch_user(id=int(u))
+            mention = user.mention
+            mention_str += mention
+
         try:
 
             dest = self.bot.get_channel(id=int(self.channel_id))
@@ -96,7 +98,7 @@ class StaffContactCmd(commands.Cog):
             supp_msg.add_field(name="Message Content",
                                value=f'{message}',
                                inline=False)
-            await dest.send(content=f"TICKET: {ticket_id}")
+            await dest.send(content=f"{mention_str} TICKET: {ticket_id}")
             support_msg = await dest.send(embed=supp_msg)
             await support_msg.add_reaction(emoji="⛔")
 
@@ -107,6 +109,7 @@ class StaffContactCmd(commands.Cog):
 
     @commands.group()
     @commands.check(is_public)
+    @commands.check(is_community_owner)
     async def sys(self, ctx):
         try:
             await ctx.message.delete()
@@ -140,7 +143,7 @@ class StaffContactCmd(commands.Cog):
             ticket_no = str(uuid4())
             time_of_request = datetime.utcnow()
 
-            if await self.send_ticket_message_channel(ctx=ctx, message=message, department='Marketing',
+            if await self.send_ticket_message_channel(ctx=ctx, message=message, department='Feature',
                                                       ticket_id=ticket_no):
                 if await self.send_ticket_message_author(ctx=ctx, time_of_request=time_of_request,
                                                          department='Feature', ticket_id=ticket_no,
@@ -156,7 +159,7 @@ class StaffContactCmd(commands.Cog):
             else:
                 title = '__Support System Internal Error__'
                 message = f'System could not process you request at this moment. Please try again later. ' \
-                          f'We apologize for inconvinience!'
+                          f'We apologize for inconvenience!'
                 await custom_message.system_message(ctx, message=message, color_code=1, destination=1,
                                                     sys_msg_title=title)
         else:
@@ -266,6 +269,13 @@ class StaffContactCmd(commands.Cog):
 
         else:
             message = f'Message needs to be between 20 and 200 characters in length!'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+
+    @sys.error
+    async def sys_error(self, ctx, error):
+        if isinstance(error, commands.CheckFailure):
+            message = 'Message could not be send to developers because either it was not written on one of the public' \
+                      ' channels, or you are now the owner of the guild.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
 
