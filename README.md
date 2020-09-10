@@ -98,7 +98,11 @@ Virtual Air Marshal is a self-funding project, if you like the product and would
 can make tip to one of the following available cryptocurrency jars bellow.
 
 ```text
-Jars still to come
+BTC: 36vWbdegL57pHK3sVghrpwfp3V1tMqvHfc
+ETH: 0x03AE3AD4b8d19091363Beb6f97AA10f8ae9c3284
+XLM: GCPFBRY4XE6PEU3HRVWJBKDUV2SQA22TQ5KGQAQ2KWX57CGDH7WOBJEF
+NEO: AbXWN3yD7JpajRiPmXdaTF4KRCHjkVjUSV
+ONT: AKSDsUfbyJcQgpycwi73MCvapseLwt2P1c
 ```
 
 ## Contributing
