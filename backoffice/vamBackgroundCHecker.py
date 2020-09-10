@@ -16,7 +16,8 @@ class BotStructureCheck:
         self.required_collections = ["jailedMembers",  # Collection storing all jailled members
                                      "jailProfiles",  # Collection storing all communities applied for jair service
                                      "spamProfiles",  # Collection storing all communities applied for spam preventions
-                                     "supportProfiles"  # Collection storing all communities applied for support system
+                                     "supportProfiles",  # Collection storing all communities applied for support system
+                                     "loggerSystem"  # Collection storing logger data
                                      ]
         
     def check_collections(self):

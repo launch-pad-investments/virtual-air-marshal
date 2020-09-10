@@ -28,8 +28,8 @@ bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 class StaffContactCmd(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.channel_id = int(bot_setup["supportChannel"]["channel"])
-        self.user_tags_list = bot_setup["supportChannel"]["userTags"]
+        self.channel_id = int(bot_setup["supportChannel"][0]["channel"])
+        self.user_tags_list = bot_setup["supportChannel"][0]["userTags"]
 
     def length_checker(self, message):
         print(len(message))

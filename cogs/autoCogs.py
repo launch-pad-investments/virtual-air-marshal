@@ -15,6 +15,7 @@ from backoffice.spamSystemDb import SpamSystemManager
 from backoffice.supportSystemDb import SupportSystemManager
 from cogs.toolsCog.systemMessages import CustomMessages
 from utils.jsonReader import Helpers
+from backoffice.loggerSystemDb import LoggerSystem
 
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
@@ -27,6 +28,7 @@ custom_messages = CustomMessages()
 spam_sys_mng = SpamSystemManager()
 jail_sys_mng = JailSystemManager()
 sup_sys_mng = SupportSystemManager()
+logger=LoggerSystem()
 
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 CONST_JAIL_DURATION = 5
@@ -239,13 +241,10 @@ class AutoFunctions(commands.Cog):
 
         support_channels = bot_setup['supportChannel']
         for chn in support_channels:
-            print(chn['userTags'])
             separator = ' '
             for user in chn['userTags']:
                 usr = await self.bot.fetch_user(user_id=user)
-                print(usr.mention)
                 separator += usr.mention + " "
-            print(separator)
 
             dest = self.bot.get_channel(id=int(chn["channel"]))
             await dest.send(embed=new_guild, content=separator)
@@ -327,7 +326,8 @@ class AutoFunctions(commands.Cog):
         Args:
             guild ([discord.Guild]): 
         """
-        print('Guild has deleted channel')
+        pass
+
 
     @commands.Cog.listener()
     async def on_guild_role_delete(self, role):

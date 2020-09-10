@@ -28,6 +28,8 @@ extensions = ['cogs.adminCogs',
               'cogs.managementCmd',
               'cogs.spamHandlerCogs',
               'cogs.supportHandlerCog',
+              'cogs.loggerAutoSystem',
+              'cogs.loggerHandlerCogs',
               'cogs.supportTicketCogs',
               'cogs.vamSupportCogs']
 

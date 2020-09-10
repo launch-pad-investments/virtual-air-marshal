@@ -250,7 +250,7 @@ class CommunityOwnerCommands(commands.Cog):
                       f' Please contact support staff or try again later!'
             await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
 
-    @register.comman()
+    @register.command()
     async def logging(self, ctx):
         try:
             await ctx.message.delete()
@@ -313,16 +313,6 @@ class CommunityOwnerCommands(commands.Cog):
     async def support_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
             message = f'You have already register community for ***SUPPORT ***  system! Proceed with ***{bot_setup["command"]} support***'
-            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
-        else:
-            dest = await self.bot.fetch_user(user_id=int(360367188432912385))
-            await custom_message.bug_messages(ctx=ctx, error=error, destination=dest)
-
-    @logger.error
-    async def support_error(self, ctx, error):
-        if isinstance(error, commands.CheckFailure):
-            message = f'You have already register community for ***LOGGER ***  system! Proceed with ' \
-                      f'***{bot_setup["command"]} support***'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
