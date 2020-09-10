@@ -69,7 +69,9 @@ class LoggerAutoSystem(commands.Cog):
 
         pass
 
-    async def send_message_related(self, channel_id, message: discord.Message, direction: int, action:str):
+    async def send_message_related(self, channel_id, message: discord.Message, direction: int, action:str, post:discord.Message = None):
+        #TODO integrate message check if its edited
+
         ts = datetime.utcnow()
         c = self.get_direction_color(direction=direction)
         destination = self.bot.get_channel(id=channel_id)
@@ -85,9 +87,6 @@ class LoggerAutoSystem(commands.Cog):
         msg_related = Embed(title=f'***Message*** {action} ',
                             colour=c,
                             timestamp=ts)
-        msg_related.add_field(name='Author',
-                              value=f'{author.mention} (id:{author_id})',
-                              inline=False)
         msg_related.add_field(name='Channel',
                               value=f'{channel_of_message} (id:{channel_id})',
                               inline=False)
@@ -101,7 +100,8 @@ class LoggerAutoSystem(commands.Cog):
                               inline=False)
         msg_related.add_field(name=f'Created at',
                               value=f'{created_at}')
-        msg_related.set_footer(text="Logged @ ", icon_url=author.avatar_url)
+        msg_related.set_author(name=f'{author} id:{author.id}', icon_url=f'{author.avatar_url}')
+        msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
         await destination.send(embed=msg_related)
 
     @commands.Cog.listener()
@@ -114,6 +114,11 @@ class LoggerAutoSystem(commands.Cog):
                 pass
         else:
             print('Message was from bot')
+
+    @commands.Cog.listener()
+    async def on_message_edit(self, pre,post):
+        pass
+
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
