@@ -59,7 +59,7 @@ class LoggerAutoSystem(commands.Cog):
 
         c = self.get_direction_color(direction=direction)
         destination = self.bot.get_channel(id=channel_id)
-        
+
         msg_related = Embed(title=f'***Message*** {action} ',
                             colour=c,
                             timestamp=ts)
@@ -93,7 +93,7 @@ class LoggerAutoSystem(commands.Cog):
         channel_id = message.channel.id
         is_pinned = message.pinned
 
-        msg_related = Embed(title=f'***Message*** {action} ',
+        msg_related = Embed(title=f'***Message*** {action}',
                             colour=c,
                             timestamp=ts)
         msg_related.add_field(name='Channel',
@@ -110,6 +110,38 @@ class LoggerAutoSystem(commands.Cog):
         msg_related.add_field(name=f'Created at',
                               value=f'{created_at}')
         msg_related.set_author(name=f'{author} id:{author.id}', icon_url=f'{author.avatar_url}')
+        msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+        await destination.send(embed=msg_related)
+
+    async def channel_actions(self, channel_id, channel, direction: int, action: str):
+        ts = datetime.utcnow()
+        c = self.get_direction_color(direction=direction)
+        destination = self.bot.get_channel(id=channel_id)
+        chn_category = channel.category
+        chn_created = channel.created_at
+        chn_id = channel.id
+        chn = f'{channel}'
+        chn_topic = channel.topic
+        chn_type = channel.type
+
+        msg_related = Embed(title=f'***Channel*** {action}',
+                            colour=c,
+                            timestamp=ts)
+        msg_related.add_field(name='Channel',
+                              value=f'{chn} (id:{chn_id})',
+                              inline=False)
+        msg_related.add_field(name=f'Created at',
+                              value=f'{chn_created}',
+                              inline=False)
+        msg_related.add_field(name=f'Channel Type',
+                              value=f'{chn_type}',
+                              inline=False)
+        msg_related.add_field(name=f'Channel Category',
+                              value=f'{chn_category}',
+                              inline=False)
+        msg_related.add_field(name=f'Channel Topic',
+                              value=f'{chn_topic}',
+                              inline=False)
         msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
         await destination.send(embed=msg_related)
 
@@ -137,26 +169,20 @@ class LoggerAutoSystem(commands.Cog):
             print('Message was from bot')
 
     @commands.Cog.listener()
-    async def on_member_join(self, member):
-        """
-        Log when member joins community
-        """
-        if self.check_logger_status(guild_id=member.guild.id):
-            channel_id = logger.get_channel(community_id=member.guild.id)
-            await self.send_member_related_messages(channel_id=channel_id, member=member, direction=1)
+    async def on_guild_channel_delete(self, channel):
+        if self.check_logger_status(guild_id=channel.guild.id):
+            channel_id = logger.get_channel(community_id=channel.guild.id)
+            await self.channel_actions(channel_id=channel_id, channel=channel, direction=0, action='Deleted')
         else:
             pass
 
     @commands.Cog.listener()
-    async def on_member_remove(self, member):
-        """
-        Log when member leaves the community
-        """
-        if self.check_logger_status(guild_id=member.guild.id):
-            channel_id = logger.get_channel(community_id=member.guild.id)
-            await self.send_member_related_messages(channel_id=channel_id, member=member, direction=0)
-        else:
-            pass
+    async def on_guild_channel_create(self, channel):
+        pass
+
+    @commands.Cog.listener()
+    async def on_guild_channel_update(self, channel):
+        pass
 
 
 def setup(bot):

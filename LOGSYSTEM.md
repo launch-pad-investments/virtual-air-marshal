@@ -1,4 +1,8 @@
 
 ### Currently integrated loggers
 - [x] On message delete
-- [ ] On message edit
+- [X] On message edit
+
+- [ ] On guild channel create
+- [X] On guild channel delete
+- [ ] On guild channel remove
