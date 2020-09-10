@@ -4,10 +4,12 @@ from discord import ChannelType
 from backoffice.jailSystemDb import JailSystemManager
 from backoffice.spamSystemDb import SpamSystemManager
 from backoffice.supportSystemDb import SupportSystemManager
+from backoffice.loggerSystemDb import LoggerSystem
 
 spam_sys_mng = SpamSystemManager()
 jail_sys_mgn = JailSystemManager()
 support_sys_mng = SupportSystemManager()
+logger = LoggerSystem()
 
 
 def is_spam_not_registered(ctx):
@@ -77,3 +79,7 @@ def admin_predicate(ctx):
 
 def role_mng(ctx):
     return ctx.author.manage_roles
+
+
+def logger_registration_status(ctx):
+    return logger.check_community_reg_status(community_id=ctx.guild.id)
