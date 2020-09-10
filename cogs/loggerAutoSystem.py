@@ -9,7 +9,6 @@ from colorama import Fore, init
 from discord import DMChannel, Embed, Colour
 from discord.ext import commands
 
-
 from cogs.toolsCog.systemMessages import CustomMessages
 from utils.jsonReader import Helpers
 from backoffice.loggerSystemDb import LoggerSystem
@@ -51,34 +50,44 @@ class LoggerAutoSystem(commands.Cog):
             return Colour.green()
         elif direction == 2:
             return Colour.orange()
-        
-    async def send_member_related_messages(self, channel_id, member: discord.Member, direction: int):
 
-        col = self.get_direction_color(direction=direction)
+    async def send_message_edit(self, pre: discord.Message, post: discord.Message, direction: int, action: str,
+                                channel_id):
+        pre_content = pre.content
+        post_content = post.content
+        ts = datetime.utcnow()
 
-        # Member properties
-
-        display_name = member.display_name
-        joined_at = member.joined_at
-        avatar_url = member.avatar_url
-        is_bot = member.bot
-        mention = member.mention
-
+        c = self.get_direction_color(direction=direction)
         destination = self.bot.get_channel(id=channel_id)
-        embed = Embed(title=f'User joined')
+        
+        msg_related = Embed(title=f'***Message*** {action} ',
+                            colour=c,
+                            timestamp=ts)
+        msg_related.add_field(name='Channel',
+                              value=f'{pre.channel} (id:{pre.channel.id})',
+                              inline=False)
+        msg_related.add_field(name='Jump Url',
+                              value=post.jump_url,
+                              inline=False)
+        msg_related.add_field(name='Original',
+                              value=f'{pre_content}',
+                              inline=False)
+        msg_related.add_field(name='Edited',
+                              value=f'{post_content}',
+                              inline=False)
+        msg_related.add_field(name=f'Created at',
+                              value=f'{pre.created_at}')
+        msg_related.set_author(name=f'{post.author} id:{post.author.id}', icon_url=f'{post.author.avatar_url}')
+        msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+        await destination.send(embed=msg_related)
 
-        pass
-
-    async def send_message_related(self, channel_id, message: discord.Message, direction: int, action:str, post:discord.Message = None):
-        #TODO integrate message check if its edited
-
+    async def send_message_deleted(self, channel_id, message: discord.Message, direction: int, action: str):
         ts = datetime.utcnow()
         c = self.get_direction_color(direction=direction)
         destination = self.bot.get_channel(id=channel_id)
         created_at = message.created_at
         author = message.author
-        author_id = message.author.id
-        content = message.content [:100]
+        content = message.content[:100]
         message_type = message.type
         channel_of_message = message.channel
         channel_id = message.channel.id
@@ -109,16 +118,23 @@ class LoggerAutoSystem(commands.Cog):
         if not message.author.bot:
             if self.check_logger_status(message.guild.id):
                 channel_id = logger.get_channel(community_id=message.guild.id)
-                await self.send_message_related(channel_id=channel_id, message=message, direction=0,action='Deleted')
+                await self.send_message_deleted(channel_id=channel_id, message=message, direction=0, action='Deleted')
             else:
                 pass
         else:
             print('Message was from bot')
 
     @commands.Cog.listener()
-    async def on_message_edit(self, pre,post):
-        pass
-
+    async def on_message_edit(self, before, after):
+        if not before.author.bot:
+            if self.check_logger_status(before.guild.id):
+                channel_id = logger.get_channel(community_id=before.guild.id)
+                await self.send_message_edit(pre=before, post=after, direction=2, action="Edited",
+                                             channel_id=channel_id)
+            else:
+                pass
+        else:
+            print('Message was from bot')
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -127,7 +143,7 @@ class LoggerAutoSystem(commands.Cog):
         """
         if self.check_logger_status(guild_id=member.guild.id):
             channel_id = logger.get_channel(community_id=member.guild.id)
-            await self.send_member_related_messages(channel_id=channel_id, member=member,direction=1)
+            await self.send_member_related_messages(channel_id=channel_id, member=member, direction=1)
         else:
             pass
 
@@ -141,10 +157,6 @@ class LoggerAutoSystem(commands.Cog):
             await self.send_member_related_messages(channel_id=channel_id, member=member, direction=0)
         else:
             pass
-
-
-
-
 
 
 def setup(bot):
