@@ -62,6 +62,10 @@ of the commands execute:
 ### Spam/Bot Invasion Protection System
 Spam/Bot prevention system allows community owners to protect their  
 
+### Log System (In development)
+Log System is used to monitor activity on Discord Guild. All actions are relayed to specific channel for owners
+to have a look at it
+
 
 ## Invite the bot
 Bot requires following Discord Permissions to operate optimally
