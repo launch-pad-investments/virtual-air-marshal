@@ -5,6 +5,8 @@
 Virtual Air Marshal is a multi Discord Management Bot with various integrated manual and automatic services and commands to manage community.
 The bot is owned by Launch Pad Investments Discord Group offering wide variety of services for their members. 
 
+[Project Github Page](https://launch-pad-investments.github.io/virtual-air-marshal/)
+
 ## Bot command
 ```text
 ^vam  # Prefix
