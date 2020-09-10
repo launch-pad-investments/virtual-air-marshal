@@ -17,10 +17,13 @@ Each of the bellow presented systems acts as a standalone entity part of the Vir
 it requires registration for each system separately (Only one command to execute).
 
 ## Available functions and systems
-- Spam/Bot Invasion Prevention System
-- Timed Jail System
-- Support Ticket System
-- General Administration Commands
+- [x] Spam/Bot Invasion Prevention System
+- [x] Timed Jail System
+- [x] Support Ticket System
+- [x] General Administration Commands
+- [ ] Log System
+
+
 
 ### Spam/Bot Invasion Protection System 
 Spam/Bot prevention system allows community owners to protect their members from media messages which were not 
@@ -100,7 +103,7 @@ can make tip to one of the following available cryptocurrency jars bellow.
 ```text
 BTC: 36vWbdegL57pHK3sVghrpwfp3V1tMqvHfc
 ETH: 0x03AE3AD4b8d19091363Beb6f97AA10f8ae9c3284
-XLM: GCPFBRY4XE6PEU3HRVWJBKDUV2SQA22TQ5KGQAQ2KWX57CGDH7WOBJEF
+XLM: GD6SRXH4BXMW7ANSW3PKXZNORKHRXQIGV7TYNK6DHSDB5ISC3M7FOQUU
 NEO: AbXWN3yD7JpajRiPmXdaTF4KRCHjkVjUSV
 ONT: AKSDsUfbyJcQgpycwi73MCvapseLwt2P1c
 ```
