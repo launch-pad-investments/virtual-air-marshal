@@ -19,7 +19,7 @@ Each of the bellow presented systems acts as a standalone entity part of the Vir
 it requires registration for each system separately (Only one command to execute).
 
 ## Available functions and systems
-- [x] [Spam/Bot Invasion Prevention System]((SPAMPROTECTION.md))
+- [x] [Spam/Bot Invasion Prevention System](SPAMPROTECTION.md)
 - [x] [Timed Jail System](JAILSYSTEM.md)
 - [x] [Support Ticket System](SUPPORTTICKET.md)
 - [x] [General Administration Commands](ADMINISTRATOR.md)

@@ -232,6 +232,25 @@ class CommunityOwnerCommands(commands.Cog):
                       f' Please contact support staff or try again later!'
             await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
 
+    @register.comman()
+    async def logging(self, ctx):
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+
+        if sup_sys_mng.register_community_for_support_service(community_id=ctx.message.guild.id,
+                                                              community_name=f'{ctx.message.guild}',
+                                                              owner_id=ctx.message.guild.owner_id,
+                                                              owner_name=f'{ctx.message.guild.owner}'):
+            message = f'You have successfully registered community to ***{self.bot.user.mention} SUPPORT*** system.'
+            await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
+
+        else:
+            message = f'There has been an error while trying register community for ***SUPPORT*** system.' \
+                      f' Please contact support staff or try again later!'
+            await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
+
     @service.error
     async def service_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
