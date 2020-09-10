@@ -12,6 +12,7 @@ from discord import Embed, Colour, Permissions
 from discord.ext import commands
 from backoffice.jailManagementDb import JailManagement
 from utils.jsonReader import Helpers
+from backoffice.loggerSystemDb import LoggerSystem
 from cogs.toolsCog.systemMessages import CustomMessages
 from cogs.toolsCog.checks import is_public, is_jail_not_registered, is_community_owner, is_spam_not_registered, \
     is_overwatch, is_support_not_registered
@@ -21,6 +22,7 @@ sup_sys_mng = SupportSystemManager()
 spam_sys_mng = SpamSystemManager()
 jail_sys_mgn = JailSystemManager()
 jail_manager = JailManagement()
+logger = LoggerSystem()
 custom_message = CustomMessages()
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 
@@ -85,7 +87,9 @@ class CommunityOwnerCommands(commands.Cog):
                       'value': "Register community for jail system. This allows to strip memmber roles for "
                                " N amount of time, and auto reasignes them uppon expiration"},
                      {'name': f'{self.bot.mention}service register support',
-                      'value': "Register community for support ticket to the staff members"}
+                      'value': "Register community for support ticket to the staff members"},
+                     {'name': f'{self.bot.mention}service register logger',
+                      'value': "Register community for logger which monitors community activity"}
                      ]
 
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
@@ -131,6 +135,15 @@ class CommunityOwnerCommands(commands.Cog):
                                    value=":red_circle:",
                                    inline=False)
 
+        if logger.check_if_logger_activated(community_id=ctx.message.guild.id) == 1:
+            status_embed.add_field(name='Logger System Status',
+                                   value=":green_circle: ",
+                                   inline=False)
+        else:
+            status_embed.add_field(name='Logger System Status',
+                                   value=":red_circle:",
+                                   inline=False)
+
         await ctx.channel.send(embed=status_embed)
 
     @service.group()
@@ -151,7 +164,12 @@ class CommunityOwnerCommands(commands.Cog):
                                "language, and executes consequences ob breach."},
                      {'name': f'{self.bot.mention}service register spam',
                       'value': "Register community for spam service, which prevents community from unwanted "
-                               "discord community bot invasions."}]
+                               "discord community bot invasions."},
+                     {'name': f'{self.bot.mention}service register logger',
+                      'value': "Register community for logger system"},
+                     {'name': f'{self.bot.mention}service register support',
+                      'value': "Register community for support system"}
+                     ]
 
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
 
@@ -239,16 +257,20 @@ class CommunityOwnerCommands(commands.Cog):
         except Exception:
             pass
 
-        if sup_sys_mng.register_community_for_support_service(community_id=ctx.message.guild.id,
-                                                              community_name=f'{ctx.message.guild}',
-                                                              owner_id=ctx.message.guild.owner_id,
-                                                              owner_name=f'{ctx.message.guild.owner}'):
-            message = f'You have successfully registered community to ***{self.bot.user.mention} SUPPORT*** system.'
-            await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
+        if not logger.check_community_reg_status(community_id=ctx.message.guild.id):
+            if logger.register_community_for_logger_service(community_id=ctx.message.guild.id,
+                                                            community_name=f'{ctx.message.guild}',
+                                                            owner_id=ctx.message.guild.owner_id,
+                                                            owner_name=f'{ctx.message.guild.owner}'):
+                message = f'You have successfully registered community to ***{self.bot.user.mention} LOGGER*** system.'
+                await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
 
+            else:
+                message = f'There has been an error while trying register community for ***SUPPORT*** system.' \
+                          f' Please contact support staff or try again later!'
+                await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
         else:
-            message = f'There has been an error while trying register community for ***SUPPORT*** system.' \
-                      f' Please contact support staff or try again later!'
+            message = f'You have already registered your community for LOGGER system'
             await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
 
     @service.error
@@ -291,6 +313,16 @@ class CommunityOwnerCommands(commands.Cog):
     async def support_error(self, ctx, error):
         if isinstance(error, commands.CheckFailure):
             message = f'You have already register community for ***SUPPORT ***  system! Proceed with ***{bot_setup["command"]} support***'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        else:
+            dest = await self.bot.fetch_user(user_id=int(360367188432912385))
+            await custom_message.bug_messages(ctx=ctx, error=error, destination=dest)
+
+    @logger.error
+    async def support_error(self, ctx, error):
+        if isinstance(error, commands.CheckFailure):
+            message = f'You have already register community for ***LOGGER ***  system! Proceed with ' \
+                      f'***{bot_setup["command"]} support***'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             dest = await self.bot.fetch_user(user_id=int(360367188432912385))
