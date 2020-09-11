@@ -117,8 +117,7 @@ class LoggerAutoSystem(commands.Cog):
         ts = datetime.utcnow()
         c = self.get_direction_color(direction=direction)
         destination = self.bot.get_channel(id=channel_id)
-        print(channel.type)
-        if channel.type == 'text':
+        if str(channel.type) == 'text':
             chn_category = channel.category
             chn_created = channel.created_at
             chn_id = channel.id
@@ -147,12 +146,38 @@ class LoggerAutoSystem(commands.Cog):
             msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
             await destination.send(embed=msg_related)
 
-        elif channel.type == 'voice':
+        elif str(channel.type) == 'voice':
+            print('Accessing voice')
             chn_category = channel.category
             chn_created = channel.created_at
             chn_id = channel.id
             chn = f'{channel}'
             chn_type = channel.type
+            print(chn_category)
+            print(chn_created)
+            print(chn_id)
+            print(chn)
+            print(chn_type)
+
+            msg_related = Embed(title=f'***Voice Channel*** {action}',
+                                colour=c,
+                                timestamp=ts)
+            msg_related.add_field(name='Voice Channel',
+                                  value=f'{chn} (id:{chn_id})',
+                                  inline=False)
+            msg_related.add_field(name=f'Created at',
+                                  value=f'{chn_created}',
+                                  inline=False)
+            msg_related.add_field(name=f'Channel Type',
+                                  value=f'{chn_type}',
+                                  inline=False)
+            msg_related.add_field(name=f'Channel Category',
+                                  value=f'{chn_category}',
+                                  inline=False)
+            msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+            await destination.send(embed=msg_related)
+
+
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
