@@ -262,7 +262,7 @@ class CommunityOwnerCommands(commands.Cog):
                                                             community_name=f'{ctx.message.guild}',
                                                             owner_id=ctx.message.guild.owner_id,
                                                             owner_name=f'{ctx.message.guild.owner}'):
-                message = f'You have successfully registered community to ***{self.bot.user.mention} LOGGER*** system.'
+                message = f'You have successfully registered community to ***{self.bot.mention} LOGGER*** system.'
                 await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
 
             else:
