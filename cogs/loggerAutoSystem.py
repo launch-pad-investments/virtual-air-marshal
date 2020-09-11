@@ -171,11 +171,9 @@ class LoggerAutoSystem(commands.Cog):
             await destination.send(embed=msg_related)
 
         elif isinstance(channel, discord.CategoryChannel):
-            chn_category = channel.category
             chn_created = channel.created_at
             chn_id = channel.id
             chn = f'{channel}'
-            chn_type = channel.type
             msg_related = Embed(title=f'***Channel Category *** {action}',
                                 colour=c,
                                 timestamp=ts)
@@ -211,7 +209,7 @@ class LoggerAutoSystem(commands.Cog):
             msg_related.add_field(name='Channel modified"',
                                   value=f'{pre} (id:{pre_chn_id})',
                                   inline=False)
-            
+
             if pre_chn_name != post_chn_name:
                 msg_related.add_field(name='Channel Name Changed:',
                                       value=f'{pre_chn_name} -> {post_chn_name}',
@@ -240,10 +238,83 @@ class LoggerAutoSystem(commands.Cog):
             await destination.send(embed=msg_related)
 
         elif isinstance(pre, discord.VoiceChannel):
-            pass
+            pre_category = pre.category
+            pre_chn_id = pre.id
+            pre_chn_name = f'{pre}'
+            pre_chn_topic = pre.topic
+            pre_chn_type = pre.type
+
+            post_category = post.category
+            post_chn_name = f'{post}'
+            post_chn_topic = f'{post.topic}'
+            post_chn_type = post.type
+
+            msg_related = Embed(title=f'***Voice Channel*** {action}',
+                                colour=c,
+                                timestamp=ts)
+            msg_related.add_field(name='Channel modified"',
+                                  value=f'{pre} (id:{pre_chn_id})',
+                                  inline=False)
+
+            if pre_chn_name != post_chn_name:
+                msg_related.add_field(name='Channel Name Changed:',
+                                      value=f'{pre_chn_name} -> {post_chn_name}',
+                                      inline=False)
+
+            if pre_chn_topic != post_chn_topic:
+                msg_related.add_field(name='Channel Topic Changed:',
+                                      value=f'{pre_chn_topic} -> {post_chn_topic}',
+                                      inline=False)
+
+            if pre_chn_type != post_chn_type:
+                msg_related.add_field(name='Channel Type Changed:',
+                                      value=f'{pre_chn_type} -> {post_chn_type}',
+                                      inline=False)
+
+            if pre_category != post_category:
+                msg_related.add_field(name='Channel Category Changed:',
+                                      value=f'{pre_category} -> {post_category}',
+                                      inline=False)
+
+            msg_related.add_field(name=f'Channel Type',
+                                  value=f'{pre_chn_type}',
+                                  inline=False)
+
+            msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+            await destination.send(embed=msg_related)
 
         elif isinstance(pre, discord.CategoryChannel):
-            pass
+            category_id = pre.id
+            category_pre = f'{pre}'
+            category_post = f'{post}'
+            category_pre_pos = pre.position
+            category_post_pos = post.position
+            category_pre_nsf = pre.is_nsfw()
+            category_post_nsfw = post.is_nsfw()
+
+            category_related = Embed(title=f'***Category Channel*** {action}',
+                                     colour=c,
+                                     timestamp=ts)
+            category_related.add_field(name='Category modified"',
+                                       value=f'{category_pre} (id:{category_id})',
+                                       inline=False)
+            if category_pre != category_post:
+                category_related.add_field(name='Category Name Changed:',
+                                           value=f'{category_pre} -> {category_post}',
+                                           inline=False)
+
+            if category_pre_pos != category_post_pos:
+                category_related.add_field(name='Category Position Change from ',
+                                           value=f'#{category_pre_pos} -> {category_post_pos}',
+                                           inline=False)
+
+            if category_pre_nsf != category_post_nsfw:
+                category_related.add_field(name='Category Nsfw Changed ',
+                                           value=f'{category_post_nsfw}',
+                                           inline=False)
+
+            category_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+            await destination.send(embed=category_related)
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
