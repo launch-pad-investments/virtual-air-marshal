@@ -375,6 +375,106 @@ class LoggerAutoSystem(commands.Cog):
         else:
             pass
 
+    async def message_pin_action(self, channel_id, channel, last_pin, direction=2):
+        ts = datetime.utcnow()
+        c = self.get_direction_color(direction=direction)
+        destination = self.bot.get_channel(id=channel_id)
+
+        chn_category = channel.category
+        chn_pins = channel.pins
+        print(chn_pins)
+
+        #
+        # pprint(dir(last_pin))
+        # print(last_pin)
+
+    async def on_member_events(self, member, direction: int, channel_id: int, action: str):
+        """
+        Get triggered when member joins
+        """
+        ts = datetime.utcnow()
+        c = self.get_direction_color(direction=direction)
+        destination = self.bot.get_channel(id=channel_id)
+
+        if not member.bot:
+            member_info = Embed(title=f'***Member {action}***',
+                                colour=c,
+                                timestamp=ts)
+            member_info.add_field(name=f'Username',
+                                  value=f'{member} ({member.id})',
+                                  inline=False)
+            member_info.add_field(name=f'Joined @',
+                                  value=f'{member.joined_at}',
+                                  inline=False)
+            member_info.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+            member_info.set_thumbnail(url=member.avatar_url)
+            await destination.send(embed=member_info)
+        else:
+            member_info = Embed(title=f'***Bot {action}***',
+                                colour=c,
+                                timestamp=ts)
+            member_info.add_field(name=f'Bot Name',
+                                  value=f'{member} ({member.id})',
+                                  inline=False)
+            member_info.add_field(name=f'Joined @',
+                                  value=f'{member.joined_at}',
+                                  inline=False)
+            member_info.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+            member_info.set_thumbnail(url=member.avatar_url)
+            await destination.send(embed=member_info)
+
+    @commands.Cog.listener()
+    async def on_guild_channel_pins_update(self, channel, last_pin):
+        if self.check_logger_status(guild_id=channel.guild.id):
+            channel_id = logger.get_channel(community_id=channel.guild.id)
+            await self.message_pin_action(channel_id=channel_id, channel=channel, last_pin=last_pin, direction=2)
+        else:
+            pass
+
+    @commands.Cog.listener()
+    async def on_webhooks_update(self, channel):
+        pass
+
+    @commands.Cog.listener()
+    async def on_member_join(self, member):
+        if self.check_logger_status(guild_id=member.guild.id):
+            channel_id = logger.get_channel(community_id=member.guild.id)
+            await self.on_member_events(member=member, direction=1, channel_id=int(channel_id), action='Left')
+        else:
+            pass
+
+    @commands.Cog.listener()
+    async def on_member_remove(self, member):
+        if self.check_logger_status(guild_id=member.guild.id):
+            channel_id = logger.get_channel(community_id=member.guild.id)
+            await self.on_member_events(member=member, direction=1, channel_id=int(channel_id), action='Joined')
+        else:
+            pass
+
+    @commands.Cog.listener()
+    async def on_member_update(self, before, after):
+        pass
+
+    @commands.Cog.listener()
+    async def on_user_update(self, before, ufter):
+        pass
+
+    # discord.on_guild_role_create(role)
+    # discord.on_guild_role_delete(role)
+    # discord.on_guild_role_update(before, after)
+    # discord.on_guild_emojis_update(guild, before, after)
+    # discord.on_voice_state_update(member, before, after)
+    #
+    # discord.on_member_ban(guild, user)
+    # discord.on_member_unban(guild, user)
+    # discord.on_invite_create(invite)
+    # discord.on_invite_delete(invite)¶
+    # discord.on_group_join(channel, user)
+    # discord.on_group_remove(channel, user)
+    # discord.on_relationship_add(relationship)
+    # discord.on_relationship_remove(relationship)
+    # discord.on_relationship_update(before, after)
+
 
 def setup(bot):
     bot.add_cog(LoggerAutoSystem(bot))

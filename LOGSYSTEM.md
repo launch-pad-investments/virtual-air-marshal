@@ -8,8 +8,8 @@
 - [ ] Guild emoji update
 
 #### Member Activity
-- [ ] Member joining Guild
-- [ ] Member leaving guild
+- [X] Member joining Guild
+- [X] Member leaving Guild
 - [ ] Member Banned
 - [ ] Member Unbanned
 - [ ] Member kicked
