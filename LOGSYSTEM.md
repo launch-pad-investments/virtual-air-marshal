@@ -10,9 +10,8 @@
 #### Member Activity
 - [X] Member joining Guild
 - [X] Member leaving Guild
-- [ ] Member Banned
-- [ ] Member Unbanned
-- [ ] Member kicked
+- [X] Member Banned
+- [X] Member Unbanned
 - [ ] Member update
 - [ ] User update
 - [ ] Member voice state update

@@ -113,6 +113,42 @@ class LoggerAutoSystem(commands.Cog):
         msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
         await destination.send(embed=msg_related)
 
+    async def on_member_events(self, member, direction: int, channel_id: int, action: str):
+        """
+        Get triggered when member joins
+        """
+        ts = datetime.utcnow()
+        c = self.get_direction_color(direction=direction)
+        destination = self.bot.get_channel(id=channel_id)
+
+        if not member.bot:
+            member_info = Embed(title=f'***Member {action}***',
+                                colour=c,
+                                timestamp=ts)
+            member_info.add_field(name=f'Username',
+                                  value=f'{member} ({member.id})',
+                                  inline=False)
+            member_info.add_field(name=f'Joined @',
+                                  value=f'{member.joined_at}',
+                                  inline=False)
+            member_info.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+            member_info.set_thumbnail(url=member.avatar_url)
+            await destination.send(embed=member_info)
+        else:
+            member_info = Embed(title=f'***Bot {action}***',
+                                colour=c,
+                                timestamp=ts)
+            member_info.add_field(name=f'Bot Name',
+                                  value=f'{member} ({member.id})',
+                                  inline=False)
+            member_info.add_field(name=f'Joined @',
+                                  value=f'{member.joined_at}',
+                                  inline=False)
+            member_info.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+            member_info.set_thumbnail(url=member.avatar_url)
+            await destination.send(embed=member_info)
+
+
     async def channel_actions(self, channel_id, channel, direction: int, action: str):
         ts = datetime.utcnow()
         c = self.get_direction_color(direction=direction)
@@ -388,40 +424,6 @@ class LoggerAutoSystem(commands.Cog):
         # pprint(dir(last_pin))
         # print(last_pin)
 
-    async def on_member_events(self, member, direction: int, channel_id: int, action: str):
-        """
-        Get triggered when member joins
-        """
-        ts = datetime.utcnow()
-        c = self.get_direction_color(direction=direction)
-        destination = self.bot.get_channel(id=channel_id)
-
-        if not member.bot:
-            member_info = Embed(title=f'***Member {action}***',
-                                colour=c,
-                                timestamp=ts)
-            member_info.add_field(name=f'Username',
-                                  value=f'{member} ({member.id})',
-                                  inline=False)
-            member_info.add_field(name=f'Joined @',
-                                  value=f'{member.joined_at}',
-                                  inline=False)
-            member_info.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
-            member_info.set_thumbnail(url=member.avatar_url)
-            await destination.send(embed=member_info)
-        else:
-            member_info = Embed(title=f'***Bot {action}***',
-                                colour=c,
-                                timestamp=ts)
-            member_info.add_field(name=f'Bot Name',
-                                  value=f'{member} ({member.id})',
-                                  inline=False)
-            member_info.add_field(name=f'Joined @',
-                                  value=f'{member.joined_at}',
-                                  inline=False)
-            member_info.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
-            member_info.set_thumbnail(url=member.avatar_url)
-            await destination.send(embed=member_info)
 
     @commands.Cog.listener()
     async def on_guild_channel_pins_update(self, channel, last_pin):
@@ -452,21 +454,48 @@ class LoggerAutoSystem(commands.Cog):
             pass
 
     @commands.Cog.listener()
+    async def on_member_ban(self,guild,user):
+        if self.check_logger_status(guild_id=guild.id):
+            channel_id = logger.get_channel(community_id=guild.id)
+            await self.on_member_events(member=user, direction=1, channel_id=int(channel_id), action='Banned')
+        else:
+            pass
+
+    @commands.Cog.listener()
+    async def on_member_unban(self, guild, user):
+        if self.check_logger_status(guild_id=guild.id):
+            channel_id = logger.get_channel(community_id=guild.id)
+            await self.on_member_events(member=user, direction=1, channel_id=int(channel_id), action='Unbanned')
+        else:
+            pass
+
+    @commands.Cog.listener()
     async def on_member_update(self, before, after):
-        pass
+        if self.check_logger_status(guild_id=before.guild.id):
+            channel_id = logger.get_channel(community_id=before.guild.id)
+        else:
+            pass
 
     @commands.Cog.listener()
     async def on_user_update(self, before, ufter):
         pass
 
-    # discord.on_guild_role_create(role)
-    # discord.on_guild_role_delete(role)
-    # discord.on_guild_role_update(before, after)
+    @commands.Cog.listener()
+    async def on_guild_role_create(self, role):
+        pass
+
+    @commands.Cog.listener()
+    async def on_guild_role_delete(self, role):
+        pass
+
+    @commands.Cog.listener()
+    async def on_guild_role_update(self,before, after):
+        pass
+
+
     # discord.on_guild_emojis_update(guild, before, after)
     # discord.on_voice_state_update(member, before, after)
-    #
-    # discord.on_member_ban(guild, user)
-    # discord.on_member_unban(guild, user)
+
     # discord.on_invite_create(invite)
     # discord.on_invite_delete(invite)¶
     # discord.on_group_join(channel, user)
