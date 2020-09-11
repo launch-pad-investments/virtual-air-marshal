@@ -117,7 +117,7 @@ class LoggerAutoSystem(commands.Cog):
         ts = datetime.utcnow()
         c = self.get_direction_color(direction=direction)
         destination = self.bot.get_channel(id=channel_id)
-        if str(channel.type) == 'text':
+        if isinstance(channel, discord.TextChannel):
             chn_category = channel.category
             chn_created = channel.created_at
             chn_id = channel.id
@@ -146,19 +146,12 @@ class LoggerAutoSystem(commands.Cog):
             msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
             await destination.send(embed=msg_related)
 
-        elif str(channel.type) == 'voice':
-            print('Accessing voice')
+        elif isinstance(channel, discord.VoiceChannel):
             chn_category = channel.category
             chn_created = channel.created_at
             chn_id = channel.id
             chn = f'{channel}'
             chn_type = channel.type
-            print(chn_category)
-            print(chn_created)
-            print(chn_id)
-            print(chn)
-            print(chn_type)
-
             msg_related = Embed(title=f'***Voice Channel*** {action}',
                                 colour=c,
                                 timestamp=ts)
@@ -177,10 +170,86 @@ class LoggerAutoSystem(commands.Cog):
             msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
             await destination.send(embed=msg_related)
 
+        elif isinstance(channel, discord.CategoryChannel):
+            chn_category = channel.category
+            chn_created = channel.created_at
+            chn_id = channel.id
+            chn = f'{channel}'
+            chn_type = channel.type
+            msg_related = Embed(title=f'***Channel Category *** {action}',
+                                colour=c,
+                                timestamp=ts)
+            msg_related.add_field(name='Category Name',
+                                  value=f'{chn} (id:{chn_id})',
+                                  inline=False)
+            msg_related.add_field(name=f'Created at',
+                                  value=f'{chn_created}',
+                                  inline=False)
+            msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+            await destination.send(embed=msg_related)
 
+    async def channel_edited(self, channel_id, pre, post, direction: int, action: str):
+        ts = datetime.utcnow()
+        c = self.get_direction_color(direction=direction)
+        destination = self.bot.get_channel(id=channel_id)
+
+        if isinstance(pre, discord.TextChannel):
+            pre_category = pre.category
+            pre_chn_id = pre.id
+            pre_chn_name = f'{pre}'
+            pre_chn_topic = pre.topic
+            pre_chn_type = pre.type
+
+            post_category = post.category
+            post_chn_name = f'{post}'
+            post_chn_topic = f'{post.topic}'
+            post_chn_type = post.type
+
+            msg_related = Embed(title=f'***Text Channel*** {action}',
+                                colour=c,
+                                timestamp=ts)
+            msg_related.add_field(name='Channel modified"',
+                                  value=f'{pre} (id:{pre_chn_id})',
+                                  inline=False)
+            
+            if pre_chn_name != post_chn_name:
+                msg_related.add_field(name='Channel Name Changed:',
+                                      value=f'{pre_chn_name} -> {post_chn_name}',
+                                      inline=False)
+
+            if pre_chn_topic != post_chn_topic:
+                msg_related.add_field(name='Channel Topic Changed:',
+                                      value=f'{pre_chn_topic} -> {post_chn_topic}',
+                                      inline=False)
+
+            if pre_chn_type != post_chn_type:
+                msg_related.add_field(name='Channel Type Changed:',
+                                      value=f'{pre_chn_type} -> {post_chn_type}',
+                                      inline=False)
+
+            if pre_category != post_category:
+                msg_related.add_field(name='Channel Category Changed:',
+                                      value=f'{pre_category} -> {post_category}',
+                                      inline=False)
+
+            msg_related.add_field(name=f'Channel Type',
+                                  value=f'{pre_chn_type}',
+                                  inline=False)
+
+            msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+            await destination.send(embed=msg_related)
+
+        elif isinstance(pre, discord.VoiceChannel):
+            pass
+
+        elif isinstance(pre, discord.CategoryChannel):
+            pass
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
+        """
+        Triggered when message deleted
+        """
         if not message.author.bot:
             if self.check_logger_status(message.guild.id):
                 channel_id = logger.get_channel(community_id=message.guild.id)
@@ -188,10 +257,13 @@ class LoggerAutoSystem(commands.Cog):
             else:
                 pass
         else:
-            print('Message was from bot')
+            pass
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
+        """
+        Triggered when message edited
+        """
         if not before.author.bot:
             if self.check_logger_status(before.guild.id):
                 channel_id = logger.get_channel(community_id=before.guild.id)
@@ -200,10 +272,13 @@ class LoggerAutoSystem(commands.Cog):
             else:
                 pass
         else:
-            print('Message was from bot')
+            pass
 
     @commands.Cog.listener()
     async def on_guild_channel_delete(self, channel):
+        """
+        Triggered when channel deleted
+        """
         if self.check_logger_status(guild_id=channel.guild.id):
             channel_id = logger.get_channel(community_id=channel.guild.id)
             await self.channel_actions(channel_id=channel_id, channel=channel, direction=0, action='Deleted')
@@ -212,16 +287,22 @@ class LoggerAutoSystem(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_channel_create(self, channel):
+        """
+        Triggered when channel created
+        """
         if self.check_logger_status(guild_id=channel.guild.id):
             channel_id = logger.get_channel(community_id=channel.guild.id)
             await self.channel_actions(channel_id=channel_id, channel=channel, direction=1, action='Created')
         else:
             pass
 
-
     @commands.Cog.listener()
-    async def on_guild_channel_update(self, channel):
-        pass
+    async def on_guild_channel_update(self, pre, post):
+        if self.check_logger_status(guild_id=pre.guild.id):
+            channel_id = logger.get_channel(community_id=pre.guild.id)
+            await self.channel_edited(channel_id=channel_id, pre=pre, post=post, direction=2, action='Updated')
+        else:
+            pass
 
 
 def setup(bot):
