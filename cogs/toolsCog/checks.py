@@ -83,3 +83,4 @@ def role_mng(ctx):
 
 def logger_registration_status(ctx):
     return logger.check_community_reg_status(community_id=ctx.guild.id)
+

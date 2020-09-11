@@ -104,6 +104,14 @@ class LoggerSystem:
         else:
             return False
 
+    def check_if_not_registered(self,community_id):
+        result = self.loggin.find_one({"communityId": community_id})
+
+        if result:
+            return False
+        else:
+            return True
+
     def get_details_of_channel(self, community_id: int):
         result = self.loggin.find_one({"communityId": community_id},
                                       {"_id": 0,

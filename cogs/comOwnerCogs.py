@@ -257,7 +257,7 @@ class CommunityOwnerCommands(commands.Cog):
         except Exception:
             pass
 
-        if not logger.check_community_reg_status(community_id=ctx.message.guild.id):
+        if logger.check_if_not_registered(community_id=ctx.message.guild.id):
             if logger.register_community_for_logger_service(community_id=ctx.message.guild.id,
                                                             community_name=f'{ctx.message.guild}',
                                                             owner_id=ctx.message.guild.owner_id,
