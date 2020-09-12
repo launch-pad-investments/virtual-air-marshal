@@ -2,8 +2,8 @@
 ### Currently integrated loggers
 
 #### Role Activity
-- [ ] Guild role create
-- [ ] Guild role delete
+- [X] Guild role create
+- [X] Guild role delete
 - [ ] Guild role update
 - [ ] Guild emoji update
 
