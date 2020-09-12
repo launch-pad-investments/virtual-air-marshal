@@ -158,12 +158,12 @@ class LoggerAutoSystem(commands.Cog):
                         member_info.add_field(name=f'New Top Role assigned',
                                               value=f'{post.top_role}',
                                               inline=False)
+                    member_info.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+                    member_info.set_thumbnail(url=member.avatar_url)
+                    await destination.send(embed=member_info)
                 else:
                     pass
 
-            member_info.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
-            member_info.set_thumbnail(url=member.avatar_url)
-            await destination.send(embed=member_info)
         else:
             if action in ["Joined", "Left"]:
                 member_info = Embed(title=f'***Bot {action}***',
