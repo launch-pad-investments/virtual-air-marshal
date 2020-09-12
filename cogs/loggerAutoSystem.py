@@ -138,10 +138,10 @@ class LoggerAutoSystem(commands.Cog):
                     member_info.add_field(name=f'Nickname Changed',
                                           value=f'{member.nick} --> {post.nick}',
                                           inline=False)
-                if member.status != post.status:
-                    member_info.add_field(name=f'Status Updated:',
-                                          value=f'{member.status} --> {post.status}',
-                                          inline=False)
+                # if member.status != post.status:
+                #     member_info.add_field(name=f'Status Updated:',
+                #                           value=f'{member.status} --> {post.status}',
+                #                           inline=False)
                 if member.roles != post.roles:
                     # TODO create role names
                     member_info.add_field(name=f'Member Roles Update',
