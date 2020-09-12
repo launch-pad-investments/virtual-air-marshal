@@ -4,7 +4,7 @@
 #### Role Activity
 - [X] Guild role create
 - [X] Guild role delete
-- [ ] Guild role update
+- [X] Guild role update
 - [ ] Guild emoji update
 
 #### Member Activity

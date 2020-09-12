@@ -365,12 +365,46 @@ class LoggerAutoSystem(commands.Cog):
         role_created = role.created_at
         role_mention = role.mention
 
+        role_stuff = Embed(title=f'***Role {action}***',
+                           colour=c,
+                           timestamp=ts)
+
         if action == 'Update':
-            pass
+            post_role = f"{post}"
+            hoist_pos = post.hoist  # Is separated or not from toher
+            post_position = post.position
+            role_mentionable_post = post.mentionable  # True or false
+            role_permissions_post = post.permissions  # Iteerable?
+            role_mention_post = post.mention
+
+            if post_role != role_name:
+                role_stuff.add_field(name=f'Role name Changed',
+                                     value=f'{role_name} --> {post_role})',
+                                     inline=False)
+
+            if hoist_pos != hoist:
+                role_stuff.add_field(name=f'Hoist status:',
+                                     value=f'{hoist} --> {hoist_pos}',
+                                     inline=False)
+
+            if role_position != post_role:
+                role_stuff.add_field(name=f'Role Position Changed:',
+                                     value=f'{role_position} --> {post_position}',
+                                     inline=False)
+
+            if role_mentionable != role_mentionable_post:
+                role_stuff.add_field(name=f'Role Mention Permission:',
+                                     value=f'{role_mentionable} --> {role_mentionable_post}',
+                                     inline=False)
+
+            if role_permissions != role_permissions_post:
+                role_stuff.add_field(name=f'Role permissons updated:',
+                                     value=f'{role_permissions_post}',
+                                     inline=False)
+
+            await destination.send(embed=role_stuff)
+
         elif action == 'Created':
-            role_stuff = Embed(title=f'***Role {action}***',
-                               colour=c,
-                               timestamp=ts)
             role_stuff.add_field(name=f'Role Name',
                                  value=f'{role_name} {role_mention} ({role_id})',
                                  inline=False)
@@ -387,9 +421,6 @@ class LoggerAutoSystem(commands.Cog):
             await destination.send(embed=role_stuff)
 
         elif action == 'Deleted':
-            role_stuff = Embed(title=f'***Role {action}***',
-                               colour=c,
-                               timestamp=ts)
             role_stuff.add_field(name=f'Role Name',
                                  value=f'{role_name} {role_mention} ({role_id})',
                                  inline=False)
@@ -403,7 +434,8 @@ class LoggerAutoSystem(commands.Cog):
                                  value=f'{role_mentionable}')
             role_stuff.add_field(name=f'Permissions',
                                  value=f'{role_permissions}')
-            await destination.send(embed=role_stuff)
+
+        await destination.send(embed=role_stuff)
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
@@ -551,7 +583,11 @@ class LoggerAutoSystem(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_role_update(self,before, after):
-        pass
+        if self.check_logger_status(guild_id=before.guild.id):
+            channel_id = logger.get_channel(community_id=before.guild.id)
+            await self.role_actions(channel_id=channel_id,role=before,direction=0, action='Deleted', post=after)
+        else:
+            pass
 
 
     # discord.on_guild_emojis_update(guild, before, after)
