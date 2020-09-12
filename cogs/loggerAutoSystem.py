@@ -379,13 +379,11 @@ class LoggerAutoSystem(commands.Cog):
             role_stuff.add_field(name=f'Role rank',
                                  value=f'#{role_position}')
             role_stuff.add_field(name=f'Hoist status:',
-                                 value=f'{hoist})')
+                                 value=f'{hoist}')
             role_stuff.add_field(name=f'Mentionable',
-                                 value=f'{role_mentionable})')
-            role_stuff.add_field(name=f'Mentionable',
-                                 value=f'{role_mentionable})')
+                                 value=f'{role_mentionable}')
             role_stuff.add_field(name=f'Permissions',
-                                 value=f'{role_permissions})')
+                                 value=f'{role_permissions}')
             await destination.send(embed=role_stuff)
 
         elif action == 'Deleted':
@@ -400,17 +398,12 @@ class LoggerAutoSystem(commands.Cog):
             role_stuff.add_field(name=f'Role rank',
                                  value=f'#{role_position}')
             role_stuff.add_field(name=f'Hoist status:',
-                                 value=f'{hoist})')
+                                 value=f'{hoist}')
             role_stuff.add_field(name=f'Mentionable',
-                                 value=f'{role_mentionable})')
-            role_stuff.add_field(name=f'Mentionable',
-                                 value=f'{role_mentionable})')
+                                 value=f'{role_mentionable}')
             role_stuff.add_field(name=f'Permissions',
-                                 value=f'{role_permissions})')
+                                 value=f'{role_permissions}')
             await destination.send(embed=role_stuff)
-
-
-
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
