@@ -113,7 +113,7 @@ class LoggerAutoSystem(commands.Cog):
         msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
         await destination.send(embed=msg_related)
 
-    async def on_member_events(self, member, direction: int, channel_id: int, action: str):
+    async def on_member_events(self, member, direction: int, channel_id: int, action: str, post=None):
         """
         Get triggered when member joins
         """
@@ -125,29 +125,56 @@ class LoggerAutoSystem(commands.Cog):
             member_info = Embed(title=f'***Member {action}***',
                                 colour=c,
                                 timestamp=ts)
-            member_info.add_field(name=f'Username',
-                                  value=f'{member} ({member.id})',
-                                  inline=False)
-            member_info.add_field(name=f'Joined @',
-                                  value=f'{member.joined_at}',
-                                  inline=False)
+            if action in ["Joined", "Left"]:
+                member_info.add_field(name=f'Username',
+                                      value=f'{member} ({member.id})',
+                                      inline=False)
+                member_info.add_field(name=f'Joined @',
+                                      value=f'{member.joined_at}',
+                                      inline=False)
+                await destination.send(embed=member_info)
+            elif action == "Update":
+                if member.nicl != post.nick:
+                    member_info.add_field(name=f'Nickname Changed',
+                                          value=f'{member.nick} --> {post.nick}',
+                                          inline=False)
+                if member.status != post.status:
+                    member_info.add_field(name=f'Status Updated:',
+                                          value=f'{member.status} --> {post.status}',
+                                          inline=False)
+                if member.roles != post.roles:
+                    # TODO create role names
+                    member_info.add_field(name=f'Member Roles Update',
+                                          value=f'{len(member.roles)} --> {len(post.roles)}',
+                                          inline=False)
+
+                if member.display_name != post.display_name:
+                    member_info.add_field(name=f'Display Name changed',
+                                          value=f'{member.display_name} --> {post.display_name}',
+                                          inline=False)
+
+                if member.top_role != post.top_role:
+                    member_info.add_field(name=f'New Top Role assigned',
+                                          value=f'{post.top_role}',
+                                          inline=False)
+
             member_info.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
             member_info.set_thumbnail(url=member.avatar_url)
             await destination.send(embed=member_info)
         else:
-            member_info = Embed(title=f'***Bot {action}***',
-                                colour=c,
-                                timestamp=ts)
-            member_info.add_field(name=f'Bot Name',
-                                  value=f'{member} ({member.id})',
-                                  inline=False)
-            member_info.add_field(name=f'Joined @',
-                                  value=f'{member.joined_at}',
-                                  inline=False)
-            member_info.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
-            member_info.set_thumbnail(url=member.avatar_url)
-            await destination.send(embed=member_info)
-
+            if action in ["Joined", "Left"]:
+                member_info = Embed(title=f'***Bot {action}***',
+                                    colour=c,
+                                    timestamp=ts)
+                member_info.add_field(name=f'Bot Name',
+                                      value=f'{member} ({member.id})',
+                                      inline=False)
+                member_info.add_field(name=f'Joined @',
+                                      value=f'{member.joined_at}',
+                                      inline=False)
+                member_info.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+                member_info.set_thumbnail(url=member.avatar_url)
+                await destination.send(embed=member_info)
 
     async def channel_actions(self, channel_id, channel, direction: int, action: str):
         ts = datetime.utcnow()
@@ -352,7 +379,7 @@ class LoggerAutoSystem(commands.Cog):
             category_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
             await destination.send(embed=category_related)
 
-    async def role_actions(self, channel_id, role, direction:int, action:str,post = None):
+    async def role_actions(self, channel_id, role, direction: int, action: str, post=None):
         ts = datetime.utcnow()
         c = self.get_direction_color(direction=direction)
         destination = self.bot.get_channel(id=channel_id)
@@ -360,8 +387,8 @@ class LoggerAutoSystem(commands.Cog):
         role_name = f"{role}"
         hoist = role.hoist  # Is separated or not from toher
         role_position = role.position
-        role_mentionable = role.mentionable # True or false
-        role_permissions = role.permissions # Iteerable?
+        role_mentionable = role.mentionable  # True or false
+        role_permissions = role.permissions  # Iteerable?
         role_created = role.created_at
         role_mention = role.mention
 
@@ -509,7 +536,6 @@ class LoggerAutoSystem(commands.Cog):
         # pprint(dir(last_pin))
         # print(last_pin)
 
-
     @commands.Cog.listener()
     async def on_guild_channel_pins_update(self, channel, last_pin):
         if self.check_logger_status(guild_id=channel.guild.id):
@@ -539,7 +565,7 @@ class LoggerAutoSystem(commands.Cog):
             pass
 
     @commands.Cog.listener()
-    async def on_member_ban(self,guild,user):
+    async def on_member_ban(self, guild, user):
         if self.check_logger_status(guild_id=guild.id):
             channel_id = logger.get_channel(community_id=guild.id)
             await self.on_member_events(member=user, direction=1, channel_id=int(channel_id), action='Banned')
@@ -558,6 +584,7 @@ class LoggerAutoSystem(commands.Cog):
     async def on_member_update(self, before, after):
         if self.check_logger_status(guild_id=before.guild.id):
             channel_id = logger.get_channel(community_id=before.guild.id)
+            await self.on_member_events(member=before, direction=2, channel_id=channel_id, action="Update", post=after)
         else:
             pass
 
@@ -569,7 +596,7 @@ class LoggerAutoSystem(commands.Cog):
     async def on_guild_role_create(self, role):
         if self.check_logger_status(guild_id=role.guild.id):
             channel_id = logger.get_channel(community_id=role.guild.id)
-            await self.role_actions(channel_id=channel_id,role=role,direction=1, action='Created')
+            await self.role_actions(channel_id=channel_id, role=role, direction=1, action='Created')
         else:
             pass
 
@@ -577,18 +604,17 @@ class LoggerAutoSystem(commands.Cog):
     async def on_guild_role_delete(self, role):
         if self.check_logger_status(guild_id=role.guild.id):
             channel_id = logger.get_channel(community_id=role.guild.id)
-            await self.role_actions(channel_id=channel_id,role=role,direction=0, action='Deleted')
+            await self.role_actions(channel_id=channel_id, role=role, direction=0, action='Deleted')
         else:
             pass
 
     @commands.Cog.listener()
-    async def on_guild_role_update(self,before, after):
+    async def on_guild_role_update(self, before, after):
         if self.check_logger_status(guild_id=before.guild.id):
             channel_id = logger.get_channel(community_id=before.guild.id)
-            await self.role_actions(channel_id=channel_id,role=before,direction=0, action='Deleted', post=after)
+            await self.role_actions(channel_id=channel_id, role=before, direction=0, action='Deleted', post=after)
         else:
             pass
-
 
     # discord.on_guild_emojis_update(guild, before, after)
     # discord.on_voice_state_update(member, before, after)

@@ -12,7 +12,7 @@
 - [X] Member leaving Guild
 - [X] Member Banned
 - [X] Member Unbanned
-- [ ] Member update
+- [X] Member update
 - [ ] User update
 - [ ] Member voice state update
 - [ ] Member joined group
