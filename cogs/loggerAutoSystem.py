@@ -134,29 +134,32 @@ class LoggerAutoSystem(commands.Cog):
                                       inline=False)
                 await destination.send(embed=member_info)
             elif action == "Update":
-                if member.nick != post.nick:
-                    member_info.add_field(name=f'Nickname Changed',
-                                          value=f'{member.nick} --> {post.nick}',
-                                          inline=False)
-                # if member.status != post.status:
-                #     member_info.add_field(name=f'Status Updated:',
-                #                           value=f'{member.status} --> {post.status}',
-                #                           inline=False)
-                if member.roles != post.roles:
-                    # TODO create role names
-                    member_info.add_field(name=f'Member Roles Update',
-                                          value=f'{len(member.roles)} --> {len(post.roles)}',
-                                          inline=False)
+                if member.status == post.status:
+                    if member.nick != post.nick:
+                        member_info.add_field(name=f'Nickname Changed',
+                                              value=f'{member.nick} --> {post.nick}',
+                                              inline=False)
+                    # if member.status != post.status:
+                    #     member_info.add_field(name=f'Status Updated:',
+                    #                           value=f'{member.status} --> {post.status}',
+                    #                           inline=False)
+                    if member.roles != post.roles:
+                        # TODO create role names
+                        member_info.add_field(name=f'Member Roles Update',
+                                              value=f'{len(member.roles)} --> {len(post.roles)}',
+                                              inline=False)
 
-                if member.display_name != post.display_name:
-                    member_info.add_field(name=f'Display Name changed',
-                                          value=f'{member.display_name} --> {post.display_name}',
-                                          inline=False)
+                    if member.display_name != post.display_name:
+                        member_info.add_field(name=f'Display Name changed',
+                                              value=f'{member.display_name} --> {post.display_name}',
+                                              inline=False)
 
-                if member.top_role != post.top_role:
-                    member_info.add_field(name=f'New Top Role assigned',
-                                          value=f'{post.top_role}',
-                                          inline=False)
+                    if member.top_role != post.top_role:
+                        member_info.add_field(name=f'New Top Role assigned',
+                                              value=f'{post.top_role}',
+                                              inline=False)
+                else:
+                    pass
 
             member_info.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
             member_info.set_thumbnail(url=member.avatar_url)
