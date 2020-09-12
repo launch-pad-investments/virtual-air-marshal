@@ -365,22 +365,21 @@ class LoggerAutoSystem(commands.Cog):
         role_created = role.created_at
         role_mention = role.mention
 
-
         if action == 'Update':
             pass
-        else:
+        elif action == 'Created':
             role_stuff = Embed(title=f'***Role {action}***',
                                colour=c,
                                timestamp=ts)
             role_stuff.add_field(name=f'Role Name',
-                                 value=f'{role_name} ({role_id})\n {role_mention}',
+                                 value=f'{role_name} {role_mention} ({role_id})',
                                  inline=False)
             role_stuff.add_field(name=f'Created at',
                                  value=f'{role_created})')
             role_stuff.add_field(name=f'Role rank',
-                                 value=f'#{role_position})')
+                                 value=f'#{role_position}')
             role_stuff.add_field(name=f'Hoist status:',
-                                 value=f'#{hoist})')
+                                 value=f'{hoist})')
             role_stuff.add_field(name=f'Mentionable',
                                  value=f'{role_mentionable})')
             role_stuff.add_field(name=f'Mentionable',
@@ -389,6 +388,26 @@ class LoggerAutoSystem(commands.Cog):
                                  value=f'{role_permissions})')
             await destination.send(embed=role_stuff)
 
+        elif action == 'Deleted':
+            role_stuff = Embed(title=f'***Role {action}***',
+                               colour=c,
+                               timestamp=ts)
+            role_stuff.add_field(name=f'Role Name',
+                                 value=f'{role_name} {role_mention} ({role_id})',
+                                 inline=False)
+            role_stuff.add_field(name=f'Created at',
+                                 value=f'{role_created})')
+            role_stuff.add_field(name=f'Role rank',
+                                 value=f'#{role_position}')
+            role_stuff.add_field(name=f'Hoist status:',
+                                 value=f'{hoist})')
+            role_stuff.add_field(name=f'Mentionable',
+                                 value=f'{role_mentionable})')
+            role_stuff.add_field(name=f'Mentionable',
+                                 value=f'{role_mentionable})')
+            role_stuff.add_field(name=f'Permissions',
+                                 value=f'{role_permissions})')
+            await destination.send(embed=role_stuff)
 
 
 
@@ -531,7 +550,11 @@ class LoggerAutoSystem(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_role_delete(self, role):
-        pass
+        if self.check_logger_status(guild_id=role.guild.id):
+            channel_id = logger.get_channel(community_id=role.guild.id)
+            await self.role_actions(channel_id=channel_id,role=role,direction=0, action='Deleted')
+        else:
+            pass
 
     @commands.Cog.listener()
     async def on_guild_role_update(self,before, after):
