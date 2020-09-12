@@ -352,6 +352,47 @@ class LoggerAutoSystem(commands.Cog):
             category_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
             await destination.send(embed=category_related)
 
+    async def role_actions(self, channel_id, role, direction:int, action:str,post = None):
+        ts = datetime.utcnow()
+        c = self.get_direction_color(direction=direction)
+        destination = self.bot.get_channel(id=channel_id)
+        role_id = role.id
+        role_name = f"{role}"
+        hoist = role.hoist  # Is separated or not from toher
+        role_position = role.position
+        role_mentionable = role.mentionable # True or false
+        role_permissions = role.permissions # Iteerable?
+        role_created = role.created_at
+        role_mention = role.mention
+
+
+        if action == 'Update':
+            pass
+        else:
+            role_stuff = Embed(title=f'***Role {action}***',
+                               colour=c,
+                               timestamp=ts)
+            role_stuff.add_field(name=f'Role Name',
+                                 value=f'{role_name} ({role_id})\n {role_mention}',
+                                 inline=False)
+            role_stuff.add_field(name=f'Created at',
+                                 value=f'{role_created})')
+            role_stuff.add_field(name=f'Role rank',
+                                 value=f'#{role_position})')
+            role_stuff.add_field(name=f'Hoist status:',
+                                 value=f'#{hoist})')
+            role_stuff.add_field(name=f'Mentionable',
+                                 value=f'{role_mentionable})')
+            role_stuff.add_field(name=f'Mentionable',
+                                 value=f'{role_mentionable})')
+            role_stuff.add_field(name=f'Permissions',
+                                 value=f'{role_permissions})')
+            await destination.send(embed=role_stuff)
+
+
+
+
+
     @commands.Cog.listener()
     async def on_message_delete(self, message):
         """
@@ -482,7 +523,11 @@ class LoggerAutoSystem(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_role_create(self, role):
-        pass
+        if self.check_logger_status(guild_id=role.guild.id):
+            channel_id = logger.get_channel(community_id=role.guild.id)
+            await self.role_actions(channel_id=channel_id,role=role,direction=1, action='Created')
+        else:
+            pass
 
     @commands.Cog.listener()
     async def on_guild_role_delete(self, role):
