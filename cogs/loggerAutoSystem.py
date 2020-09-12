@@ -134,7 +134,7 @@ class LoggerAutoSystem(commands.Cog):
                                       inline=False)
                 await destination.send(embed=member_info)
             elif action == "Update":
-                if member.nicl != post.nick:
+                if member.nick != post.nick:
                     member_info.add_field(name=f'Nickname Changed',
                                           value=f'{member.nick} --> {post.nick}',
                                           inline=False)
