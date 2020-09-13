@@ -51,6 +51,49 @@ class LoggerAutoSystem(commands.Cog):
         elif direction == 2:
             return Colour.orange()
 
+    async def invite_logging(self, channel_id: int, invite, direction: int, action: str):
+        ts = datetime.utcnow()
+        c = self.get_direction_color(direction=direction)
+        destination = self.bot.get_channel(id=channel_id)
+        fragment = invite.code
+        invite_id = invite.id
+        invite_url = invite.url
+        created_at = invite.created_at
+        is_temporary = invite.temporary
+        uses_max_count = invite.max_uses
+        who_invited = f'{invite.inviter}'
+        chn_destination = invite.channel  # list
+
+        invite_info = Embed(title=f'***Invite*** {action}',
+                            timestamp=ts,
+                            colour=c)
+        invite_info.add_field(name='Invite ID and code',
+                              value=f'{invite_id} ({fragment})',
+                              inline=False)
+        invite_info.add_field(name='Creation time',
+                              value=f'{created_at}',
+                              inline=False)
+        invite_info.add_field(name='Invite Creator',
+                              value=f'{who_invited}',
+                              inline=False)
+        invite_info.add_field(name='Destination Channel',
+                              value=f'{chn_destination} ({invite.channel.id})',
+                              inline=False)
+        invite_info.add_field(name='Temporary',
+                              value=f'{is_temporary}',
+                              inline=False)
+        invite_info.add_field(name='Max Available',
+                              value=f'{uses_max_count}',
+                              inline=False)
+        invite_info.add_field(name='Max Available',
+                              value=f'{uses_max_count}',
+                              inline=False)
+        invite_info.add_field(name='Invite Url',
+                              value=f'{invite_url}',
+                              inline=False)
+        invite_info.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+        await destination.send(embed=invite_info)
+
     async def send_message_edit(self, pre: discord.Message, post: discord.Message, direction: int, action: str,
                                 channel_id):
         pre_content = pre.content
@@ -627,56 +670,11 @@ class LoggerAutoSystem(commands.Cog):
     async def on_voice_state_update(self, member, before, after):
         pass
 
-    async def invite_logging(self, channel_id:int, invite, direction:int, action:str):
-        ts = datetime.utcnow()
-        c = self.get_direction_color(direction=direction)
-        destination = self.bot.get_channel(id=channel_id)
-        fragment = invite.code
-        invite_id = invite.id
-        invite_url = invite.url
-        created_at = invite.created_at
-        is_temporary = invite.temporary
-        uses_max_count = invite.max_uses
-        who_invited = f'{invite.inviter}'
-        chn_destination = invite.channel #list
-
-        invite_info = Embed(title=f'***Invite*** {action}',
-                            timestamp=ts,
-                            colour=c)
-        invite_info.add_field(name='Invite ID and code',
-                              value=f'{invite_id} ({fragment})',
-                              inline=False)
-        invite_info.add_field(name='Creation time',
-                              value=f'{created_at}',
-                              inline=False)
-        invite_info.add_field(name='Invite Creator',
-                              value=f'{who_invited}',
-                              inline=False)
-        invite_info.add_field(name='Destination Channel',
-                              value=f'{chn_destination} ({invite.channel.id})',
-                              inline=False)
-        invite_info.add_field(name='Temporary',
-                              value=f'{is_temporary}',
-                              inline=False)
-        invite_info.add_field(name='Max Available',
-                              value=f'{uses_max_count}',
-                              inline=False)
-        invite_info.add_field(name='Max Available',
-                              value=f'{uses_max_count}',
-                              inline=False)
-        invite_info.add_field(name='Invite Url',
-                              value=f'{invite_url}',
-                              inline=False)
-        invite_info.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
-        await destination.send(embed=invite_info)
-
-
-
     @commands.Cog.listener()
-    async def on_invite_create(self,invite):
+    async def on_invite_create(self, invite):
         if self.check_logger_status(guild_id=invite.guild.id):
             channel_id = logger.get_channel(community_id=invite.guild.id)
-            await self.invite_logging(channel_id = channel_id, invite=invite, direction=1, action = "Created")
+            await self.invite_logging(channel_id=channel_id, invite=invite, direction=1, action="Created")
         else:
             pass
 
@@ -684,18 +682,17 @@ class LoggerAutoSystem(commands.Cog):
     async def on_invite_delete(self, invite):
         if self.check_logger_status(guild_id=invite.guild.id):
             channel_id = logger.get_channel(community_id=invite.guild.id)
-            await self.invite_logging(channel_id = channel_id, invite=invite, direction=0, action = "Deleted")
+            await self.invite_logging(channel_id=channel_id, invite=invite, direction=0, action="Deleted")
         else:
             pass
 
     @commands.Cog.listener()
-    async def on_group_join(self,channel, user):
+    async def on_group_join(self, channel, user):
         pass
 
     @commands.Cog.listener()
     async def on_group_remove(self, channel, user):
         pass
-
 
 
 def setup(bot):
