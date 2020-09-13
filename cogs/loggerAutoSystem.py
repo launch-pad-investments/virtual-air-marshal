@@ -539,6 +539,21 @@ class LoggerAutoSystem(commands.Cog):
         pin_details.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
         await destination.send(embed=pin_details)
 
+    async def group_events(self, channel_id, channel, user, direction: int, action: str):
+        ts = datetime.utcnow()
+        c = self.get_direction_color(direction=direction)
+        destination = self.bot.get_channel(id=channel_id)
+        group_ev = Embed(title=f'Member {action} group',
+                         description=f'{user} {action} group',
+                         timestamp=ts,
+                         colour=c)
+        group_ev.add_field(name=f'Channel',
+                           value=f'{channel.mention} ({channel.id})',
+                           inline=False)
+        group_ev.set_thumbnail(url=user.avatar_url)
+        group_ev.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+        await destination.send(embed=group_ev)
+
     @commands.Cog.listener()
     async def on_message_delete(self, message):
         """
@@ -708,11 +723,19 @@ class LoggerAutoSystem(commands.Cog):
 
     @commands.Cog.listener()
     async def on_group_join(self, channel, user):
-        pass
+        if self.check_logger_status(guild_id=channel.guild.id):
+            channel_id = logger.get_channel(community_id=channel.guild.id)
+            await self.group_events(channel_id=channel_id, channel=channel, user=user, direction=1, action='Joined')
+        else:
+            pass
 
     @commands.Cog.listener()
     async def on_group_remove(self, channel, user):
-        pass
+        if self.check_logger_status(guild_id=channel.guild.id):
+            channel_id = logger.get_channel(community_id=channel.guild.id)
+            await self.group_events(channel_id=channel_id, channel=channel, user=user, direction=0, action='Removed')
+        else:
+            pass
 
 
 def setup(bot):

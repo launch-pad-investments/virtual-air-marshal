@@ -15,8 +15,8 @@
 - [X] Member update
 - [X] User update
 - [ ] Member voice state update
-- [ ] Member joined group
-- [ ] Member leaving group
+- [X] Member joined group
+- [X] Member leaving group
 
 #### Invitations
 - [X] Invite created
