@@ -577,8 +577,23 @@ class LoggerAutoSystem(commands.Cog):
         channel_name = f'{channel.name}'
         channel_tag = channel.mention
         channel_id = channel.id
+        all_pins = await channel.pins()
+        for msg in all_pins:
+            print(dir(msg))
 
-        print(last_pin)
+        if last_pin:
+            c = self.get_direction_color(direction=direction)
+            action = 'Pinned'
+        else:
+            c = discord.Colour.red()
+            action = "Un-Pinned"
+
+        pin_details = Embed(title=f'***Message*** {action}',
+                            timestamp=ts,
+                            colour=c)
+        pin_details.add_field(name='Message Pinned at',
+                              value=f'{last_pin}')
+
 
     @commands.Cog.listener()
     async def on_guild_channel_pins_update(self, channel, last_pin):
