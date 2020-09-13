@@ -510,6 +510,35 @@ class LoggerAutoSystem(commands.Cog):
 
         await destination.send(embed=role_stuff)
 
+    async def message_pin_action(self, channel_id, channel, last_pin, direction=2):
+        ts = datetime.utcnow()
+        destination = self.bot.get_channel(id=channel_id)
+        channel_tag = channel.mention
+        channel_id = channel.id
+        all_pins = await channel.pins()
+
+        if last_pin:
+            c = self.get_direction_color(direction=direction)
+            action = 'Pinned'
+        else:
+            c = discord.Colour.red()
+            action = "Un-Pinned"
+
+        pin_details = Embed(title=f'***Message*** {action}',
+                            timestamp=ts,
+                            colour=c)
+        pin_details.add_field(name='Message Pinned at',
+                              value=f'{last_pin}')
+        pin_details.add_field(name='On channel',
+                              value=f'{channel_tag} \n'
+                                    f'{channel_id}',
+                              inline=False)
+        pin_details.add_field(name=f'Pin count',
+                              value=f'{len(all_pins)}',
+                              inline=False)
+        pin_details.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+        await destination.send(embed=pin_details)
+
     @commands.Cog.listener()
     async def on_message_delete(self, message):
         """
@@ -568,36 +597,6 @@ class LoggerAutoSystem(commands.Cog):
             await self.channel_edited(channel_id=channel_id, pre=pre, post=post, direction=2, action='Updated')
         else:
             pass
-
-    async def message_pin_action(self, channel_id, channel, last_pin, direction=2):
-        ts = datetime.utcnow()
-        destination = self.bot.get_channel(id=channel_id)
-        channel_tag = channel.mention
-        channel_id = channel.id
-        all_pins = await channel.pins()
-
-        if last_pin:
-            c = self.get_direction_color(direction=direction)
-            action = 'Pinned'
-        else:
-            c = discord.Colour.red()
-            action = "Un-Pinned"
-
-        pin_details = Embed(title=f'***Message*** {action}',
-                            timestamp=ts,
-                            colour=c)
-        pin_details.add_field(name='Message Pinned at',
-                              value=f'{last_pin}')
-        pin_details.add_field(name='On channel',
-                              value=f'{channel_tag} \n'
-                                    f'{channel_id}',
-                              inline=False)
-        pin_details.add_field(name=f'Pin count',
-                              value=f'{len(all_pins)}',
-                              inline=False)
-        pin_details.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
-        await destination.send(embed=pin_details)
-
 
     @commands.Cog.listener()
     async def on_guild_channel_pins_update(self, channel, last_pin):
