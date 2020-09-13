@@ -33,7 +33,7 @@
 #### Message Activity
 - [x] On message delete
 - [X] On message edit
-- [ ] On message pin
-- [ ] On message unpin
+- [X] On message pin/unpin
+
 
 

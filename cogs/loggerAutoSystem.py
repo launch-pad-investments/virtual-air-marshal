@@ -571,17 +571,10 @@ class LoggerAutoSystem(commands.Cog):
 
     async def message_pin_action(self, channel_id, channel, last_pin, direction=2):
         ts = datetime.utcnow()
-        c = self.get_direction_color(direction=direction)
         destination = self.bot.get_channel(id=channel_id)
-
-        channel_name = f'{channel.name}'
         channel_tag = channel.mention
         channel_id = channel.id
         all_pins = await channel.pins()
-        for msg in all_pins:
-            print(dir(msg))
-            print(msg.content)
-            print(msg.created_at)
 
         if last_pin:
             c = self.get_direction_color(direction=direction)
@@ -595,6 +588,15 @@ class LoggerAutoSystem(commands.Cog):
                             colour=c)
         pin_details.add_field(name='Message Pinned at',
                               value=f'{last_pin}')
+        pin_details.add_field(name='On channel',
+                              value=f'{channel_tag} \n'
+                                    f'{channel_id}',
+                              inline=False)
+        pin_details.add_field(name=f'Pin count',
+                              value=f'{len(all_pins)}',
+                              inline=False)
+        pin_details.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+        await destination.send(embed=pin_details)
 
 
     @commands.Cog.listener()
