@@ -580,6 +580,8 @@ class LoggerAutoSystem(commands.Cog):
         all_pins = await channel.pins()
         for msg in all_pins:
             print(dir(msg))
+            print(msg.content)
+            print(msg.created_at)
 
         if last_pin:
             c = self.get_direction_color(direction=direction)
