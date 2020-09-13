@@ -635,8 +635,12 @@ class LoggerAutoSystem(commands.Cog):
             pass
 
     @commands.Cog.listener()
-    async def on_user_update(self, before, ufter):
-        pass
+    async def on_user_update(self, before, after):
+        if self.check_logger_status(guild_id=before.guild.id):
+            channel_id = logger.get_channel(community_id=before.guild.id)
+            await self.on_member_events(member=before, direction=2, channel_id=channel_id, action="Update", post=after)
+        else:
+            pass
 
     @commands.Cog.listener()
     async def on_guild_role_create(self, role):
