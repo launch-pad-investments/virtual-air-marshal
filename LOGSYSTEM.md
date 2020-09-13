@@ -13,13 +13,13 @@
 - [X] Member Banned
 - [X] Member Unbanned
 - [X] Member update
-- [ ] User update
+- [X] User update
 - [ ] Member voice state update
 - [ ] Member joined group
 - [ ] Member leaving group
 
 #### Invitations
-- [ ] Invite created
+- [X] Invite created
 - [ ] Invite deleted
 
 #### Channel activity
@@ -35,7 +35,5 @@
 - [X] On message edit
 - [ ] On message pin
 - [ ] On message unpin
-
-#### 
 
 
