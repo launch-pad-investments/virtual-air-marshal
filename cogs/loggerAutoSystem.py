@@ -574,13 +574,11 @@ class LoggerAutoSystem(commands.Cog):
         c = self.get_direction_color(direction=direction)
         destination = self.bot.get_channel(id=channel_id)
 
-        chn_category = channel.category
-        chn_pins = channel.pins
-        print(chn_pins)
+        channel_name = f'{channel.name}'
+        channel_tag = channel.mention
+        channel_id = channel.id
 
-        #
-        # pprint(dir(last_pin))
-        # print(last_pin)
+        print(last_pin)
 
     @commands.Cog.listener()
     async def on_guild_channel_pins_update(self, channel, last_pin):
