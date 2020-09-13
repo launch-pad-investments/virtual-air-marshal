@@ -24,7 +24,7 @@ class SupportService(commands.Cog):
 
     @commands.group()
     @commands.check(is_public)
-    @commands.bot_has_guild_permissions(administrator=True, manage_messages=True, manage_roles=True)
+    @commands.bot_has_guild_permissions(administrator=True, manage_messages=True)
     @commands.check_any(commands.has_guild_permissions(administrator=True), commands.check(is_overwatch),
                         commands.check(is_community_owner))
     async def support(self, ctx):
