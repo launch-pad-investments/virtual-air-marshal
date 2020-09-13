@@ -8,7 +8,7 @@ from datetime import datetime
 from datetime import timedelta
 import time
 import discord
-from discord import Member as DiscordMember
+from discord import Member
 
 from backoffice.jailSystemDb import JailSystemManager
 from backoffice.jailManagementDb import JailManagement
@@ -113,7 +113,7 @@ class JailService(commands.Cog):
     @jail.command()
     @commands.check(is_public)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
-    async def release(self, ctx, user: DiscordMember):
+    async def release(self, ctx, user: Member):
         """
         Allows user with either overwatch or community owner rights to release discord member from the jail.
 
@@ -188,7 +188,7 @@ class JailService(commands.Cog):
     @commands.check(is_public)
     @commands.check(is_community_registered)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
-    async def punish(self, ctx, jailee: DiscordMember, duration: int, *, subject: str = None):
+    async def punish(self, ctx, jailee: Member, duration: int, *, subject: str = None):
         """
         Command throws user to the jail
 
