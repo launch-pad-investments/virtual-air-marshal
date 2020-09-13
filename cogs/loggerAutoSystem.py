@@ -631,7 +631,6 @@ class LoggerAutoSystem(commands.Cog):
         ts = datetime.utcnow()
         c = self.get_direction_color(direction=direction)
         destination = self.bot.get_channel(id=channel_id)
-        dureation = invite.max_age
         fragment = invite.code
         invite_id = invite.id
         invite_url = invite.url
@@ -683,7 +682,11 @@ class LoggerAutoSystem(commands.Cog):
 
     @commands.Cog.listener()
     async def on_invite_delete(self, invite):
-        pass
+        if self.check_logger_status(guild_id=invite.guild.id):
+            channel_id = logger.get_channel(community_id=invite.guild.id)
+            await self.invite_logging(channel_id = channel_id, invite=invite, direction=0, action = "Deleted")
+        else:
+            pass
 
     @commands.Cog.listener()
     async def on_group_join(self,channel, user):

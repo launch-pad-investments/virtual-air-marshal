@@ -20,7 +20,7 @@
 
 #### Invitations
 - [X] Invite created
-- [ ] Invite deleted
+- [X] Invite deleted
 
 #### Channel activity
 
