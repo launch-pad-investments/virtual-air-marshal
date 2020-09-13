@@ -21,7 +21,7 @@ it requires registration for each system separately (Only one command to execute
 - [x] [Timed Jail System](JAILSYSTEM.md)
 - [x] [Support Ticket System](SUPPORTTICKET.md)
 - [x] [General Administration Commands](ADMINISTRATOR.md)
-- [ ] [Log System](LOGSYSTEM.md)
+- [X] [Log System](LOGSYSTEM.md)
 
 
 
