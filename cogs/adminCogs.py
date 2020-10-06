@@ -4,9 +4,6 @@ import sys
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
 
-from datetime import datetime
-from datetime import timedelta
-import time
 import discord
 from discord import Member as DiscordMember
 from discord.ext import commands
@@ -15,7 +12,6 @@ from backoffice.jailManagementDb import JailManagement
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
 from cogs.toolsCog.checks import is_public, is_overwatch, ban_predicate, kick_predicate, admin_predicate, role_mng
-from colorama import Fore
 
 helper = Helpers()
 jail_manager = JailManagement()
@@ -238,7 +234,6 @@ class TeamCommands(commands.Cog):
 
         if not channel_name:
             channel_name = 'NewVoice'
-
 
         try:
             await ctx.guild.create_voice_channel(name=channel_name)
