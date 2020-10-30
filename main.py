@@ -2,6 +2,8 @@
 Main bot script
 """
 import discord
+from discord import Intents
+
 from datetime import datetime
 import time
 from discord.ext import commands
@@ -19,7 +21,7 @@ helper = Helpers()
 scheduler = AsyncIOScheduler()
 
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
-bot = commands.Bot(command_prefix=commands.when_mentioned_or(bot_setup['command']))
+bot = commands.Bot(command_prefix=commands.when_mentioned_or(bot_setup['command']), intents=Intents.all())
 bot.remove_command('help')
 extensions = ['cogs.adminCogs',
               'cogs.autoCogs',
@@ -31,7 +33,8 @@ extensions = ['cogs.adminCogs',
               'cogs.loggerAutoSystem',
               'cogs.loggerHandlerCogs',
               'cogs.supportTicketCogs',
-              'cogs.vamSupportCogs']
+              'cogs.vamSupportCogs',
+              'cogs.projectsAdminsCogs']
 
 
 async def jail_sentence_checker():
