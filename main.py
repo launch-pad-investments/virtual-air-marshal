@@ -33,8 +33,9 @@ extensions = ['cogs.adminCogs',
               'cogs.loggerAutoSystem',
               'cogs.loggerHandlerCogs',
               'cogs.supportTicketCogs',
-              'cogs.vamSupportCogs',
-              'cogs.projectsAdminsCogs']
+              'cogs.vamSupportCogs']
+
+# 'cogs.projectsAdminsCogs'
 
 
 async def jail_sentence_checker():
