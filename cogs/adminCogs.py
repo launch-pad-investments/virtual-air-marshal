@@ -43,12 +43,6 @@ class TeamCommands(commands.Cog):
         :param ctx:
         :return:
         """
-
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
-
         if ctx.invoked_subcommand is None:
             title = 'Admin available commands'
             description = 'All available commands for administrators of the community.'
@@ -78,10 +72,6 @@ class TeamCommands(commands.Cog):
         :param reason:
         :return:
         """
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
 
         if ctx.author.guild_permissions.kick_members:
             kicked_members = ''
@@ -122,10 +112,7 @@ class TeamCommands(commands.Cog):
         :return:
         """
 
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
+
         if ctx.author.guild_permissions.ban_members:
             kicked_members = ''
             for user in users:
@@ -156,10 +143,7 @@ class TeamCommands(commands.Cog):
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(role_mng), commands.check(admin_predicate))
     async def role(self, ctx):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
+
         if ctx.invoked_subcommand is None:
             title = 'Admin available commands'
             description = 'All available commands for administrators of the community.'
@@ -173,20 +157,12 @@ class TeamCommands(commands.Cog):
 
     @role.command()
     async def remove(self, ctx, user: DiscordMember, role: Role):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
         await user.remove_roles(role, reason='Naughty boy')
         message = f'Role {role.name} with ID {role.id}has ben removed from {user.display_name}'
         await customMessages.system_message(ctx=ctx, color_code=0, destination=1, message=message)
 
     @role.command()
     async def add(self, ctx, user: DiscordMember, role: Role):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
         await user.add_roles(role, reason='Role given')
         message = f'Role {role.name} with ID {role.id}has ben given to the user {user.display_name}'
         await customMessages.system_message(ctx=ctx, color_code=0, destination=1, message=message)
@@ -209,11 +185,6 @@ class TeamCommands(commands.Cog):
 
     @create.command()
     async def text_channel(self, ctx, *, channel_name: str = None):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
-
         if not channel_name:
             channel_name = 'NewChannel'
 
@@ -232,11 +203,6 @@ class TeamCommands(commands.Cog):
 
     @create.command()
     async def voice_channel(self, ctx, *, channel_name: str):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
-
         if not channel_name:
             channel_name = 'NewVoice'
 
