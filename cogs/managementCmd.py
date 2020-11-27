@@ -29,11 +29,6 @@ class ManagementCommands(commands.Cog):
         :param user:
         :return:
         """
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
-
         user_id = int(user.id)
         data = helper.read_json_file(file_name='mainBotConfig.json')
         list_of_user = data['userAccess']
@@ -58,12 +53,19 @@ class ManagementCommands(commands.Cog):
     @commands.command()
     @commands.check(is_overwatch)
     async def update(self, ctx):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
         await ctx.channel.send(content='Trying to update')
-        extensions = ['managementCmd', 'autoCogs', 'adminCogs']
+        extensions = ['cogs.adminCogs',
+                      'cogs.autoCogs',
+                      'cogs.comOwnerCogs',
+                      'cogs.jailHandlerCogs',
+                      'cogs.managementCmd',
+                      'cogs.spamHandlerCogs',
+                      'cogs.supportHandlerCog',
+                      'cogs.loggerAutoSystem',
+                      'cogs.loggerHandlerCogs',
+                      'cogs.supportTicketCogs',
+                      'cogs.vamSupportCogs']
+
         notification_str = ''
         try:
             repo = Repo()  # Initiate repo
@@ -81,8 +83,8 @@ class ManagementCommands(commands.Cog):
         for extension in extensions:
             print(f'Trying to load extension {extension}')
             try:
-                self.bot.unload_extension(f'cogs.{extension}')
-                self.bot.load_extension(f'cogs.{extension}')
+                self.bot.unload_extension(f'{extension}')
+                self.bot.load_extension(f'{extension}')
                 notification_str += f'{extension} :green_circle:  \n'
                 print('success')
                 print('=========')
