@@ -153,23 +153,23 @@ class SpamService(commands.Cog):
                       f'<#discord.TextChannel> *** before you can set the mssage from the selected channel.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
-    @spam.error
-    async def spam_error(self, ctx, error):
-        if isinstance(error, commands.CheckAnyFailure):
-            message = f'You are either not an Overwatch member, owner of the community, or community has not ' \
-                      f'been registered yet into the system. Use {bot_setup["command"]}service register to start'
-            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
-        elif isinstance(error, commands.CheckFailure):
-            message = f'This command is allowed to be executed only on the public channels of the community ' \
-                      f'or than it has not been registered yet into {self.bot.user} system.\n Error: {error}'
-            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
-        else:
-            title = '__:bug: Found__'
-            message = f'Bug has been found while executing command and {self.bot.user} service team has been ' \
-                      f'automatically notified. We apologize for inconvinience!'
-            await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)
-            dest = await self.bot.fetch_user(user_id=int(360367188432912385))
-            await custom_message.bug_messages(ctx=ctx, error=error, destination=dest)
+    # @spam.error
+    # async def spam_error(self, ctx, error):
+    #     if isinstance(error, commands.CheckAnyFailure):
+    #         message = f'You are either not an Overwatch member, owner of the community, or community has not ' \
+    #                   f'been registered yet into the system. Use {bot_setup["command"]}service register to start'
+    #         await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+    #     elif isinstance(error, commands.CheckFailure):
+    #         message = f'This command is allowed to be executed only on the public channels of the community ' \
+    #                   f'or than it has not been registered yet into {self.bot.user} system.\n Error: {error}'
+    #         await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+    #     else:
+    #         title = '__:bug: Found__'
+    #         message = f'Bug has been found while executing command and {self.bot.user} service team has been ' \
+    #                   f'automatically notified. We apologize for inconvinience!'
+    #         await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)
+    #         dest = await self.bot.fetch_user(user_id=int(360367188432912385))
+    #         await custom_message.bug_messages(ctx=ctx, error=error, destination=dest)
 
 
 def setup(bot):
