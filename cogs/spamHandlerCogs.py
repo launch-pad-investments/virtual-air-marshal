@@ -36,10 +36,8 @@ class SpamService(commands.Cog):
             description = 'Spam system has been designed with the reason to protect community from ' \
                           'invasion of spam bots. It includes Auto role upon successful reaction from the user ' \
                           'to appropriate channel. '
-            value = [{'name': f'MUST READ Before start',
-                      'value': "Create two roles with exact name as written here:\n ***Unverified*** -> "
-                               "Given when member joins\n ***Visitor*** --> Given when member reacts appropriately"},
-                     {'name': f'Set channel for bot to listen',
+            value = [{"name":":exclamation: Read Manual First :exclamation: "},
+                     {'name': f'```{self.command}spam manual```',
                       'value': f'```{self.command}spam set_channel <#discord.Channel>```'},
                      {'name': f'Set message ID for bot to monitor for reaction',
                       'value': f'```{self.command}spam set_message <Message ID as number>```'},
@@ -49,6 +47,29 @@ class SpamService(commands.Cog):
 
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
 
+    @spam.command()
+    async def manual(self, ctx):
+        title = ':information_source: Setup Procedure :information_source: '
+        description = ''
+        value = [{'name': f':one: Manually Create Required Roles :one:',
+                  'value': "Create two roles with exact name as written here:\n ***Unverified*** -> "
+                           "Given when member joins\n ***Visitor*** --> Given when member reacts appropriately"},
+                 {'name': f':two: Set channel for bot to monitor for verifications :two:',
+                  'value': f'```{self.command}spam set_channel <#discord.Channel>```'},
+                 {'name': f':three: Set message ID for bot to monitor for reaction :three: ',
+                  'value': f'```{self.command}spam set_message <Message ID as number>```'},
+                 {'name': ':four: Turn the spam ON :four',
+                  'value': f'```{self.command}spam on```'},
+                 {'name': ':five: ***@everyone*** :five:',
+                  'value': f'It is crucial that @everyone has no rights what so ever across community as '
+                           f'spam bots utilize its functions to view users. Also ***Unverified*** Should have '
+                           f'granted read-only, view message history and add-reaction rights only on the channel'
+                           f' where it is expected for incoming members to provide reaction. ***Visitor*** role '
+                           f'should be assigned to all other channels of the server where you want user to have'
+                           f' access to once he/she is verified.'},
+                 ]
+
+        await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
     @spam.command()
     async def on(self, ctx):
         if spam_sys_mng.check_welcome_channel_status(community_id=int(ctx.message.guild.id)):
