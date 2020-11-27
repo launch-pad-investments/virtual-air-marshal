@@ -121,37 +121,37 @@ class LoggerAutoSystem(commands.Cog):
         msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
         await destination.send(embed=msg_related)
 
-    async def send_message_deleted(self, channel_id, message: discord.Message, direction: int, action: str):
-        ts = datetime.utcnow()
-        c = self.get_direction_color(direction=direction)
-        destination = self.bot.get_channel(id=channel_id)
-        created_at = message.created_at
-        author = message.author
-        content = message.content[:100]
-        message_type = message.type
-        channel_of_message = message.channel
-        channel_id = message.channel.id
-        is_pinned = message.pinned
-
-        msg_related = Embed(title=f'***Message*** {action}',
-                            colour=c,
-                            timestamp=ts)
-        msg_related.add_field(name='Channel',
-                              value=f'{channel_of_message} (id:{channel_id})',
-                              inline=False)
-        msg_related.add_field(name=f'Message Type',
-                              value=f'{message_type}',
-                              inline=False)
-        msg_related.add_field(name=f'Pin Status',
-                              value=f'{is_pinned}')
-        msg_related.add_field(name='Message content',
-                              value=f'{content}',
-                              inline=False)
-        msg_related.add_field(name=f'Created at',
-                              value=f'{created_at}')
-        msg_related.set_author(name=f'{author} id:{author.id}', icon_url=f'{author.avatar_url}')
-        msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
-        await destination.send(embed=msg_related)
+    # async def send_message_deleted(self, channel_id, message: discord.Message, direction: int, action: str):
+    #     ts = datetime.utcnow()
+    #     c = self.get_direction_color(direction=direction)
+    #     destination = self.bot.get_channel(id=channel_id)
+    #     created_at = message.created_at
+    #     author = message.author
+    #     content = message.content[:100]
+    #     message_type = message.type
+    #     channel_of_message = message.channel
+    #     channel_id = message.channel.id
+    #     is_pinned = message.pinned
+    #
+    #     msg_related = Embed(title=f'***Message*** {action}',
+    #                         colour=c,
+    #                         timestamp=ts)
+    #     msg_related.add_field(name='Channel',
+    #                           value=f'{channel_of_message} (id:{channel_id})',
+    #                           inline=False)
+    #     msg_related.add_field(name=f'Message Type',
+    #                           value=f'{message_type}',
+    #                           inline=False)
+    #     msg_related.add_field(name=f'Pin Status',
+    #                           value=f'{is_pinned}')
+    #     msg_related.add_field(name='Message content',
+    #                           value=f'{content}',
+    #                           inline=False)
+    #     msg_related.add_field(name=f'Created at',
+    #                           value=f'{created_at}')
+    #     msg_related.set_author(name=f'{author} id:{author.id}', icon_url=f'{author.avatar_url}')
+    #     msg_related.set_footer(text="Logged @ ", icon_url=self.bot.user.avatar_url)
+    #     await destination.send(embed=msg_related)
 
     async def on_member_events(self, member, direction: int, channel_id: int, action: str, post=None):
         """
@@ -556,14 +556,8 @@ class LoggerAutoSystem(commands.Cog):
         """
         Triggered when message deleted
         """
-        if message.author.bot is True:
-            if self.check_logger_status(message.guild.id):
-                channel_id = logger.get_channel(community_id=message.guild.id)
-                await self.send_message_deleted(channel_id=channel_id, message=message, direction=0, action='Deleted')
-            else:
-                pass
-        else:
-            pass
+        pass
+
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
