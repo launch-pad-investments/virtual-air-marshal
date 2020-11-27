@@ -24,43 +24,33 @@ bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 class SpamService(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.command = bot_setup["command"]
 
     @commands.group()
     @commands.check(is_public)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
     @commands.check(is_spam_registered)
     async def spam(self, ctx):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
         if ctx.invoked_subcommand is None:
-            title = '__Available commands under ***Spam*** category!'
-            description = 'Spam system has been designed witht he reason to protect community from ' \
-                          'invasion of spam bots. It includes '
-            'Auto role uppon successfull reaction from the user to appropriate channel. '
+            title = '__Available commands under ***Spam*** category!__'
+            description = 'Spam system has been designed with the reason to protect community from ' \
+                          'invasion of spam bots. It includes Auto role upon successful reaction from the user ' \
+                          'to appropriate channel. '
             value = [{'name': f'MUST READ Before start',
                       'value': "Create two roles with exact name as written here:\n ***Unverified*** -> "
-                               "Given when member joins\n ***Visitor*** --> Given when member reacts appropriatelly"},
-                     {'name': f'{bot_setup["command"]}spam on/off',
-                      'value': 'This will turn the spam protection ON/OFF. In order to make it work you'
-                               ' need to set appropriate message, channel,'
-                               ' and role on community.'},
-                     {'name': f'{bot_setup["command"]}spam set_channel <#discord.Channel>',
-                      'value': "This will set the channel where bot will be listening for message and reaction."},
-                     {'name': f'{bot_setup["command"]}spam set_message <Message ID as number>',
-                      'value': "Right click on the messsage and copy its ID and provide it to bot. Message needs "
-                               "to be located in selected channel"}
+                               "Given when member joins\n ***Visitor*** --> Given when member reacts appropriately"},
+                     {'name': f'Set channel for bot to listen',
+                      'value': f'```{self.command}spam set_channel <#discord.Channel>```'},
+                     {'name': f'Set message ID for bot to monitor for reaction',
+                      'value': f'```{self.command}spam set_message <Message ID as number>```'},
+                     {'name': 'turn spam ON or OFF',
+                      'value': f'```{self.command}spam on/off```'},
                      ]
 
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
 
     @spam.command()
     async def on(self, ctx):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
         if spam_sys_mng.check_welcome_channel_status(community_id=int(ctx.message.guild.id)):
             if spam_sys_mng.check_reaction_message_status(community_id=int(ctx.message.guild.id)):
                 if spam_sys_mng.turn_on_off(community_id=int(ctx.message.guild.id), direction=1):
@@ -85,10 +75,6 @@ class SpamService(commands.Cog):
 
     @spam.command()
     async def off(self, ctx):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
         if spam_sys_mng.turn_on_off(community_id=int(ctx.message.guild.id), direction=0):
             title = '__System Message__'
             message = 'You have turned OFF the bot invasion prevention function successfully. Have in ' \
@@ -102,10 +88,6 @@ class SpamService(commands.Cog):
 
     @spam.command()
     async def set_channel(self, ctx, channel: discord.TextChannel):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
         if spam_sys_mng.modify_channel(community_id=int(ctx.message.guild.id), channel_id=channel.id,
                                        channel_name=f'{channel.name}'):
             title = '__System Message__'
@@ -121,10 +103,6 @@ class SpamService(commands.Cog):
 
     @spam.command()
     async def set_message(self, ctx, message_id: int):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
         channel_db = spam_sys_mng.get_communtiy_settings(community_id=ctx.message.guild.id)
         if channel_db['appliedChannelId']:
             channel = self.bot.get_channel(id=int(channel_db['appliedChannelId']))
