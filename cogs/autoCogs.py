@@ -36,37 +36,6 @@ class AutoFunctions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    async def guild_notify(self, member, direction: int):
-        """
-        Custom notifications to desired channel
-        Args:
-            member ([discord.Member]): [description]
-            direction (int): [0 if leaves, 1 if joins]
-        """
-
-        # kavic tag
-        kavic = await self.bot.fetch_user(user_id=int(455916314238648340))
-        # animus = await self.bot.fetch_user(user_id=int(360367188432912385))
-        info_channel = self.bot.get_channel(id=int(722048385078788217))
-
-        await info_channel(content=f'{kavic.mention} :arrow_double_down: ')
-
-        time_joined = datetime.utcnow()
-        if direction == 0:
-            embed_info = Embed(title=f'User left {member.guild}',
-                               colour=Colour.orange())
-        elif direction == 1:
-            embed_info = Embed(title=f'New user Joined {member.guild}',
-                               colour=Colour.orange())
-        embed_info.add_field(name='Time:',
-                             value=f'{time_joined}')
-        embed_info.add_field(name='User details',
-                             value=f'{member}\n{member.id}')
-        embed_info.add_field(name='Bot?',
-                             value=f'{member.bot}\n')
-        embed_info.set_thumbnail(url=member.avatar_url)
-        await info_channel(embed=embed_info)
-
     @commands.Cog.listener()
     async def on_ready(self):
         """
@@ -437,33 +406,36 @@ class AutoFunctions(commands.Cog):
                 print(f'Bot could not delete command from channel: {e}')
                 pass
 
-    # @commands.Cog.listener()
-    # async def on_command_error(self, ctx, error):
-    #     """
-    #     Triggered everytime there is command error
-    #
-    #     Args:
-    #         ctx (discord.Context): [description]
-    #         error (discord.Error): [description]
-    #     """
-    #     try:
-    #         await ctx.message.delete()
-    #     except Exception:
-    #         pass
-    #     if isinstance(error, commands.CommandNotFound):
-    #         title = 'System Command Error'
-    #         message = f':no_entry: Sorry, this command does not exist! Please' \
-    #                   f'type `{bot_setup["command"]} help` to check available commands.'
-    #         await custom_messages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
-    #                                              sys_msg_title=title)
-    #     elif isinstance(error, commands.BotMissingAnyRole):
-    #         title = 'System Permission Error'
-    #         message = f'Bot does not have sufficient rights to execute command '
-    #         await custom_messages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
-    #                                              sys_msg_title=title)
-    #
-    #     else:
-    #         print("Timeout asyncio")
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        """
+        Triggered everytime there is command error
+
+        Args:
+            ctx (discord.Context): [description]
+            error (discord.Error): [description]
+        """
+        try:
+            await ctx.message.delete()
+        except Exception:
+            pass
+        if isinstance(error, commands.CommandNotFound):
+            title = 'System Command Error'
+            message = f':no_entry: Sorry, this command does not exist! Please' \
+                      f'type `{bot_setup["command"]} help` to check available commands.'
+            await custom_messages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
+                                                 sys_msg_title=title)
+        elif isinstance(error, commands.BotMissingAnyRole):
+            title = 'System Permission Error'
+            message = f'Bot does not have sufficient rights to execute command '
+            await custom_messages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
+                                                 sys_msg_title=title)
+
+        else:
+            title = 'System Permission Error'
+            message = f'Bot does not have sufficient rights to execute command: ```{error}``` '
+            await custom_messages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
+                                                 sys_msg_title=title)
 
 
 def setup(bot):
