@@ -31,6 +31,7 @@ bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 class JailService(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.command = bot_setup['command']
 
     @commands.group()
     @commands.check(is_public)
@@ -44,22 +45,20 @@ class JailService(commands.Cog):
         Args:
             ctx (discord.Context)
         """
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
         if ctx.invoked_subcommand is None:
             title = '__Available commands under ***Jail*** category!__'
-            description = 'Jail system was designed with intentions to keep the language of the community clean and social. If member breaches language for 3 minutes, he/she is sent to jail for 2 minutes.'
-            ' All roles are removed and given back once jail-time has expired.'
-            value = [{'name': f'{bot_setup["command"]}jail on',
-                      'value': "Turns the jail ON"},
-                     {'name': f'{bot_setup["command"]}jail off',
-                      'value': "Turns the jail system off"},
-                     {'name': f'{bot_setup["command"]}jail release <@discord.User>',
-                      'value': "Releases the user from jail before the expiration time. Can be used only by users with special rights"},
-                     {'name': f'{bot_setup["command"]}jail punish <@discord.User> <duration in minutes>',
-                      'value': "Manually puts user to Jail for N amount of minutes. Can be used only by users with special rights"}
+            description = 'With jail system, with administrative rights, user can put another member to jail for ' \
+                          'N amount of time. System handles on its own jail release and returning of perks from pre-' \
+                          'jail time upon expirations'
+
+            value = [{'name': f'Activate jail',
+                      'value': f'```{self.command}jail on```'},
+                     {'name': f'Deactivate jail',
+                      'value': f'```{self.command}jail off```'},
+                     {'name': f'Release members sooner manually',
+                      'value': f'```{self.command}jail release <@discord.User>```'},
+                     {'name': f'Send member to jail',
+                      'value': f'```{self.command}jail punish <@discord.User> <duration in minutes>```'}
                      ]
 
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
@@ -73,11 +72,6 @@ class JailService(commands.Cog):
         Args:
             ctx (discord.Context)
         """
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
-
         if jail_sys_manager.turn_on_off(community_id=int(ctx.message.guild.id), direction=1):
             title = '__System Message__'
             message = 'You have turned ON the automatic jail system and profanity monitor successfully. '
@@ -96,11 +90,6 @@ class JailService(commands.Cog):
         Args:
             ctx (discord.Context)
         """
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
-
         if jail_sys_manager.turn_on_off(community_id=int(ctx.message.guild.id), direction=0):
             title = '__System Message__'
             message = 'You have turned OFF automtic jail system and profanity successfully. Your members can get crazy'
@@ -121,11 +110,6 @@ class JailService(commands.Cog):
             ctx (dscrod.Context): 
             user (discord.Member): 
         """
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
-
         # Check if member in jail
         if jail_manager.check_if_jailed(user_id=user.id, community_id=ctx.guild.id):
             user_details = jail_manager.get_jailed_user(discord_id=user.id)
@@ -189,20 +173,6 @@ class JailService(commands.Cog):
     @commands.check(is_community_registered)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
     async def punish(self, ctx, jailee: Member, duration: int, *, subject: str = None):
-        """
-        Command throws user to the jail
-
-        Args:
-            ctx (discord.Context): 
-            jailee (discord.Member): 
-            duration (int): Duration in minutes
-            subject ([String], optional): Optional argument if explanation provided. Defaults to None.
-        """
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
-
         # Current time
         start = datetime.utcnow()
         # Set the jail expiration to after N minutes
