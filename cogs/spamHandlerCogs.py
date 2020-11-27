@@ -37,13 +37,13 @@ class SpamService(commands.Cog):
                           'invasion of spam bots. It includes Auto role upon successful reaction from the user ' \
                           'to appropriate channel. '
             value = [{"name": ":exclamation: Read Manual First :exclamation: ",
-                      "value": f'```{self.command}spam manual```'},
+                      "value": f'```{self.command} spam manual```'},
                      {'name': f'Set channel',
-                      'value': f'```{self.command}spam set_channel <#discord.Channel>```'},
+                      'value': f'```{self.command} spam set_channel <#discord.Channel>```'},
                      {'name': f'Set message ID for bot to monitor for reaction',
-                      'value': f'```{self.command}spam set_message <Message ID as number>```'},
+                      'value': f'```{self.command} spam set_message <Message ID as number>```'},
                      {'name': 'turn spam ON or OFF',
-                      'value': f'```{self.command}spam on/off```'},
+                      'value': f'```{self.command} spam on/off```'},
                      ]
 
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
@@ -56,11 +56,11 @@ class SpamService(commands.Cog):
                   'value': "Create two roles with exact name as written here:\n ***Unverified*** -> "
                            "Given when member joins\n ***Visitor*** --> Given when member reacts appropriately"},
                  {'name': f':two: Set channel for bot to monitor for verifications :two:',
-                  'value': f'```{self.command}spam set_channel <#discord.Channel>```'},
+                  'value': f'```{self.command} spam set_channel <#discord.Channel>```'},
                  {'name': f':three: Set message ID for bot to monitor for reaction :three: ',
-                  'value': f'```{self.command}spam set_message <Message ID as number>```'},
+                  'value': f'```{self.command} spam set_message <Message ID as number>```'},
                  {'name': ':four: Turn the spam ON :four',
-                  'value': f'```{self.command}spam on```'},
+                  'value': f'```{self.command} spam on```'},
                  {'name': ':five: ***@everyone*** :five:',
                   'value': f'It is crucial that @everyone has no rights what so ever across community as '
                            f'spam bots utilize its functions to view users. Also ***Unverified*** Should have '
@@ -153,23 +153,23 @@ class SpamService(commands.Cog):
                       f'<#discord.TextChannel> *** before you can set the mssage from the selected channel.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
-    # @spam.error
-    # async def spam_error(self, ctx, error):
-    #     if isinstance(error, commands.CheckAnyFailure):
-    #         message = f'You are either not an Overwatch member, owner of the community, or community has not ' \
-    #                   f'been registered yet into the system. Use {bot_setup["command"]}service register to start'
-    #         await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
-    #     elif isinstance(error, commands.CheckFailure):
-    #         message = f'This command is allowed to be executed only on the public channels of the community ' \
-    #                   f'or than it has not been registered yet into {self.bot.user} system.\n Error: {error}'
-    #         await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
-    #     else:
-    #         title = '__:bug: Found__'
-    #         message = f'Bug has been found while executing command and {self.bot.user} service team has been ' \
-    #                   f'automatically notified. We apologize for inconvinience!'
-    #         await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)
-    #         dest = await self.bot.fetch_user(user_id=int(360367188432912385))
-    #         await custom_message.bug_messages(ctx=ctx, error=error, destination=dest)
+    @spam.error
+    async def spam_error(self, ctx, error):
+        if isinstance(error, commands.CheckAnyFailure):
+            message = f'You are either not an Overwatch member, owner of the community, or community has not ' \
+                      f'been registered yet into the system. Use {bot_setup["command"]}service register to start'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        elif isinstance(error, commands.CheckFailure):
+            message = f'This command is allowed to be executed only on the public channels of the community ' \
+                      f'or than it has not been registered yet into {self.bot.user} system.\n Error: {error}'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
+        else:
+            title = '__:bug: Found__'
+            message = f'Bug has been found while executing command and {self.bot.user} service team has been ' \
+                      f'automatically notified. We apologize for inconvinience!'
+            await custom_message.system_message(ctx, message=message, color_code=1, destination=1, sys_msg_title=title)
+            dest = await self.bot.fetch_user(user_id=int(360367188432912385))
+            await custom_message.bug_messages(ctx=ctx, error=error, destination=dest)
 
 
 def setup(bot):
