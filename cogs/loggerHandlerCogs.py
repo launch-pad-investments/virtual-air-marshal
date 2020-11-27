@@ -3,18 +3,11 @@ import sys
 
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
-
-from datetime import datetime
-from datetime import timedelta
-import time
 import discord
-from discord import Member as DiscordMember
-
 from discord.ext import commands
 from backoffice.loggerSystemDb import LoggerSystem
 from utils.jsonReader import Helpers
 from cogs.toolsCog.systemMessages import CustomMessages
-from colorama import Fore
 from cogs.toolsCog.checks import is_community_owner, is_overwatch, logger_registration_status, is_public, \
     admin_predicate
 
@@ -29,6 +22,7 @@ bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 class LoggerService(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.command = bot_setup["command"]
 
     @commands.group()
     @commands.check(is_public)
@@ -43,20 +37,15 @@ class LoggerService(commands.Cog):
         Args:
             ctx (discord.Context)
         """
-        # TODO rewrite command map
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
         if ctx.invoked_subcommand is None:
             title = '__Available commands under ***LOGGER*** category!__'
             description = 'Logger system monitors activity on guild and provides notifications on changes.'
             ' All roles are removed and given back once jail-time has expired.'
-            value = [{'name': f'{bot_setup["command"]}logger on',
+            value = [{'name': f'{self.command}logger on',
                       'value': "Turns the jail ON"},
-                     {'name': f'{bot_setup["command"]}logger off',
+                     {'name': f'{self.command}logger off',
                       'value': "Turns the jail system off"},
-                     {'name': f'{bot_setup["command"]}logger set_channel <#discord_channel>',
+                     {'name': f'{self.command}logger set_channel <#discord_channel>',
                       'value': "Turns the jail system off"}
                      ]
 
@@ -64,10 +53,6 @@ class LoggerService(commands.Cog):
 
     @logger.command()
     async def set_channel(self, ctx, channel: discord.TextChannel):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
         if logger.modify_channel(community_id=int(ctx.message.guild.id), channel_id=channel.id,
                                  channel_name=f'{channel.name}'):
             title = '__System Message__'
@@ -87,11 +72,6 @@ class LoggerService(commands.Cog):
         Args:
             ctx (discord.Context)
         """
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
-
         if logger.turn_on_off(community_id=int(ctx.message.guild.id), direction=1):
             title = '__System Message__'
             message = 'You have turned ON the logging system. '
@@ -110,11 +90,6 @@ class LoggerService(commands.Cog):
         Args:
             ctx (discord.Context)
         """
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
-
         if logger.turn_on_off(community_id=int(ctx.message.guild.id), direction=0):
             title = '__System Message__'
             message = 'You have turned OFF logging system'
