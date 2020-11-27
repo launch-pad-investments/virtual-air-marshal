@@ -4,7 +4,8 @@ import sys
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
 
-import discord
+from discord import Role, Forbidden, HTTPException, InvalidArgument
+
 from discord import Member as DiscordMember
 from discord.ext import commands
 from discord.ext.commands import Greedy
@@ -51,12 +52,16 @@ class TeamCommands(commands.Cog):
         if ctx.invoked_subcommand is None:
             title = 'Admin available commands'
             description = 'All available commands for administrators of the community.'
-            value = [{'name': f'{bot_setup["command"]} kick <list of users> <reason>',
-                      'value': f"Kicks selected user/users and provides reason. requires to have *kick_members*"
-                               f" permission"},
-                     {'name': f'{bot_setup["command"]} ban <list of users> <reason>',
-                      'value': f"Bans the selected users and deletes messages for past 7 days. Requires to have"
-                               f" *ban_members* permission"}
+            value = [{'name': f'Kick user from community',
+                      'value': f"```{bot_setup['command']}kick <list of users> <reason>```"},
+                     {'name': f'Ban user from commuunity',
+                      'value': f'{bot_setup["command"]}ban <list of users> <reason>'},
+
+                     {'name': f'Manage Roles to users',
+                      'value': f'```{bot_setup["command"]}role```'},
+                     {'name': f'Create various stuff',
+                      'value': f'```{bot_setup["command"]}admin create```'}
+
                      ]
 
             await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
@@ -147,7 +152,7 @@ class TeamCommands(commands.Cog):
                                                 destination=0,
                                                 sys_msg_title='Kicking failed')
 
-    @commands.group()
+    @admin.group()
     @commands.check(is_public)
     @commands.check_any(commands.is_owner(), commands.check(role_mng), commands.check(admin_predicate))
     async def role(self, ctx):
@@ -158,16 +163,16 @@ class TeamCommands(commands.Cog):
         if ctx.invoked_subcommand is None:
             title = 'Admin available commands'
             description = 'All available commands for administrators of the community.'
-            value = [{'name': f'{bot_setup["command"]} admin role remove <@discord.Member> <@discord.Role>',
-                      'value': f""},
-                     {'name': f'{bot_setup["command"]} admin role add <@discord.Member> <@discord.Role>',
-                      'value': f""},
+            value = [{'name': "Remove tole from user",
+                      'value': f"```{bot_setup['command']}admin role remove <@discord.Member> <@discord.Role>```"},
+                     {'name': f'Add role to user',
+                      'value': f'```{bot_setup["command"]}admin role add <@discord.Member> <@discord.Role>```'},
                      ]
 
             await customMessages.embed_builder(ctx=ctx, title=title, description=description, data=value)
 
     @role.command()
-    async def remove(self, ctx, user: discord.Member, role: discord.Role):
+    async def remove(self, ctx, user: DiscordMember, role: Role):
         try:
             await ctx.message.delete()
         except Exception:
@@ -177,7 +182,7 @@ class TeamCommands(commands.Cog):
         await customMessages.system_message(ctx=ctx, color_code=0, destination=1, message=message)
 
     @role.command()
-    async def add(self, ctx, user: discord.Member, role: discord.Role):
+    async def add(self, ctx, user: DiscordMember, role: Role):
         try:
             await ctx.message.delete()
         except Exception:
@@ -215,13 +220,13 @@ class TeamCommands(commands.Cog):
         try:
             channel = await ctx.guild.create_text_channel(name=channel_name)
             await channel.send(content=f'{ctx.author.mention} you have successfully created new Text Channel!')
-        except discord.Forbidden as e:
+        except Forbidden as e:
             message = f'Voice Channel could not be created.. Here are details {e}.'
             await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
-        except discord.HTTPException as e:
+        except HTTPException as e:
             message = f'Voice Channel could not be created.. Here are details {e}.'
             await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
-        except discord.InvalidArgument as e:
+        except InvalidArgument as e:
             message = f'Voice Channel could not be created.. Here are details {e}.'
             await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
 
@@ -237,14 +242,15 @@ class TeamCommands(commands.Cog):
 
         try:
             await ctx.guild.create_voice_channel(name=channel_name)
-            await ctx.channel.send(content=f'{ctx.message.author.mention} Voice channel has been successfully created')
-        except discord.Forbidden as e:
+            await ctx.channel.send(
+                content=f'{ctx.message.author.mention} Voice channel has been successfully created')
+        except Forbidden as e:
             message = f'Voice Channel could not be created.. Here are details {e}.'
             await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
-        except discord.HTTPException as e:
+        except HTTPException as e:
             message = f'Voice Channel could not be created.. Here are details {e}.'
             await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
-        except discord.InvalidArgument as e:
+        except InvalidArgument as e:
             message = f'Voice Channel could not be created.. Here are details {e}.'
             await customMessages.system_message(ctx, message=message, color_code=1, destination=1)
 
