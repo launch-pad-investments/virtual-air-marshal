@@ -36,8 +36,9 @@ class SpamService(commands.Cog):
             description = 'Spam system has been designed with the reason to protect community from ' \
                           'invasion of spam bots. It includes Auto role upon successful reaction from the user ' \
                           'to appropriate channel. '
-            value = [{"name":":exclamation: Read Manual First :exclamation: "},
-                     {'name': f'```{self.command}spam manual```',
+            value = [{"name": ":exclamation: Read Manual First :exclamation: ",
+                      "value": f'```{self.command}spam manual```'},
+                     {'name': f'Set channel',
                       'value': f'```{self.command}spam set_channel <#discord.Channel>```'},
                      {'name': f'Set message ID for bot to monitor for reaction',
                       'value': f'```{self.command}spam set_message <Message ID as number>```'},
@@ -70,6 +71,7 @@ class SpamService(commands.Cog):
                  ]
 
         await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
+
     @spam.command()
     async def on(self, ctx):
         if spam_sys_mng.check_welcome_channel_status(community_id=int(ctx.message.guild.id)):
