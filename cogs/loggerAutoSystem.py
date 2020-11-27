@@ -1,12 +1,9 @@
 import os
 import sys
-import time
-from datetime import datetime, timedelta
-from pprint import pprint
+from datetime import datetime
 import discord
-from better_profanity import profanity
-from colorama import Fore, init
-from discord import DMChannel, Embed, Colour
+from colorama import init
+from discord import Embed, Colour
 from discord.ext import commands
 
 from cogs.toolsCog.systemMessages import CustomMessages
@@ -559,7 +556,7 @@ class LoggerAutoSystem(commands.Cog):
         """
         Triggered when message deleted
         """
-        if not message.author.bot:
+        if message.author.bot is True:
             if self.check_logger_status(message.guild.id):
                 channel_id = logger.get_channel(community_id=message.guild.id)
                 await self.send_message_deleted(channel_id=channel_id, message=message, direction=0, action='Deleted')
