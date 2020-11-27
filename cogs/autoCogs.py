@@ -1,21 +1,19 @@
 import os
 import sys
-import time
-from datetime import datetime, timedelta
+from datetime import datetime
 
-import discord
-from better_profanity import profanity
 from colorama import Fore, init
-from discord import DMChannel, Embed, Colour
+from discord import Embed, Colour
+from discord import TextChannel, utils
 from discord.ext import commands
 
 from backoffice.jailManagementDb import JailManagement
 from backoffice.jailSystemDb import JailSystemManager
+from backoffice.loggerSystemDb import LoggerSystem
 from backoffice.spamSystemDb import SpamSystemManager
 from backoffice.supportSystemDb import SupportSystemManager
 from cogs.toolsCog.systemMessages import CustomMessages
 from utils.jsonReader import Helpers
-from backoffice.loggerSystemDb import LoggerSystem
 
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_path)
@@ -28,7 +26,7 @@ custom_messages = CustomMessages()
 spam_sys_mng = SpamSystemManager()
 jail_sys_mng = JailSystemManager()
 sup_sys_mng = SupportSystemManager()
-logger=LoggerSystem()
+logger = LoggerSystem()
 
 bot_setup = helper.read_json_file(file_name='mainBotConfig.json')
 CONST_JAIL_DURATION = 5
@@ -95,11 +93,6 @@ class AutoFunctions(commands.Cog):
             member (discord.Member): Member which joines the community
         """
         print(Fore.LIGHTYELLOW_EX + f'{member} joining {member.guild} ')
-        if member.guild.id == 667607865199951872:
-            await self.guild_notify(member=member, direction=1)
-        else:
-            pass
-
         if spam_sys_mng.check_community_reg_status(community_id=member.guild.id):
             if not member.bot:
                 sec_value = spam_sys_mng.check_if_security_activated(community_id=int(member.guild.id))
@@ -107,25 +100,27 @@ class AutoFunctions(commands.Cog):
                     community_id=member.guild.id)  # Get details of channel as dict
 
                 if sec_value == 1:
-                    role = discord.utils.get(member.guild.roles,
-                                             name="Unverified")  # Check if role can be found if not than None
+                    role = utils.get(member.guild.roles,
+                                     name="Unverified")  # Check if role can be found if not than None
                     if role:
                         await member.add_roles(role)  # Give member a role
                         # Console printoutn
                         print(Fore.BLUE + f"New user joined community: {member} (ID: {member.id})")
-                        print(Fore.YELLOW + f"Role Unveriffied given to the user {member} with ID: {member.id}")
+                        print(Fore.YELLOW + f"Role Unverified given to the user {member} with ID: {member.id}")
                         text = f'Hey and welcome to the {member.guild}. '
-                        f'Head to channel #{details["appliedChannelName"]} '
-                        f'(ID: {details["appliedChannelId"]}) and accept TOS/Rules of community!'
+                        f' Community has activate __spam prevention system__ which requires from newly joined users ' \
+                        f' to verify themselves. Head to channel #{details["appliedChannelName"]} '
+                        f'(ID: {details["appliedChannelId"]}) and accept TOS/Rules of community by reacting to the ' \
+                        f'message with :thumbsup: ! If successful, community channels will become availabale for you.'
 
-                        sys_embed = discord.Embed(title="__Air Marshal System Message__",
-                                                  description="This is auto-message!",
-                                                  colour=0x319f6b)
-                        sys_embed.add_field(name='Message',
+                        sys_embed = Embed(title="__Air Marshal Auto-System Message__",
+                                          description="This is auto-message!",
+                                          colour=0x319f6b)
+                        sys_embed.add_field(name=':warning: Message: warning: ',
                                             value=text,
                                             inline=False)
                         sys_embed.set_thumbnail(url=self.bot.user.avatar_url)
-                        sys_embed.set_footer(text='Service provided by Launch Pad Investments')
+                        sys_embed.set_footer(text='Virtual Air Marshal is watching')
 
                         try:
                             await member.send(embed=sys_embed)
@@ -142,7 +137,7 @@ class AutoFunctions(commands.Cog):
                 elif sec_value == 0:
                     # Auto role if system is off
                     print(Fore.BLUE + f"New user joined community: {member} (ID: {member.id})")
-                    role = discord.utils.get(member.guild.roles, name='Visitor')
+                    role = utils.get(member.guild.roles, name='Visitor')
 
                     if role:
                         await member.add_roles(role)
@@ -153,9 +148,9 @@ class AutoFunctions(commands.Cog):
                         f'(ID: {details["appliedChannelId"]}) and familiarize yourself with TOS/Rules of ' \
                         f'community and enjoy jour stay!'
 
-                        sys_embed = discord.Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
-                                                  description=f"Access to {member.guild} granted!",
-                                                  colour=0x319f6b)
+                        sys_embed = Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
+                                          description=f"Access to {member.guild} granted!",
+                                          colour=0x319f6b)
                         sys_embed.add_field(name='__Notice!__',
                                             value=text)
 
@@ -168,9 +163,9 @@ class AutoFunctions(commands.Cog):
                                f'of Launch Pad Investment Discord Group. '
                         f' It has been designed with the reason to allow moderation of the community.'
 
-                        sys_embed = discord.Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
-                                                  description=f"Air-Marshal monitoring you activity :robot: ",
-                                                  colour=0x319f6b)
+                        sys_embed = Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
+                                          description=f"Air-Marshal monitoring you activity :robot: ",
+                                          colour=0x319f6b)
                         sys_embed.add_field(name='__Notice!__',
                                             value=text)
 
@@ -203,11 +198,6 @@ class AutoFunctions(commands.Cog):
             member ([type]): [description]
         """
         print(Fore.LIGHTYELLOW_EX + f'{member} left {member.guild}...')
-        if member.guild.id == 667607865199951872:
-            await self.guild_notify(member=member, direction=0)
-        else:
-            pass
-
         print(Fore.LIGHTWHITE_EX + f'Initiating clean up process for member {member} with ID {member.id}')
         jail_manager.clear_community_member_jail(community_id=member.guild.id, member_id=member.id)
         print(Fore.GREEN + f'Cleaning process finished')
@@ -328,7 +318,6 @@ class AutoFunctions(commands.Cog):
         """
         pass
 
-
     @commands.Cog.listener()
     async def on_guild_role_delete(self, role):
         """
@@ -356,7 +345,7 @@ class AutoFunctions(commands.Cog):
                 if reaction.channel_id == details['appliedChannelId']:
                     if reaction.message_id == details['appliedMessageId']:
                         if reaction.emoji.name == '\U0001F44D':
-                            role = discord.utils.get(reaction.member.guild.roles, name='Visitor')
+                            role = utils.get(reaction.member.guild.roles, name='Visitor')
                             if role:
                                 await reaction.member.add_roles(role)
                                 print(Fore.YELLOW + f"Role Visitor given to the user {author} with ID: {author.id}")
@@ -365,9 +354,9 @@ class AutoFunctions(commands.Cog):
                                 f'You have successfully verified yourself, and gave yourself a chance to look' \
                                 f' through its content. Enjoy Your Stay!'
 
-                                sys_embed = discord.Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
-                                                          description=f"Access to {author.guild} granted!",
-                                                          colour=0x319f6b)
+                                sys_embed = Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
+                                                  description=f"Access to {author.guild} granted!",
+                                                  colour=0x319f6b)
                                 sys_embed.add_field(name='__Notice!__',
                                                     value=text)
 
@@ -383,9 +372,9 @@ class AutoFunctions(commands.Cog):
                                        f'Investment Discord Group. '
                                 f' It has been designed with the reason to allow moderation of the community.'
 
-                                sys_embed = discord.Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
-                                                          description=f"Air-Marshal monitoring you activity :robot: ",
-                                                          colour=0x319f6b)
+                                sys_embed = Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
+                                                  description=f"Air-Marshal monitoring you activity :robot: ",
+                                                  colour=0x319f6b)
                                 sys_embed.add_field(name='__Notice!__',
                                                     value=text)
 
@@ -397,7 +386,7 @@ class AutoFunctions(commands.Cog):
                                     pass
 
                                 print(Fore.CYAN + f"Removing the Unverified role from {author} (ID: {author.id}")
-                                role_rmw = discord.utils.get(author.guild.roles, name="Unverified")
+                                role_rmw = utils.get(author.guild.roles, name="Unverified")
                                 await author.remove_roles(role_rmw, reason='User accepted TOS')
                                 print(Fore.YELLOW + f"Role Unverified removed from user {author} with ID: {author.id}")
                                 print(Fore.GREEN + f"User accepted TOS {author} (ID: {author.id}")
@@ -408,17 +397,17 @@ class AutoFunctions(commands.Cog):
                             message = 'You have either reacted with wrong emoji or than you did not want to accept ' \
                                       'Terms Of Service. Community has therefore stayed locked for you.'
                             title = f"Access to {reaction.guild} forbidden"
-                            sys_embed = discord.Embed(title="System Message",
-                                                      description=title,
-                                                      colour=0x319f6b)
+                            sys_embed = Embed(title="System Message",
+                                              description=title,
+                                              colour=0x319f6b)
                             sys_embed.add_field(name='Message',
                                                 value=message)
                     else:
                         message = f'You have reacted to wrong message! Message ID is {details["appliedMessageId"]}!'
                         title = f":octagonal_sign:  __Air Marshal System Message__ :octagonal_sign: "
-                        sys_embed = discord.Embed(title="System Message",
-                                                  description=title,
-                                                  colour=0x319f6b)
+                        sys_embed = Embed(title="System Message",
+                                          description=title,
+                                          colour=0x319f6b)
                         sys_embed.add_field(name='Message',
                                             value=message)
                 else:
@@ -433,37 +422,48 @@ class AutoFunctions(commands.Cog):
         """
 
         Args:
-            message (discord.Message): 
+            message (discord.Message):
         """
-        pass
 
     @commands.Cog.listener()
-    async def on_command_error(self, ctx, error):
+    async def on_command(self, ctx):
         """
-        Triggered everytime there is command error
-
-        Args:
-            ctx (discord.Context): [description]
-            error (discord.Error): [description]
+        global function activated everytime when command is executed
         """
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
-        if isinstance(error, commands.CommandNotFound):
-            title = 'System Command Error'
-            message = f':no_entry: Sorry, this command does not exist! Please' \
-                      f'type `{bot_setup["command"]} help` to check available commands.'
-            await custom_messages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
-                                                 sys_msg_title=title)
-        elif isinstance(error, commands.BotMissingAnyRole):
-            title = 'System Permission Error'
-            message = f'Bot does not have sufficient rights to execute command '
-            await custom_messages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
-                                                 sys_msg_title=title)
+        if isinstance(ctx.message.channel, TextChannel):
+            try:
+                await ctx.message.delete()
+            except Exception as e:
+                print(f'Bot could not delete command from channel: {e}')
+                pass
 
-        else:
-            pass
+    # @commands.Cog.listener()
+    # async def on_command_error(self, ctx, error):
+    #     """
+    #     Triggered everytime there is command error
+    #
+    #     Args:
+    #         ctx (discord.Context): [description]
+    #         error (discord.Error): [description]
+    #     """
+    #     try:
+    #         await ctx.message.delete()
+    #     except Exception:
+    #         pass
+    #     if isinstance(error, commands.CommandNotFound):
+    #         title = 'System Command Error'
+    #         message = f':no_entry: Sorry, this command does not exist! Please' \
+    #                   f'type `{bot_setup["command"]} help` to check available commands.'
+    #         await custom_messages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
+    #                                              sys_msg_title=title)
+    #     elif isinstance(error, commands.BotMissingAnyRole):
+    #         title = 'System Permission Error'
+    #         message = f'Bot does not have sufficient rights to execute command '
+    #         await custom_messages.system_message(ctx=ctx, color_code=1, message=message, destination=1,
+    #                                              sys_msg_title=title)
+    #
+    #     else:
+    #         print("Timeout asyncio")
 
 
 def setup(bot):

@@ -48,7 +48,7 @@ class TeamCommands(commands.Cog):
             description = 'All available commands for administrators of the community.'
             value = [{'name': f'Kick user from community',
                       'value': f"```{bot_setup['command']}kick <list of users> <reason>```"},
-                     {'name': f'Ban user from commuunity',
+                     {'name': f'Ban user from community',
                       'value': f'{bot_setup["command"]}ban <list of users> <reason>'},
 
                      {'name': f'Manage Roles to users',
