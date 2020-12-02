@@ -37,13 +37,13 @@ class SpamService(commands.Cog):
                           'invasion of spam bots. It includes Auto role upon successful reaction from the user ' \
                           'to appropriate channel. '
             value = [{"name": ":exclamation: Read Manual First :exclamation: ",
-                      "value": f'```{self.command} spam manual```'},
+                      "value": f'```{self.command}spam manual```'},
                      {'name': f'Set channel',
-                      'value': f'```{self.command} spam set_channel <#discord.Channel>```'},
+                      'value': f'```{self.command}spam set_channel <#discord.Channel>```'},
                      {'name': f'Set message ID for bot to monitor for reaction',
-                      'value': f'```{self.command} spam set_message <Message ID as number>```'},
+                      'value': f'```{self.command}spam set_message <Message ID as number>```'},
                      {'name': 'turn spam ON or OFF',
-                      'value': f'```{self.command} spam on/off```'},
+                      'value': f'```{self.command}spam on/off```'},
                      ]
 
             await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
@@ -56,11 +56,11 @@ class SpamService(commands.Cog):
                   'value': "Create two roles with exact name as written here:\n ***Unverified*** -> "
                            "Given when member joins\n ***Visitor*** --> Given when member reacts appropriately"},
                  {'name': f':two: Set channel for bot to monitor for verifications :two:',
-                  'value': f'```{self.command} spam set_channel <#discord.Channel>```'},
+                  'value': f'```{self.command}spam set_channel <#discord.Channel>```'},
                  {'name': f':three: Set message ID for bot to monitor for reaction :three: ',
-                  'value': f'```{self.command} spam set_message <Message ID as number>```'},
+                  'value': f'```{self.command}spam set_message <Message ID as number>```'},
                  {'name': ':four: Turn the spam ON :four',
-                  'value': f'```{self.command} spam on```'},
+                  'value': f'```{self.command}spam on```'},
                  {'name': ':five: ***@everyone*** :five:',
                   'value': f'It is crucial that @everyone has no rights what so ever across community as '
                            f'spam bots utilize its functions to view users. Also ***Unverified*** Should have '
@@ -101,12 +101,12 @@ class SpamService(commands.Cog):
         if spam_sys_mng.turn_on_off(community_id=int(ctx.message.guild.id), direction=0):
             title = '__System Message__'
             message = 'You have turned OFF the bot invasion prevention function successfully. Have in ' \
-                      'mind that now everything will needd to be done manually.'
+                      'mind that now everything will needed to be done manually.'
             await custom_message.system_message(ctx=ctx, color_code=0, message=message,
                                                 destination=1, sys_msg_title=title)
         else:
             message = f'There was a backend error. Please try again later or contact one of the administrators ' \
-                      f'on the community. We apologize for inconvinience'
+                      f'on the community. We apologize for inconvenience'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
     @spam.command()
@@ -137,7 +137,7 @@ class SpamService(commands.Cog):
                         message = f'You have set message to be listening for reaction successfully! ' \
                                   f'Here is location of message:\n Location: #{msg.channel}\n ID: {msg.id}.' \
                                   f' \nProceed with final step by activating the service with ' \
-                                  f'***{bot_setup["command"]} spam on***. '
+                                  f'***{bot_setup["command"]}spam on***. '
                         await custom_message.system_message(ctx=ctx, color_code=0, message=message, destination=1,
                                                             sys_msg_title=title)
                 else:
@@ -150,7 +150,7 @@ class SpamService(commands.Cog):
                 await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
         else:
             message = f'You need to first set channel with command {bot_setup["command"]} spam set_channel ' \
-                      f'<#discord.TextChannel> *** before you can set the mssage from the selected channel.'
+                      f'<#discord.TextChannel> *** before you can set the message from the selected channel.'
             await custom_message.system_message(ctx, message=message, color_code=1, destination=1)
 
     @spam.error
