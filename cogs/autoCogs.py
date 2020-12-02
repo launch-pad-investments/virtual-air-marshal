@@ -76,11 +76,11 @@ class AutoFunctions(commands.Cog):
                         # Console printoutn
                         print(Fore.BLUE + f"New user joined community: {member} (ID: {member.id})")
                         print(Fore.YELLOW + f"Role Unverified given to the user {member} with ID: {member.id}")
-                        text = f'Hey and welcome to the {member.guild}. '
-                        f' Community has activate __spam prevention system__ which requires from newly joined users ' \
-                        f' to verify themselves. Head to channel #{details["appliedChannelName"]} '
-                        f'(ID: {details["appliedChannelId"]}) and accept TOS/Rules of community by reacting to the ' \
-                        f'message with :thumbsup: ! If successful, community channels will become availabale for you.'
+                        text = f'Hey and welcome to the {member.guild}. Community has activate __spam prevention system__ ' \
+                               f'which requires from newly joined users o verify themselves. Head to channel ' \
+                               f'#{details["appliedChannelName"]} (ID: {details["appliedChannelId"]}) and accept ' \
+                               f'TOS/Rules of community by reacting to the message with :thumbsup: ! If ' \
+                               f'successful, community channels will become availabale for you.'
 
                         sys_embed = Embed(title="__Air Marshal Auto-System Message__",
                                           description="This is auto-message!",
@@ -319,9 +319,9 @@ class AutoFunctions(commands.Cog):
                                 await reaction.member.add_roles(role)
                                 print(Fore.YELLOW + f"Role Visitor given to the user {author} with ID: {author.id}")
 
-                                text = f'Hey and welcome to the {author.guild}. '
-                                f'You have successfully verified yourself, and gave yourself a chance to look' \
-                                f' through its content. Enjoy Your Stay!'
+                                text = f'Hey and welcome to the {author.guild}. ' \
+                                       f'You have successfully verified yourself. Server channels have been opened up' \
+                                       f' for you.Enjoy Your Stay!'
 
                                 sys_embed = Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
                                                   description=f"Access to {author.guild} granted!",
@@ -335,23 +335,6 @@ class AutoFunctions(commands.Cog):
                                     print(
                                         Fore.RED + f"Welcome message could not be delivered to {author} with "
                                                    f"ID: {author.id} due to no DM rule")
-                                    pass
-
-                                text = f'{author.guild} uses {self.bot.user} which is a product of Launch Pad ' \
-                                       f'Investment Discord Group. '
-                                f' It has been designed with the reason to allow moderation of the community.'
-
-                                sys_embed = Embed(title=":rocket: __Air Marshal System Message__ :rocket:",
-                                                  description=f"Air-Marshal monitoring you activity :robot: ",
-                                                  colour=0x319f6b)
-                                sys_embed.add_field(name='__Notice!__',
-                                                    value=text)
-
-                                try:
-                                    await author.send(embed=sys_embed)
-                                except Exception:
-                                    print(
-                                        Fore.RED + f"Welcome message could not be delivered to {author} with ID: {author.id} due to no DM rule")
                                     pass
 
                                 print(Fore.CYAN + f"Removing the Unverified role from {author} (ID: {author.id}")
