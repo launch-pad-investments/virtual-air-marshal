@@ -60,7 +60,7 @@ class CommunityOwnerCommands(commands.Cog):
         else:
             return True
 
-    @commands.group(aliases=['s'])
+    @commands.group(aliases=['s','services'])
     @commands.bot_has_guild_permissions(administrator=True, manage_messages=True, manage_roles=True)
     @commands.check(is_public)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
