@@ -60,7 +60,7 @@ class CommunityOwnerCommands(commands.Cog):
         else:
             return True
 
-    @commands.group()
+    @commands.group(aliases=['s'])
     @commands.bot_has_guild_permissions(administrator=True, manage_messages=True, manage_roles=True)
     @commands.check(is_public)
     @commands.check_any(commands.check(is_overwatch), commands.check(is_community_owner))
@@ -77,7 +77,7 @@ class CommunityOwnerCommands(commands.Cog):
             value = [{'name': f'Check activate services',
                       'value': f"```{bot_setup['command']}service status```"},
                      {'name': f'Register for spam prevention system',
-                      'value': f"{bot_setup['command']}service register spam"},
+                      'value': f"```{bot_setup['command']}service register spam```"},
                      {'name': f'Register for jail system ',
                       'value': f"```{bot_setup['command']}service register jail```"},
                      {'name': f'Register for support ticketing system',
