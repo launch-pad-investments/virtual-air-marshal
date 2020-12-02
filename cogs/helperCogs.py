@@ -38,7 +38,7 @@ class HelpCommands(commands.Cog):
     async def help(self, ctx):
         help_nfo = Embed(title=f'Welcome to virtual air marshall',
                          description='Welcome to help menu. All available command entry points are presented below',
-                         colour=Colour.green)
+                         colour=Colour.green())
         help_nfo.add_field(name=f'Bot links',
                            value=f'[Web Page](https://launch-pad-investments.github.io/virtual-air-marshal/)\n'
                                  f'[Github](https://github.com/launch-pad-investments/virtual-air-marshal)',
