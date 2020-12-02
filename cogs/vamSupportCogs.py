@@ -112,10 +112,6 @@ class StaffContactCmd(commands.Cog):
     @commands.check(is_public)
     @commands.check(is_community_owner)
     async def sys(self, ctx):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
         if ctx.invoked_subcommand is None:
             title = '__Available commands for issuing a  ***Support*** ticket!'
             description = 'Message can be sent directly to Virtual Air Marshal development team and they will be in ' \
@@ -135,11 +131,6 @@ class StaffContactCmd(commands.Cog):
     @sys.command()
     @commands.check(is_public)
     async def feature(self, ctx, *, message: str):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
-
         if self.length_checker(message=message):  # Message length checker
             ticket_no = str(uuid4())
             time_of_request = datetime.utcnow()
@@ -170,10 +161,6 @@ class StaffContactCmd(commands.Cog):
     @sys.command()
     @commands.check(is_public)
     async def bug(self, ctx, *, message: str):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
         if self.length_checker(message=message):
             ticket_no = str(uuid4())
             time_of_request = datetime.utcnow()
@@ -205,10 +192,6 @@ class StaffContactCmd(commands.Cog):
     @sys.command()
     @commands.check(is_public)
     async def marketing(self, ctx, *, message: str):
-        try:
-            await ctx.message.delete()
-        except Exception:
-            pass
         if self.length_checker(message=message):
             ticket_no = str(uuid4())
             time_of_request = datetime.utcnow()
