@@ -52,22 +52,23 @@ class SpamService(commands.Cog):
     async def manual(self, ctx):
         title = ':information_source: Setup Procedure :information_source: '
         description = ''
-        value = [{'name': f':one: Manually Create Required Roles :one:',
-                  'value': "Create two roles with exact name as written here:\n ***Unverified*** -> "
+        value = [{'name': f':play_pause: Manually Create Required Roles if missing :play_pause: ',
+                  'value': "Both roles should be already created throughout the registration process."
+                           "Please verify if they are otherwise create roles with exact name:\n ***Unverified*** -> "
                            "Given when member joins\n ***Visitor*** --> Given when member reacts appropriately"},
-                 {'name': f':two: Set channel for bot to monitor for verifications :two:',
+                 {'name': f':one: Set channel for bot to monitor for verifications :one:',
                   'value': f'```{self.command}spam set_channel <#discord.Channel>```'},
-                 {'name': f':three: Set message ID for bot to monitor for reaction :three: ',
+                 {'name': f':two: Set message ID for bot to monitor for reaction :two: ',
                   'value': f'```{self.command}spam set_message <Message ID as number>```'},
-                 {'name': ':four: Turn the spam ON :four',
+                 {'name': ':three: Turn the spam ON :three',
                   'value': f'```{self.command}spam on```'},
-                 {'name': ':five: ***@everyone*** :five:',
+                 {'name': ':four: ***@everyone*** :four:',
                   'value': f'It is crucial that @everyone has no rights what so ever across community as '
                            f'spam bots utilize its functions to view users. Also ***Unverified*** Should have '
                            f'granted read-only, view message history and add-reaction rights only on the channel'
                            f' where it is expected for incoming members to provide reaction. ***Visitor*** role '
                            f'should be assigned to all other channels of the server where you want user to have'
-                           f' access to once he/she is verified.'},
+                           f' access to once he/she is verified. Reaction which bot is listening to is :thumbsup: '},
                  ]
 
         await custom_message.embed_builder(ctx=ctx, title=title, description=description, data=value)
