@@ -7,7 +7,7 @@ The bot is owned by Launch Pad Investments Discord Group offering wide variety o
 
 ## Bot command
 ```text
-^vam  # Prefix
+*  # Prefix (asterix)
 or
 @Virtual Air Marshal#8238  # Bot tag
 ``` 
@@ -17,12 +17,12 @@ Each of the bellow presented systems acts as a standalone entity part of the Vir
 it requires registration for each system separately (Only one command to execute).
 
 ## Available functions and systems
+- [x] Access help menu with *help
 - [x] [Spam/Bot Invasion Prevention System](SPAMPROTECTION.md)
 - [x] [Timed Jail System](JAILSYSTEM.md)
 - [x] [Support Ticket System](SUPPORTTICKET.md)
 - [x] [General Administration Commands](ADMINISTRATOR.md)
 - [X] [Log System](LOGSYSTEM.md)
-
 
 
 ### Spam/Bot Invasion Protection System 
@@ -54,7 +54,7 @@ This section includes basic administrative commands which get accessible once bo
 of the commands execute:
 
 ```text
-^vam admin
+*admin
 ```
 
 [Administration commands List and explanations](ADMINISTRATOR.md)
@@ -96,7 +96,7 @@ Note: You need to be guild owner in order to contact Virtual Air Marshal support
 to see available types of support execute command 
 
 ```text
-^vam sys
+*sys
 ```
 
 [AVAILABLE COMMANDS FOR SYS](SYSCOMMANDS.md)
