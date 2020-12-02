@@ -33,7 +33,8 @@ extensions = ['cogs.adminCogs',
               'cogs.loggerAutoSystem',
               'cogs.loggerHandlerCogs',
               'cogs.supportTicketCogs',
-              'cogs.vamSupportCogs']
+              'cogs.vamSupportCogs',
+              'cogs.helperCogs']
 
 # 'cogs.projectsAdminsCogs'
 
