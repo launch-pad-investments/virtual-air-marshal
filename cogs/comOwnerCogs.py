@@ -187,7 +187,8 @@ class CommunityOwnerCommands(commands.Cog):
                                                                owner_id=ctx.message.guild.owner_id,
                                                                owner_name=f'{ctx.message.guild.owner}'):
                     message = f'You have successfully registered community to ***{self.bot.user.mention} SPAM*** ' \
-                              f'system.'
+                              f'system. Role ***Visitor*** and ***Unverified*** has been created which are' \
+                              f' required for system to operate optimally. Please do not change/remove them.'
                     await custom_message.system_message(ctx, message=message, color_code=0, destination=1)
                 else:
                     message = f'There has been an error while trying register community into the system. ' \
